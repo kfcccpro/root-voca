@@ -405,6 +405,47 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 @keyframes shimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(200%)}}
 .session-count{font-size:13px;font-weight:600;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
 .exit-btn{font-size:13px;font-weight:500;color:var(--ink-3)}
+
+/* ---- 다층 진행 시각화 ---- */
+.prog-panel{margin:6px 0 18px;display:flex;flex-direction:column;gap:12px}
+.prog-stats{display:flex;gap:10px}
+.prog-stats .ps-item{
+  flex:1;background:var(--surface);border:1px solid var(--hairline);
+  border-radius:var(--radius-sm);padding:10px 8px;text-align:center;
+  box-shadow:var(--shadow-card);transition:transform .3s var(--spring);
+}
+.prog-stats .ps-item:hover{transform:translateY(-2px)}
+.prog-stats .ps-n{display:block;font-size:20px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1}
+.prog-stats .ps-l{display:block;font-size:11px;font-weight:600;color:var(--ink-3);margin-top:3px}
+.prog-dots{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.prog-dots .dot{
+  width:11px;height:11px;border-radius:50%;background:var(--track-strong);
+  transition:all .4s var(--spring);flex:0 0 auto;
+}
+.prog-dots .dot.done{background:var(--green);box-shadow:0 0 6px rgba(52,199,89,.5)}
+.prog-dots .dot.wrong{background:var(--red);box-shadow:0 0 6px rgba(255,59,48,.5)}
+.prog-dots .dot.current{
+  background:var(--blue);transform:scale(1.5);
+  box-shadow:0 0 0 4px var(--blue-tint),0 0 10px rgba(0,113,227,.6);
+  animation:dotPulse 1.4s var(--ease) infinite;
+}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 4px var(--blue-tint),0 0 10px rgba(0,113,227,.6)}50%{box-shadow:0 0 0 7px var(--blue-tint-soft),0 0 14px rgba(0,113,227,.35)}}
+
+/* ---- 홈: 30일 코스 진척 ---- */
+.course-bar{margin:22px 0 6px;background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-md);padding:18px 20px;box-shadow:var(--shadow-card)}
+.course-bar .cb-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.course-bar .cb-title{font-size:15px;font-weight:700;color:var(--ink)}
+.course-bar .cb-day{font-size:13px;font-weight:600;color:var(--blue);font-variant-numeric:tabular-nums}
+.course-bar .cb-track{height:10px;border-radius:5px;background:var(--track-strong);overflow:hidden;position:relative}
+.course-bar .cb-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width .6s var(--ease);position:relative}
+.course-bar .cb-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-100%);animation:shimmer 2.6s var(--ease) infinite}
+.course-bar .cb-sub{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ---- 관리자 인쇄 버튼 ---- */
+.print-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn-print{font-size:14px;font-weight:600;padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--blue);color:var(--blue);background:var(--blue-tint);transition:all .25s var(--spring);cursor:pointer}
+.btn-print:hover{transform:translateY(-2px);box-shadow:0 6px 16px var(--blue-tint-2)}
+.btn-print.answer{border-color:var(--green);color:var(--correct-ink);background:var(--green-tint)}
 .exit-btn:hover{color:var(--ink)}
 
 .study-card{
@@ -631,7 +672,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 <!-- ============ HOME ============ -->
 <main class="page visible" id="page-home">
   <section class="hero">
-    <div class="eyebrow">능률VOCA 어원편 · DAY 01–60 완성본</div>
+    <div class="eyebrow">능률VOCA 어원편 · 30일 완성 코스</div>
     <h1>매일, 어원으로.<br>단어가 자랍니다.</h1>
     <p>하나의 뿌리를 알면, 열 개의 단어가 열립니다.</p>
     <div class="cta-row">
@@ -644,6 +685,19 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
       <button class="switch" id="spellToggle" role="switch" aria-checked="false"></button>
     </div>
   </section>
+
+  <!-- 30일 완성 코스 진척 -->
+  <div class="course-bar" id="courseBar">
+    <div class="cb-head">
+      <span class="cb-title">📅 30일 완성 코스</span>
+      <span class="cb-day" id="cbDay">Day 0 / 30</span>
+    </div>
+    <div class="cb-track"><div class="cb-fill" id="cbFill" style="width:0%"></div></div>
+    <div class="cb-sub">
+      <span id="cbLearned">학습 0 / 1410</span>
+      <span id="cbPace">하루 47개 · 남은 예상 30일</span>
+    </div>
+  </div>
 
   <div class="grid grid-3">
     <div class="card ring-card">
@@ -715,6 +769,15 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
       <div class="progress-track"><div class="progress-fill" id="sessProg" style="width:0%"></div></div>
       <div class="session-count" id="sessCount"></div>
     </div>
+    <!-- 다층 진행 시각화 -->
+    <div class="prog-panel" id="progPanel">
+      <div class="prog-stats">
+        <div class="ps-item"><span class="ps-n" id="psDone">0</span><span class="ps-l">완료</span></div>
+        <div class="ps-item"><span class="ps-n" id="psLeft">0</span><span class="ps-l">남음</span></div>
+        <div class="ps-item"><span class="ps-n" id="psTime">–</span><span class="ps-l">예상 남은시간</span></div>
+      </div>
+      <div class="prog-dots" id="progDots"></div>
+    </div>
     <div id="studyStage"></div>
   </div>
 </main>
@@ -758,17 +821,17 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 <!-- ============ ADMIN ============ -->
 <main class="page" id="page-admin">
   <h2 class="section-title">관리자 · 학습 기록</h2>
-  <p class="section-sub">두 계정의 진도와 학습 현황을 확인합니다. (클라우드 연결 시)</p>
+  <p class="section-sub">두 계정의 진도·오답 현황을 확인하고, 오답 시험지를 A4로 바로 인쇄합니다. (클라우드 연결 시)</p>
   <div id="adminBody" class="grid" style="gap:18px"></div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <footer class="footnote">
-  Root Voca 프로토타입 · 데이터: 능률VOCA 어원편 DAY 01–60, 표제어 1,410개 ·
+  Root Voca · 데이터: 능률VOCA 어원편, 표제어 1,410개 · 30일 완성 코스(하루 신규 47개) ·
   플러스 학습: 핵심 다의어 10개 · 혼동어휘 5쌍(11단어) · 매칭 게임(보스전) · 스펠링 입력 모드 · 브라우저 TTS 발음 ·
   복습 간격: 당일 → 1일 → 3일 → 7일 → 14일 → 30일 (오답 시 리셋) ·
-  DAY 01–60 전체 표제어 대조와 브라우저 저장 기능 검수를 완료한 개인 학습용 최종본입니다.
+  관리자 오답 시험지 A4 인쇄(영↔한) 지원 · 개인 학습용 최종본입니다.
 </footer>
 
 <script>
@@ -37996,6 +38059,7 @@ async function renderAdmin(){
     const seen = Object.values(cards).filter(c=>c.seen).length;
     const acc2 = d.totAttempts ? Math.round(d.totCorrect/d.totAttempts*100) : 0;
     const pct = Math.round(mastered/total*100);
+    const wrongCount = wrongWordsFor(cards).length;
     html += `<div class="card">
       <div class="ad-word">${info.label} <span style="font-size:13px;color:var(--ink-3);font-weight:500">(${id})</span></div>
       <div class="bar-row" style="margin-top:16px">
@@ -38011,12 +38075,121 @@ async function renderAdmin(){
       <div class="result-stats" style="margin-top:12px">
         <div class="rs"><div class="n">🔥 ${d.streak||0}</div><div class="l">연속일</div></div>
         <div class="rs"><div class="n">${d.sessions||0}</div><div class="l">세션</div></div>
-        <div class="rs"><div class="n">${acc2}%</div><div class="l">정답률</div></div>
+        <div class="rs"><div class="n" style="color:var(--red)">${wrongCount}</div><div class="l">오답 단어</div></div>
       </div>
+      <div class="print-actions">
+        <button class="btn-print" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTest('${id}',false)">🖨 오답 시험지 인쇄</button>
+        <button class="btn-print answer" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTest('${id}',true)">📋 답안지 인쇄</button>
+      </div>
+      ${wrongCount? '' : '<p style="font-size:12px;color:var(--ink-3);margin-top:8px">현재 오답 단어가 없습니다.</p>'}
       ${d._updatedAt ? `<p style="font-size:12px;color:var(--ink-3);margin-top:14px">최근 활동: ${new Date(d._updatedAt).toLocaleString('ko-KR')}</p>` : ''}
     </div>`;
   });
   box.innerHTML = html;
+  window._adminData = all;   // 인쇄 함수에서 재사용
+}
+
+/* 오답 단어 목록 추출 — wrong>0 이면서 아직 완전암기(streakOk<3) 아닌 단어 */
+function wrongWordsFor(cards){
+  return WORDS.filter(w=>{
+    const c = cards[w.id];
+    return c && c.wrong>0 && c.streakOk<3;
+  }).map(w=>({
+    word: w.word,
+    mean: (w.mean||'').split('/')[0].trim(),
+    root: (w.parts||[]).map(p=>p[0]).join(' + '),
+    arrow: w.storyArrow || '',
+    wrong: cards[w.id].wrong
+  }));
+}
+
+/* ==================== 오답 시험지 A4 인쇄 ==================== */
+function printWrongTest(accountId, isAnswer){
+  const all = window._adminData || {};
+  const info = all[accountId];
+  if(!info || !info.data){ toast('학습 기록이 없습니다.'); return; }
+  const label = info.label || accountId;
+  const list = wrongWordsFor(info.data.cards || {});
+  if(!list.length){ toast('오답 단어가 없습니다.'); return; }
+
+  // 출제 형태 배분: 앞 절반 영→한, 뒤 절반 한→영 (섞어서 다양화)
+  const shuffled = [...list].sort(()=>Math.random()-0.5);
+  const half = Math.ceil(shuffled.length/2);
+  const engKor = shuffled.slice(0, half);   // 영어 제시 → 한글 뜻 쓰기
+  const korEng = shuffled.slice(half);      // 한글 뜻 제시 → 영어 쓰기
+
+  const today = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+  const win = window.open('', '_blank');
+  if(!win){ toast('팝업이 차단되었습니다. 팝업 허용 후 다시 시도하세요.'); return; }
+
+  const rowsEngKor = engKor.map((w,i)=>`
+    <tr>
+      <td class="num">${i+1}</td>
+      <td class="q"><b>${w.word}</b></td>
+      <td class="a">${isAnswer? '<span class="ans">'+w.mean+'</span>' : ''}</td>
+    </tr>`).join('');
+
+  const rowsKorEng = korEng.map((w,i)=>`
+    <tr>
+      <td class="num">${i+1}</td>
+      <td class="q">${w.mean}</td>
+      <td class="a">${isAnswer? '<span class="ans">'+w.word+'</span>' : ''}</td>
+    </tr>`).join('');
+
+  const title = isAnswer ? '어원 단어 시험 · 관리자 답안지' : '어원 단어 시험';
+
+  win.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>${title} — ${label} — ${today}</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif; color:#111; font-size:14pt; line-height:1.5; margin:0; }
+  .sheet { max-width:180mm; margin:0 auto; }
+  .head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #111; padding-bottom:10px; margin-bottom:6px; }
+  .head h1 { font-size:20pt; margin:0; font-weight:800; }
+  .head .meta { font-size:13pt; text-align:right; color:#333; }
+  .info { display:flex; gap:24px; font-size:13pt; margin:14px 0 20px; }
+  .info span { border-bottom:1px solid #999; min-width:120px; display:inline-block; padding-bottom:2px; }
+  .sec-title { font-size:15pt; font-weight:800; margin:22px 0 10px; padding:6px 10px; background:#f0f0f0; border-left:5px solid #111; }
+  .hint { font-size:12pt; color:#555; margin:0 0 10px; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:9px 10px; border-bottom:1px solid #ccc; vertical-align:middle; font-size:14pt; }
+  td.num { width:34px; text-align:center; color:#777; font-size:12pt; }
+  td.q { width:44%; }
+  td.q b { font-size:15pt; }
+  td.a { width:48%; }
+  ${isAnswer ? '' : 'td.a { border-bottom:1px solid #111; }'}
+  .ans { color:#c0392b; font-weight:700; }
+  .foot { margin-top:26px; font-size:11pt; color:#888; text-align:center; border-top:1px solid #ddd; padding-top:10px; }
+  .score-box { border:2px solid #111; border-radius:6px; padding:6px 16px; font-size:14pt; font-weight:700; }
+  @media print { .no-print { display:none; } }
+</style></head><body>
+<div class="sheet">
+  <div class="no-print" style="text-align:center;margin-bottom:14px">
+    <button onclick="window.print()" style="font-size:14pt;padding:10px 24px;border-radius:8px;border:none;background:#0071e3;color:#fff;font-weight:700;cursor:pointer">🖨 인쇄하기</button>
+    <button onclick="window.close()" style="font-size:14pt;padding:10px 20px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer;margin-left:8px">닫기</button>
+  </div>
+  <div class="head">
+    <h1>${isAnswer? '어원 단어 시험 — 답안지' : '어원 단어 시험'}</h1>
+    <div class="meta">능률VOCA 어원편 · 오답 복습<br>${today}</div>
+  </div>
+  <div class="info">
+    <div>이름: <span>${isAnswer? label : '&nbsp;'}</span></div>
+    <div>점수: <span class="score-box">&nbsp; / ${list.length}</span></div>
+  </div>
+
+  <div class="sec-title">Ⅰ. 다음 영어 단어의 뜻을 쓰시오. (영 → 한)</div>
+  <p class="hint">어원 힌트를 떠올려 정확한 뜻을 적으세요.</p>
+  <table>${rowsEngKor || '<tr><td colspan="3" style="text-align:center;color:#999">해당 문항 없음</td></tr>'}</table>
+
+  <div class="sec-title">Ⅱ. 다음 뜻에 해당하는 영어 단어를 쓰시오. (한 → 영)</div>
+  <p class="hint">철자에 유의하여 정확히 적으세요.</p>
+  <table>${rowsKorEng || '<tr><td colspan="3" style="text-align:center;color:#999">해당 문항 없음</td></tr>'}</table>
+
+  <div class="foot">Root Voca · ${label} 오답 시험지 (${list.length}문항) · ${today} 출제${isAnswer? ' · ※ 관리자 채점용 답안지':''}</div>
+</div>
+</body></html>`);
+  win.document.close();
 }
 document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>go(t.dataset.page)));
 
@@ -38041,6 +38214,19 @@ function renderHome(){
     : '오늘의 학습 시작';
   const st = $('#spellToggle');
   if(st){ st.classList.toggle('on', !!state.spellMode); st.setAttribute('aria-checked', !!state.spellMode); }
+
+  // 30일 코스 진척
+  const total = WORDS.length;
+  const seen = Object.values(state.cards).filter(c=>c.seen).length;
+  const coursePct = Math.round(seen/total*100);
+  const dayNo = Math.min(Math.ceil(seen/DAILY_NEW), COURSE_DAYS);
+  const remainWords = Math.max(total - seen, 0);
+  const remainDays = Math.ceil(remainWords/DAILY_NEW);
+  const cbFill=$('#cbFill'), cbDay=$('#cbDay'), cbLearned=$('#cbLearned'), cbPace=$('#cbPace');
+  if(cbFill) cbFill.style.width = coursePct+'%';
+  if(cbDay) cbDay.textContent = `Day ${dayNo} / ${COURSE_DAYS}`;
+  if(cbLearned) cbLearned.textContent = `학습 ${seen} / ${total} (${coursePct}%)`;
+  if(cbPace) cbPace.textContent = remainWords===0 ? '전 단어 학습 완료 🎉' : `하루 ${DAILY_NEW}개 · 남은 예상 ${remainDays}일`;
 }
 /* ==================== ROOT MAP ==================== */
 function renderMap(sel){
@@ -38086,9 +38272,15 @@ function renderMap(sel){
 /* ==================== SESSION ENGINE ==================== */
 let sess = null;
 
+/* 30일 완성 코스 설정 — 총 1,410단어 ÷ 30일 = 하루 47개 */
+const COURSE_DAYS = 30;
+const DAILY_NEW = Math.ceil(WORDS.length / COURSE_DAYS);   // ≈ 47
+const DAILY_REVIEW = 40;                                    // 하루 복습 상한
+const SEC_PER_WORD = 12;                                    // 단어당 예상 소요(초) — 남은시간 추정용
+
 function buildSession(){
-  const due = shuffle(dueCards()).slice(0,8);
-  const fresh = newCards().slice(0,6);
+  const due = shuffle(dueCards()).slice(0,DAILY_REVIEW);
+  const fresh = newCards().slice(0,DAILY_NEW);
   const rootIds = [...new Set(fresh.map(w=>w.root))];
   const steps = [];
   // 1) warm-up: 오늘의 어원 (신규가 없으면 취약 어원 1개)
@@ -38126,8 +38318,47 @@ function startSession(){
 function exitSession(){ sess=null; go('home'); }
 
 function updateTop(){
-  $('#sessProg').style.width = (sess.i/sess.steps.length*100)+'%';
-  $('#sessCount').textContent = Math.min(sess.i+1,sess.steps.length)+' / '+sess.steps.length;
+  const n = sess.steps.length;
+  $('#sessProg').style.width = (sess.i/n*100)+'%';
+  $('#sessCount').textContent = Math.min(sess.i+1,n)+' / '+n;
+
+  // 다층 진행: 완료/남음/예상시간
+  const done = sess.i;
+  const left = Math.max(n - done, 0);
+  const psDone = $('#psDone'), psLeft = $('#psLeft'), psTime = $('#psTime');
+  if(psDone) psDone.textContent = done;
+  if(psLeft) psLeft.textContent = left;
+  if(psTime){
+    const secs = left * SEC_PER_WORD;
+    const m = Math.floor(secs/60), s = secs%60;
+    psTime.textContent = left===0 ? '완료' : (m>0 ? `${m}분 ${s}초` : `${s}초`);
+  }
+  // 단어별 도트 흐름 갱신
+  renderDots();
+}
+
+function renderDots(){
+  const wrap = $('#progDots');
+  if(!wrap) return;
+  const n = sess.steps.length;
+  // 이미 그려졌으면 상태만 갱신, 아니면 새로 생성
+  if(wrap.children.length !== n){
+    wrap.innerHTML = '';
+    for(let k=0;k<n;k++){ const d=document.createElement('span'); d.className='dot'; wrap.appendChild(d); }
+  }
+  const wrongSet = new Set(sess.wrongIds||[]);
+  Array.from(wrap.children).forEach((d,k)=>{
+    d.className = 'dot';
+    if(k < sess.i){
+      // 지나간 스텝: 해당 스텝이 퀴즈이고 틀렸으면 red, 아니면 done
+      const st = sess.steps[k];
+      const wid = st && st.w ? st.w.id : null;
+      if(wid && wrongSet.has(wid)) d.classList.add('wrong');
+      else d.classList.add('done');
+    } else if(k === sess.i){
+      d.classList.add('current');
+    }
+  });
 }
 function next(){
   sess.i++;
