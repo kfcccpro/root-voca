@@ -38270,8 +38270,9 @@ async function renderAdmin(){
         <div class="rs"><div class="n" style="color:var(--red)">${wrongCount}</div><div class="l">오답 단어</div></div>
       </div>
       <div class="print-actions">
-        <button class="btn-print" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTest('${id}',false)">🖨 오답 시험지 인쇄</button>
-        <button class="btn-print answer" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTest('${id}',true)">📋 답안지 인쇄</button>
+        <button class="btn-print" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTestBoth('${id}')">🖨 문제+답안 한번에 인쇄</button>
+        <button class="btn-print" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTest('${id}',false)">📝 문제지만</button>
+        <button class="btn-print answer" ${wrongCount?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="printWrongTest('${id}',true)">📋 답안지만</button>
       </div>
       ${wrongCount? '' : '<p style="font-size:12px;color:var(--ink-3);margin-top:8px">현재 오답 단어가 없습니다.</p>'}
       ${d._updatedAt ? `<p style="font-size:12px;color:var(--ink-3);margin-top:14px">최근 활동: ${new Date(d._updatedAt).toLocaleString('ko-KR')}</p>` : ''}
@@ -38296,47 +38297,49 @@ function wrongWordsFor(cards){
 }
 
 /* ==================== 오답 시험지 A4 인쇄 ==================== */
-function printWrongTest(accountId, isAnswer){
-  const all = window._adminData || {};
-  const info = all[accountId];
-  if(!info || !info.data){ toast('학습 기록이 없습니다.'); return; }
-  const label = info.label || accountId;
-  const list = wrongWordsFor(info.data.cards || {});
-  if(!list.length){ toast('오답 단어가 없습니다.'); return; }
-
-  // 출제 형태 배분: 앞 절반 영→한, 뒤 절반 한→영 (섞어서 다양화)
+/* 오답 리스트 → 시험지 본문 HTML (인쇄/메일 공용). isAnswer=답안지 여부 */
+function buildTestSheetHTML(list, label, isAnswer, opts){
+  opts = opts || {};
+  const heading = opts.heading || '어원 단어 시험';
+  const subLabel = opts.subLabel || '오답 복습';
+  const today = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
   const shuffled = [...list].sort(()=>Math.random()-0.5);
   const half = Math.ceil(shuffled.length/2);
-  const engKor = shuffled.slice(0, half);   // 영어 제시 → 한글 뜻 쓰기
-  const korEng = shuffled.slice(half);      // 한글 뜻 제시 → 영어 쓰기
-
-  const today = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
-  const win = window.open('', '_blank');
-  if(!win){ toast('팝업이 차단되었습니다. 팝업 허용 후 다시 시도하세요.'); return; }
-
+  const engKor = shuffled.slice(0, half);
+  const korEng = shuffled.slice(half);
   const rowsEngKor = engKor.map((w,i)=>`
-    <tr>
-      <td class="num">${i+1}</td>
-      <td class="q"><b>${w.word}</b></td>
-      <td class="a">${isAnswer? '<span class="ans">'+w.mean+'</span>' : ''}</td>
-    </tr>`).join('');
-
+    <tr><td class="num">${i+1}</td><td class="q"><b>${w.word}</b></td>
+    <td class="a">${isAnswer? '<span class="ans">'+w.mean+'</span>' : ''}</td></tr>`).join('');
   const rowsKorEng = korEng.map((w,i)=>`
-    <tr>
-      <td class="num">${i+1}</td>
-      <td class="q">${w.mean}</td>
-      <td class="a">${isAnswer? '<span class="ans">'+w.word+'</span>' : ''}</td>
-    </tr>`).join('');
-
-  const title = isAnswer ? '어원 단어 시험 · 관리자 답안지' : '어원 단어 시험';
-
-  win.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
-<title>${title} — ${label} — ${today}</title>
-<style>
+    <tr><td class="num">${i+1}</td><td class="q">${w.mean}</td>
+    <td class="a">${isAnswer? '<span class="ans">'+w.word+'</span>' : ''}</td></tr>`).join('');
+  return `
+  <div class="sheet">
+    <div class="head">
+      <h1>${heading}${isAnswer? ' — 답안지':''}</h1>
+      <div class="meta">능률VOCA 어원편 · ${subLabel}<br>${today}</div>
+    </div>
+    <div class="info">
+      <div>이름: <span>${isAnswer? label : '&nbsp;'}</span></div>
+      <div>점수: <span class="score-box">&nbsp; / ${list.length}</span></div>
+    </div>
+    <div class="sec-title">Ⅰ. 다음 영어 단어의 뜻을 쓰시오. (영 → 한)</div>
+    <p class="hint">어원 힌트를 떠올려 정확한 뜻을 적으세요.</p>
+    <table>${rowsEngKor || '<tr><td colspan="3" style="text-align:center;color:#999">해당 문항 없음</td></tr>'}</table>
+    <div class="sec-title">Ⅱ. 다음 뜻에 해당하는 영어 단어를 쓰시오. (한 → 영)</div>
+    <p class="hint">철자에 유의하여 정확히 적으세요.</p>
+    <table>${rowsKorEng || '<tr><td colspan="3" style="text-align:center;color:#999">해당 문항 없음</td></tr>'}</table>
+    <div class="foot">Root Voca · ${label} ${subLabel} 시험지 (${list.length}문항) · ${today} 출제${isAnswer? ' · ※ 관리자 채점용 답안지':''}</div>
+  </div>`;
+}
+/* 시험지 인쇄용 공통 CSS */
+function testSheetCSS(isAnswer){
+  return `
   @page { size: A4; margin: 18mm 16mm; }
   * { box-sizing: border-box; }
   body { font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif; color:#111; font-size:14pt; line-height:1.5; margin:0; }
-  .sheet { max-width:180mm; margin:0 auto; }
+  .sheet { max-width:180mm; margin:0 auto; page-break-after:always; }
+  .sheet:last-child { page-break-after:auto; }
   .head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #111; padding-bottom:10px; margin-bottom:6px; }
   .head h1 { font-size:20pt; margin:0; font-weight:800; }
   .head .meta { font-size:13pt; text-align:right; color:#333; }
@@ -38347,42 +38350,53 @@ function printWrongTest(accountId, isAnswer){
   table { width:100%; border-collapse:collapse; }
   td { padding:9px 10px; border-bottom:1px solid #ccc; vertical-align:middle; font-size:14pt; }
   td.num { width:34px; text-align:center; color:#777; font-size:12pt; }
-  td.q { width:44%; }
-  td.q b { font-size:15pt; }
-  td.a { width:48%; }
-  ${isAnswer ? '' : 'td.a { border-bottom:1px solid #111; }'}
+  td.q { width:44%; } td.q b { font-size:15pt; }
+  td.a { width:48%; border-bottom:1px solid #111; }
   .ans { color:#c0392b; font-weight:700; }
   .foot { margin-top:26px; font-size:11pt; color:#888; text-align:center; border-top:1px solid #ddd; padding-top:10px; }
   .score-box { border:2px solid #111; border-radius:6px; padding:6px 16px; font-size:14pt; font-weight:700; }
-  @media print { .no-print { display:none; } }
-</style></head><body>
-<div class="sheet">
-  <div class="no-print" style="text-align:center;margin-bottom:14px">
+  @media print { .no-print { display:none; } }`;
+}
+/* 인쇄창 열기 (문제지 + 답안지 함께 = 여러 페이지) */
+function openPrintWindow(sheetsHTML, titleStr){
+  const win = window.open('', '_blank');
+  if(!win){ toast('팝업이 차단되었습니다. 팝업 허용 후 다시 시도하세요.'); return false; }
+  win.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<title>${titleStr}</title><style>${testSheetCSS()}</style></head><body>
+  <div class="no-print" style="text-align:center;margin:10px 0 18px">
     <button onclick="window.print()" style="font-size:14pt;padding:10px 24px;border-radius:8px;border:none;background:#0071e3;color:#fff;font-weight:700;cursor:pointer">🖨 인쇄하기</button>
     <button onclick="window.close()" style="font-size:14pt;padding:10px 20px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer;margin-left:8px">닫기</button>
   </div>
-  <div class="head">
-    <h1>${isAnswer? '어원 단어 시험 — 답안지' : '어원 단어 시험'}</h1>
-    <div class="meta">능률VOCA 어원편 · 오답 복습<br>${today}</div>
-  </div>
-  <div class="info">
-    <div>이름: <span>${isAnswer? label : '&nbsp;'}</span></div>
-    <div>점수: <span class="score-box">&nbsp; / ${list.length}</span></div>
-  </div>
-
-  <div class="sec-title">Ⅰ. 다음 영어 단어의 뜻을 쓰시오. (영 → 한)</div>
-  <p class="hint">어원 힌트를 떠올려 정확한 뜻을 적으세요.</p>
-  <table>${rowsEngKor || '<tr><td colspan="3" style="text-align:center;color:#999">해당 문항 없음</td></tr>'}</table>
-
-  <div class="sec-title">Ⅱ. 다음 뜻에 해당하는 영어 단어를 쓰시오. (한 → 영)</div>
-  <p class="hint">철자에 유의하여 정확히 적으세요.</p>
-  <table>${rowsKorEng || '<tr><td colspan="3" style="text-align:center;color:#999">해당 문항 없음</td></tr>'}</table>
-
-  <div class="foot">Root Voca · ${label} 오답 시험지 (${list.length}문항) · ${today} 출제${isAnswer? ' · ※ 관리자 채점용 답안지':''}</div>
-</div>
+  ${sheetsHTML}
 </body></html>`);
   win.document.close();
+  return true;
 }
+
+function printWrongTest(accountId, isAnswer){
+  const all = window._adminData || {};
+  const info = all[accountId];
+  if(!info || !info.data){ toast('학습 기록이 없습니다.'); return; }
+  const label = info.label || accountId;
+  const list = wrongWordsFor(info.data.cards || {});
+  if(!list.length){ toast('오답 단어가 없습니다.'); return; }
+  const sheet = buildTestSheetHTML(list, label, isAnswer, {subLabel:'오답 복습'});
+  openPrintWindow(sheet, `어원 오답 시험 — ${label}`);
+}
+
+/* 관리자: 문제지 + 답안지를 한 번에 인쇄 (2페이지) */
+function printWrongTestBoth(accountId){
+  const all = window._adminData || {};
+  const info = all[accountId];
+  if(!info || !info.data){ toast('학습 기록이 없습니다.'); return; }
+  const label = info.label || accountId;
+  const list = wrongWordsFor(info.data.cards || {});
+  if(!list.length){ toast('오답 단어가 없습니다.'); return; }
+  const q = buildTestSheetHTML(list, label, false, {subLabel:'오답 복습'});
+  const a = buildTestSheetHTML(list, label, true, {subLabel:'오답 복습'});
+  openPrintWindow(q + a, `어원 오답 시험(문제+답안) — ${label}`);
+}
+window.printWrongTestBoth = printWrongTestBoth;
 document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>go(t.dataset.page)));
 
 /* ==================== HOME ==================== */
@@ -39335,14 +39349,43 @@ function finishSession(){
     <div class="study-actions" style="justify-content:center;flex-wrap:wrap">
       ${nextDayBtn}
       ${mailBtn}
+      <button class="btn btn-dark" onclick="printTodayTest()">🖨 오늘 학습분 시험지 인쇄</button>
       <button class="btn btn-dark" onclick="go('map')">어원 맵 확인</button>
       <button class="btn btn-primary" onclick="go('home')">홈으로</button>
     </div>
     <div id="mailStatus" class="mail-status"></div>`;
   stage.appendChild(c);
   $('#sessProg').style.width='100%';
+  // 오늘 학습분 인쇄용 단어 목록 저장 (세션에서 다룬 실제 단어)
+  window._todayWords = collectSessionWords(sess);
   if(memoryOnly) toast('저장소 미지원 환경 — 이번 세션 기록은 이 창에서만 유지됩니다.');
 }
+
+/* 세션에서 다룬 단어(중복 제거) 수집 → 인쇄/메일용 */
+function collectSessionWords(session){
+  const seen = new Set(); const out = [];
+  (session.steps||[]).forEach(s=>{
+    const w = s.w;
+    if(w && !seen.has(w.id)){
+      seen.add(w.id);
+      out.push({ word:w.word, mean:(w.mean||'').split('/')[0].trim(), root:(w.parts||[]).map(p=>p[0]).join('+'), arrow:w.storyArrow });
+    }
+  });
+  return out;
+}
+
+/* 학습자: 오늘 학습분 시험지 인쇄 (문제 + 답안 함께) */
+function printTodayTest(){
+  const list = window._todayWords || [];
+  if(!list.length){ toast('인쇄할 오늘 학습 단어가 없습니다.'); return; }
+  const accnt = (typeof cloudCurrentAccount==='function') ? cloudCurrentAccount() : null;
+  const label = accnt ? accnt.label : '학습자';
+  const dayLabel = (sess && sess.day) ? ('Day '+sess.day) : '오늘의 학습';
+  const q = buildTestSheetHTML(list, label, false, {subLabel:dayLabel, heading:'데일리 어원 단어 시험'});
+  const a = buildTestSheetHTML(list, label, true, {subLabel:dayLabel, heading:'데일리 어원 단어 시험'});
+  openPrintWindow(q + a, `데일리 시험지 — ${label} — ${dayLabel}`);
+}
+window.printTodayTest = printTodayTest;
 
 /* 오늘 학습 보고서 데이터 집계 */
 function buildReport(session, acc){
@@ -39363,6 +39406,9 @@ function buildReport(session, acc){
     const w = WORDS.find(x=>x.id===id);
     return w ? { word:w.word, mean:(w.mean||'').split('/')[0].trim(), root:w.parts.map(p=>p[0]).join('+'), arrow:w.storyArrow } : null;
   }).filter(Boolean);
+  // 오늘 학습한 전체 단어(시험지 출제용)
+  const todayWords = collectSessionWords(session);
+  const dayLabel = session.day ? ('Day '+session.day) : '오늘의 학습';
 
   return {
     who, dateStr: now.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}),
@@ -39372,7 +39418,7 @@ function buildReport(session, acc){
     streak: state.streak, sessions: state.sessions,
     mastered, learning, seen, total, overallPct, seenPct, soon,
     totCorrect: state.totCorrect||0, totAttempts: state.totAttempts||0,
-    wrongList
+    wrongList, todayWords, dayLabel
   };
 }
 
@@ -39459,10 +39505,53 @@ function reportToHtml(r){
       ${wrongRows}
     </table>
 
+    ${buildMailTestSheet(r)}
+
     <p style="text-align:center;color:#aaa;font-size:12px;margin:24px 0">
       Root Voca · 능률VOCA 어원편 · 자동 생성 보고서
     </p>
   </div>`;
+}
+
+/* 메일용 지면 시험지(문제 + 답안) — 프린트해서 바로 시험 가능 */
+function buildMailTestSheet(r){
+  const list = r.todayWords || [];
+  if(!list.length) return '';
+  const shuffled = [...list].sort(()=>Math.random()-0.5);
+  const half = Math.ceil(shuffled.length/2);
+  const engKor = shuffled.slice(0, half);
+  const korEng = shuffled.slice(half);
+  const cell = 'padding:7px 10px;border-bottom:1px solid #ddd;font-size:14px';
+  const numCell = 'padding:7px 6px;border-bottom:1px solid #ddd;font-size:13px;color:#999;text-align:center;width:30px';
+  const blankCell = 'padding:7px 10px;border-bottom:1px solid #333;font-size:14px;color:#fff';
+  const ansCell = 'padding:7px 10px;border-bottom:1px solid #ddd;font-size:14px;color:#c0392b;font-weight:700';
+
+  const qEngKor = engKor.map((w,i)=>`<tr><td style="${numCell}">${i+1}</td><td style="${cell};font-weight:700">${w.word}</td><td style="${blankCell}">.</td></tr>`).join('');
+  const qKorEng = korEng.map((w,i)=>`<tr><td style="${numCell}">${i+1}</td><td style="${cell}">${w.mean}</td><td style="${blankCell}">.</td></tr>`).join('');
+  const aEngKor = engKor.map((w,i)=>`<tr><td style="${numCell}">${i+1}</td><td style="${cell};font-weight:700">${w.word}</td><td style="${ansCell}">${w.mean}</td></tr>`).join('');
+  const aKorEng = korEng.map((w,i)=>`<tr><td style="${numCell}">${i+1}</td><td style="${cell}">${w.mean}</td><td style="${ansCell}">${w.word}</td></tr>`).join('');
+
+  return `
+    <div style="margin-top:28px;border-top:3px solid #111;padding-top:8px">
+      <h2 style="font-size:17px;margin:14px 0 4px">📄 오늘의 지면 시험지 (${list.length}문항)</h2>
+      <p style="font-size:13px;color:#888;margin:0 0 16px">이 메일을 그대로 인쇄하면 아래 문제지와 답안지를 시험에 쓸 수 있습니다.</p>
+
+      <div style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:18px;margin-bottom:16px">
+        <div style="font-weight:800;font-size:15px;margin-bottom:4px">■ 문제지 &nbsp;<span style="font-weight:400;font-size:13px;color:#888">이름: ______  점수: ___ / ${list.length}</span></div>
+        <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 4px">Ⅰ. 영어 단어의 뜻을 쓰시오 (영→한)</div>
+        <table style="width:100%;border-collapse:collapse">${qEngKor||'<tr><td style="padding:8px;color:#999">없음</td></tr>'}</table>
+        <div style="font-size:13px;font-weight:700;color:#555;margin:14px 0 4px">Ⅱ. 뜻에 맞는 영어 단어를 쓰시오 (한→영)</div>
+        <table style="width:100%;border-collapse:collapse">${qKorEng||'<tr><td style="padding:8px;color:#999">없음</td></tr>'}</table>
+      </div>
+
+      <div style="background:#fffbfb;border:1px solid #f0d0d0;border-radius:12px;padding:18px">
+        <div style="font-weight:800;font-size:15px;margin-bottom:4px;color:#c0392b">■ 답안지 (관리자 채점용)</div>
+        <div style="font-size:13px;font-weight:700;color:#555;margin:12px 0 4px">Ⅰ. 영→한</div>
+        <table style="width:100%;border-collapse:collapse">${aEngKor||'<tr><td style="padding:8px;color:#999">없음</td></tr>'}</table>
+        <div style="font-size:13px;font-weight:700;color:#555;margin:14px 0 4px">Ⅱ. 한→영</div>
+        <table style="width:100%;border-collapse:collapse">${aKorEng||'<tr><td style="padding:8px;color:#999">없음</td></tr>'}</table>
+      </div>
+    </div>`;
 }
 
 /* 보고서 텍스트 요약(메일 미리보기·제목용) */
