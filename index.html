@@ -646,6 +646,93 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ============ Day 진입 전 강제 복습 팝업 ============ */
+.fr-overlay{
+  position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  opacity:0;transition:opacity .3s var(--ease);padding:24px;
+}
+.fr-overlay.show{opacity:1}
+.fr-card{
+  background:var(--surface);border-radius:var(--radius-lg);padding:34px 30px;max-width:380px;width:100%;
+  text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35);
+  transform:scale(.9) translateY(10px);transition:transform .35s var(--spring);
+}
+.fr-overlay.show .fr-card{transform:scale(1) translateY(0)}
+.fr-emoji{font-size:44px;margin-bottom:10px;animation:dotPulse 1.6s var(--ease) infinite}
+.fr-card h3{font-size:19px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.fr-card p{font-size:14px;color:var(--ink-2);line-height:1.6;margin-bottom:22px}
+.fr-card p b{color:var(--red);font-weight:800}
+.fr-main{width:100%;font-size:15px;padding:14px}
+
+/* ============ 오답 각인 팝업 ============ */
+.imprint-overlay{
+  position:fixed;inset:0;z-index:320;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.62);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  opacity:0;transition:opacity .28s var(--ease);padding:24px;
+}
+.imprint-overlay.show{opacity:1}
+.imprint-card{
+  background:var(--surface);border-radius:var(--radius-lg);padding:40px 44px;max-width:640px;width:100%;
+  text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.4);border-top:6px solid var(--red);
+  transform:scale(.88) translateY(14px);transition:transform .38s var(--spring);
+  max-height:88vh;overflow-y:auto;
+}
+.imprint-overlay.show .imprint-card{transform:scale(1) translateY(0)}
+.imprint-badge{display:inline-block;font-size:13px;font-weight:800;color:var(--red);background:var(--red-tint);padding:5px 14px;border-radius:980px;margin-bottom:16px}
+.imprint-q{font-size:15px;color:var(--ink-3);font-weight:600;margin-bottom:6px}
+.imprint-answer{font-size:clamp(42px,7vw,68px);font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.1;margin:2px 0 6px;min-height:1.1em}
+.imprint-mean{font-size:clamp(22px,3.4vw,30px);font-weight:700;color:var(--blue);margin-bottom:20px;min-height:1.2em}
+.imprint-story{
+  background:var(--sunk);border-radius:var(--radius-md);padding:20px 22px;text-align:left;
+  font-size:16px;line-height:1.7;color:var(--ink-2);margin-bottom:14px;min-height:2em;
+}
+.imprint-story .k{display:block;font-size:12px;font-weight:800;color:var(--ink-3);letter-spacing:.02em;margin-bottom:8px;text-transform:uppercase}
+.imprint-ex{text-align:left;font-size:14.5px;line-height:1.6;color:var(--ink-2);margin-bottom:22px}
+.imprint-ex .en{font-weight:600;color:var(--ink)}
+.imprint-ex .ko{color:var(--ink-3);margin-top:3px}
+.imprint-next{width:100%;font-size:16px;padding:15px;opacity:.4;cursor:not-allowed}
+.imprint-next.ready{opacity:1;cursor:pointer}
+.imprint-hint{font-size:12px;color:var(--ink-3);margin-top:10px}
+.imprint-hint kbd{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--seg-bg);color:var(--ink-2);font-size:11px;font-weight:700;border:1px solid var(--hairline)}
+
+/* 선택 하이라이트(확정 전) */
+.choice.selected{border-color:var(--blue);background:var(--blue-tint);box-shadow:0 0 0 3px var(--blue-tint-soft)}
+.choice.selected .choice-num{background:var(--blue);color:#fff}
+
+/* 문제 타이머 + 총 학습시간 (우측 상단) */
+.study-timers{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.timer-pill{display:inline-flex;flex-direction:column;align-items:center;line-height:1.1;padding:4px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--hairline);min-width:58px}
+.timer-pill .tv{font-size:15px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.timer-pill .tl{font-size:9px;font-weight:700;color:var(--ink-3);margin-top:1px}
+.timer-pill.q .tv{color:var(--blue)}
+.timer-pill.q.over .tv{color:var(--red)}
+
+/* 4지선다 키워드 크게 (PC에서 특히) */
+.quiz-key{font-size:clamp(46px,8vw,104px);font-weight:800;letter-spacing:-.03em;line-height:1.05;display:inline-block}
+.quiz-key.ko{font-size:clamp(30px,5vw,64px)}
+@media(min-width:900px){
+  .quiz-key{font-size:clamp(72px,7.5vw,120px)}
+  .quiz-key.ko{font-size:clamp(40px,4.6vw,72px)}
+}
+
+/* Day 인라인 매칭 레이아웃 */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+.match-col{gap:9px}
+.match-col .choice{justify-content:center;text-align:center;font-weight:600}
+
+/* PC: 학습 카드 좌우 폭 넓게 */
+@media(min-width:900px){
+  #page-study .session-wrap{max-width:960px}
+  #page-study .study-card{max-width:none;padding:34px 56px}
+  #page-study .choices{grid-template-columns:1fr 1fr;gap:12px}
+  #page-study .choice{font-size:16px;padding:15px 20px}
+  .imprint-card{max-width:720px}
+}
+@media(min-width:1280px){
+  #page-study .session-wrap{max-width:1120px}
+}
+
 /* ============ PC/태블릿: 학습 화면 스크롤 최소화 압축 레이아웃 ============ */
 @media(min-width:900px){
   #page-study{padding-bottom:20px}
@@ -848,6 +935,10 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
       <button class="exit-btn" onclick="exitSession()">‹ 나가기</button>
       <div class="progress-track"><div class="progress-fill" id="sessProg" style="width:0%"></div></div>
       <div class="session-count" id="sessCount"></div>
+      <div class="study-timers">
+        <div class="timer-pill q" id="qTimerPill"><span class="tv" id="qTimer">0s</span><span class="tl">이 문제</span></div>
+        <div class="timer-pill" id="totalTimerPill"><span class="tv" id="totalTimer">0:00</span><span class="tl">총 학습</span></div>
+      </div>
     </div>
     <!-- 다층 진행 시각화 -->
     <div class="prog-panel" id="progPanel">
@@ -38462,10 +38553,50 @@ function weakestRoot(){
   return worst;
 }
 
+/* ==================== 학습 타이머 ==================== */
+let studyTimer = { totalStart:0, totalTick:null, qStart:0, qTick:null };
+function startTotalTimer(){
+  studyTimer.totalStart = Date.now();
+  clearInterval(studyTimer.totalTick);
+  studyTimer.totalTick = setInterval(updateTotalTimer, 1000);
+  updateTotalTimer();
+}
+function stopTotalTimer(){ clearInterval(studyTimer.totalTick); studyTimer.totalTick=null; }
+function updateTotalTimer(){
+  const elp = $('#totalTimer'); if(!elp) return;
+  const s = Math.floor((Date.now()-studyTimer.totalStart)/1000);
+  const m = Math.floor(s/60), ss = s%60;
+  elp.textContent = m+':'+String(ss).padStart(2,'0');
+}
+/* 문제 타이머 — 6초 기준, 초과해도 계속 카운트업(자동처리 없음) */
+const Q_TARGET_SEC = 6;
+function startQTimer(){
+  studyTimer.qStart = Date.now();
+  clearInterval(studyTimer.qTick);
+  const pill = $('#qTimerPill'); if(pill) pill.classList.remove('over');
+  const tick = ()=>{
+    const elp = $('#qTimer'); if(!elp) return;
+    const s = Math.floor((Date.now()-studyTimer.qStart)/1000);
+    elp.textContent = s+'s';
+    const p = $('#qTimerPill');
+    if(p) p.classList.toggle('over', s>=Q_TARGET_SEC);
+  };
+  tick();
+  studyTimer.qTick = setInterval(tick, 250);
+}
+function stopQTimer(){ clearInterval(studyTimer.qTick); studyTimer.qTick=null; }
+
 /* ==================== Day 세션 빌더 (자유 열람) ==================== */
 function buildDaySession(day){
-  const due = shuffle(dueCards()).slice(0,DAILY_REVIEW);       // 복습(어원 없음, 기존 SRS)
   const dayWords = wordsForDay(day);
+  const dayIdSet = new Set(dayWords.map(w=>w.id));
+
+  // 이전에 틀린 단어(현재 Day 것 제외) — 앞부분에 자연스럽게 복습 삽입
+  const prevWrong = shuffle(
+    WORDS.filter(w=>!dayIdSet.has(w.id) && state.cards[w.id].wrong>0 && state.cards[w.id].streakOk<3)
+  ).slice(0, 12);
+
+  // 이 Day 단어들의 고유 어원
   const roots = [];
   const seenRoot = new Set();
   dayWords.forEach(w=>{
@@ -38475,33 +38606,117 @@ function buildDaySession(day){
       if(r) roots.push(r);
     }
   });
+
   const steps = [];
-  due.forEach(w=>steps.push({type:'quiz', w, phase:'review'}));
+  // 1) 지난 오답 복습(어원 없이, 인출만) — 맨 앞
+  prevWrong.forEach(w=>steps.push({type:'quiz', w, phase:'review'}));
+  // 2) 어원 학습(4지선다)
   roots.forEach(r=>steps.push({type:'rootMC', root:r}));
+  // 3) 단어 학습(영↔한 4지선다)
   shuffle(dayWords).forEach((w,i)=>steps.push({type:'wordMC', w, phase:'learn', format: i%2? 'k2e':'e2k'}));
+  // 4) 후반부: 혼동어휘(있으면) → 매칭게임(그 Day 단어 일부)
+  const confItems = buildDayConfuse(dayWords);
+  confItems.forEach(it=>steps.push({type:'confuseMC', item:it}));
+  const matchPool = dayWords.slice(0, Math.min(8, dayWords.length));
+  if(matchPool.length>=4) steps.push({type:'match', pool:matchPool});
+
   return steps;
 }
+
+/* 이 Day 단어와 관련된 혼동어휘 그룹만 추출 (없으면 빈 배열) */
+function buildDayConfuse(dayWords){
+  const dayWordSet = new Set(dayWords.map(w=>w.word.toLowerCase()));
+  const items = [];
+  CONFUSABLES.forEach(g=>{
+    const hit = g.group.some(x=>dayWordSet.has(x.word.toLowerCase()));
+    if(!hit) return;
+    g.group.forEach(w=>{
+      const re = new RegExp(w.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'i');
+      const blank = w.ex.replace(re, '_____');
+      items.push({word:w.word, mean:w.mean, blank, ex:w.ex, ko:w.ko, choices:g.group.map(x=>x.word)});
+    });
+  });
+  return shuffle(items).slice(0, 6);
+}
+/* Day 진입 — 지난 오답은 세션 앞부분에 자동으로 섞여 들어감(강제팝업 없음) */
 function startDaySession(day){
+  enterDaySession(day);
+}
+function enterDaySession(day){
   const steps = buildDaySession(day);
   if(!steps.length){ toast('이 Day에 해당하는 단어가 없습니다.'); return; }
   sess = {
     steps, i:0, correct:0, wrong:0,
-    total: steps.filter(s=>s.type==='quiz'||s.type==='wordMC'||s.type==='rootMC').length,
+    total: steps.filter(s=>s.type==='quiz'||s.type==='wordMC'||s.type==='rootMC'||s.type==='confuseMC').length,
     wrongIds:[], mode:'day', day,
-    pendingWrongWords: new Set(), pendingWrongRoots: new Set()
+    pendingWrongWords: new Set(), pendingWrongRoots: new Set(), pendingWrongConf: new Map()
   };
   go('study');
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  startTotalTimer();
   renderStep();
 }
 /* Day 안에서 오답은 맞힐 때까지 이어서 재출제 */
 function appendRetryBatch(){
-  const rootRetries = shuffle([...sess.pendingWrongRoots]).map(rid=>({type:'rootMC', root:ROOTS.find(r=>r.id===rid)})).filter(s=>s.root);
-  const wordIds = shuffle([...sess.pendingWrongWords]);
-  const wordRetries = wordIds.map((id,i)=>({type:'wordMC', w:WORDS.find(w=>w.id===id), phase:'learn', format:i%2?'k2e':'e2k'})).filter(s=>s.w);
-  const extra = [...rootRetries, ...wordRetries];
+  const rootRetries = sess.pendingWrongRoots
+    ? shuffle([...sess.pendingWrongRoots]).map(rid=>({type:'rootMC', root:ROOTS.find(r=>r.id===rid)})).filter(s=>s.root)
+    : [];
+  const wordIds = sess.pendingWrongWords ? shuffle([...sess.pendingWrongWords]) : [];
+  const isDay = sess.mode === 'day';
+  const wordRetries = wordIds.map((id,i)=>{
+    const w = WORDS.find(x=>x.id===id);
+    if(!w) return null;
+    return isDay
+      ? {type:'wordMC', w, phase:'learn', format: i%2? 'k2e':'e2k'}
+      : {type:'quiz', w, phase:'review'};
+  }).filter(Boolean);
+  const confRetries = (sess.pendingWrongConf && sess.pendingWrongConf.size)
+    ? [...sess.pendingWrongConf.values()].map(it=>({type:'confuseMC', item:it}))
+    : [];
+  const extra = [...rootRetries, ...wordRetries, ...confRetries];
   sess.steps = sess.steps.concat(extra);
   sess.total += extra.length;
+}
+
+/* ---- Day 진입 전 강제 복습 팝업 ---- */
+function showForcedReviewModal(nextDay, count){
+  closeForcedReviewModal();
+  const wrap = el('div','fr-overlay');
+  wrap.id = 'frModal';
+  wrap.innerHTML = `
+    <div class="fr-card">
+      <div class="fr-emoji">🔁</div>
+      <h3>먼저 복습부터 완료해요</h3>
+      <p>Day ${nextDay}로 넘어가기 전에, 아직 못 맞힌 단어 <b>${count}개</b>를 복습해야 해요.<br>다 맞히면 자동으로 Day ${nextDay}로 이어집니다.</p>
+      <button class="btn btn-primary fr-main" id="frGoReview">지금 복습 시작하기 →</button>
+    </div>`;
+  document.body.appendChild(wrap);
+  requestAnimationFrame(()=>wrap.classList.add('show'));
+  $('#frGoReview').onclick = ()=>{
+    closeForcedReviewModal();
+    startWrongOnlyReview(nextDay);
+  };
+}
+function closeForcedReviewModal(){
+  const old = $('#frModal');
+  if(old) old.remove();
+}
+/* 오답만(어원 없이) 복습 → 다 맞히면 지정된 Day로 자동 진입 */
+function startWrongOnlyReview(nextDay){
+  const wrongs = shuffle(WORDS.filter(w=>state.cards[w.id].wrong>0 && state.cards[w.id].streakOk<3));
+  if(!wrongs.length){
+    if(nextDay) enterDaySession(nextDay); else toast('복습할 오답이 없습니다.');
+    return;
+  }
+  const steps = wrongs.map(w=>({type:'quiz', w, phase:'review'}));
+  sess = {
+    steps, i:0, correct:0, wrong:0, total:steps.length, wrongIds:[], mode:'review', nextDay: nextDay||null,
+    pendingWrongWords: new Set(wrongs.map(w=>w.id)), pendingWrongRoots: new Set()
+  };
+  go('study');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  startTotalTimer();
+  renderStep();
 }
 
 /* ==================== 복습 전용 세션 (어원 없음, 틀린/복습대상 단어만) ==================== */
@@ -38514,9 +38729,15 @@ function startReviewSession(){
   sess = {steps, i:0, correct:0, wrong:0, total:steps.length, wrongIds:[], mode:'review'};
   go('study');
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  startTotalTimer();
   renderStep();
 }
-function exitSession(){ sess=null; go('home'); }
+function exitSession(){
+  sess=null; stopTotalTimer(); stopQTimer();
+  const imp=$('#imprintModal'); if(imp) imp.remove();
+  closeForcedReviewModal(); go('home');
+}
+
 
 function updateTop(){
   const n = sess.steps.length;
@@ -38560,13 +38781,18 @@ function renderDots(){
   });
 }
 function next(){
+  stopQTimer();
   sess.i++;
   if(sess.i>=sess.steps.length){
-    if(sess.mode==='day' && sess.pendingWrongWords && (sess.pendingWrongWords.size || sess.pendingWrongRoots.size)){
+    const rootsLeft = sess.pendingWrongRoots ? sess.pendingWrongRoots.size : 0;
+    const wordsLeft = sess.pendingWrongWords ? sess.pendingWrongWords.size : 0;
+    const confLeft = sess.pendingWrongConf ? sess.pendingWrongConf.size : 0;
+    if(rootsLeft || wordsLeft || confLeft){
       appendRetryBatch();
       renderStep();
       return;
     }
+    stopTotalTimer();
     finishSession(); return;
   }
   renderStep();
@@ -38581,23 +38807,62 @@ function renderStep(){
   else if(s.type==='learn') stage.appendChild(cardLearn(s.w));
   else if(s.type==='wordMC') stage.appendChild(cardQuiz(s.w, s.phase, s.format));
   else if(s.type==='quiz') stage.appendChild(state.spellMode ? cardSpell(s.w, s.phase) : cardQuiz(s.w, s.phase));
+  else if(s.type==='confuseMC') stage.appendChild(cardConfuseMC(s.item));
+  else if(s.type==='match') stage.appendChild(cardMatchInline(s.pool));
   else if(s.type==='challenge') stage.appendChild(cardChallenge(s.ch));
+  // 스펠링/매칭이 아닌 4지선다형에서만 문제 타이머 작동
+  if(['rootMC','wordMC','quiz','confuseMC'].includes(s.type) && !(s.type==='quiz' && state.spellMode)){
+    startQTimer();
+  } else {
+    stopQTimer();
+  }
 }
 
-/* ---- 숫자키(1~4)로 4지선다 선택 — 마우스/터치와 함께 지원 ---- */
+/* ---- 통합 키보드: 숫자=선택, 엔터=확정 또는 다음 ---- */
 document.addEventListener('keydown', e=>{
+  // 각인 팝업이 떠 있으면: 엔터로만 닫고 다음 진행
+  const imp = $('#imprintModal');
+  if(imp){
+    if(e.key==='Enter'){
+      e.preventDefault();
+      const btn = imp.querySelector('.imprint-next.ready');
+      if(btn) btn.click();
+    }
+    return;
+  }
   const page = $('#page-study');
   if(!page || !page.classList.contains('visible')) return;
   const tag = (document.activeElement && document.activeElement.tagName) || '';
   if(tag==='INPUT' || tag==='TEXTAREA') return;   // 스펠링 입력 중엔 무시
-  if(!['1','2','3','4'].includes(e.key)) return;
+
+  // "다음" 버튼이 노출된 상태면 엔터로 진행
+  const primaryNext = document.querySelector('#studyStage [data-role="next-btn"]:not([disabled])');
+  if(e.key==='Enter' && primaryNext){ e.preventDefault(); primaryNext.click(); return; }
+
   const group = document.querySelector('#studyStage .choices');
   if(!group) return;
-  if(group.querySelector('.choice.correct, .choice.wrong')) return; // 이미 답변됨
-  const btns = group.querySelectorAll('.choice');
-  const idx = +e.key - 1;
-  if(btns[idx]) btns[idx].click();
+  if(group.querySelector('.choice.correct, .choice.wrong')) return; // 이미 확정됨
+
+  if(['1','2','3','4'].includes(e.key)){
+    e.preventDefault();
+    const btns = group.querySelectorAll('.choice');
+    const idx = +e.key - 1;
+    if(btns[idx]) selectChoice(group, idx);
+    return;
+  }
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const sel = group.querySelector('.choice.selected');
+    if(sel) sel.dispatchEvent(new CustomEvent('confirm-choice')); // 확정
+  }
 });
+
+/* 선택(하이라이트만) — 확정은 엔터 또는 재클릭 */
+function selectChoice(group, idx){
+  const btns = [...group.querySelectorAll('.choice')];
+  btns.forEach(b=>b.classList.remove('selected'));
+  if(btns[idx]) btns[idx].classList.add('selected');
+}
 
 /* ---- 어원 워밍업 카드(구버전, 미사용 유지) ---- */
 function cardWarm(r){
@@ -38651,15 +38916,15 @@ function cardQuiz(w, phase, format){
     : `<span class="phase-tag learn">단어학습 · 한→영</span>`;
   const prompt = format==='e2k'
     ? `<div style="text-align:center;margin:6px 0 4px">
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px">
-          <span style="font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-.025em">${w.word}</span>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px">
+          <span class="quiz-key">${w.word}</span>
           <button class="speak-btn" data-word="${w.word}">🔊</button>
           <span class="stars" style="color:var(--orange);font-size:16px">${starsOf(w)}</span>
         </div>
-        <div style="font-size:13px;color:var(--ink-3);margin-top:6px">${w.parts.map(p=>p[0]).join(' + ')}</div>
+        <div style="font-size:14px;color:var(--ink-3);margin-top:8px">${w.parts.map(p=>p[0]).join(' + ')}</div>
       </div>`
     : `<div style="text-align:center;margin:10px 0 4px">
-        <div style="font-size:clamp(20px,3vw,25px);font-weight:600;letter-spacing:-.01em">${w.mean}</div>
+        <div class="quiz-key ko">${w.mean}</div>
       </div>`;
   const qLabel = format==='e2k' ? '뜻을 골라보세요' : '알맞은 단어를 골라보세요';
   c.innerHTML = `
@@ -38669,27 +38934,26 @@ function cardQuiz(w, phase, format){
     <div class="choices">${choices.map((ch,i)=>`<button class="choice" data-i="${i}"><span class="choice-num">${i+1}</span>${ch.text}</button>`).join('')}</div>
     <div id="detailSlot"></div>
     <div class="study-actions" id="quizActions"></div>
-    <div class="key-hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 숫자키로도 선택할 수 있어요</div>`;
+    <div class="key-hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 로 선택 · <kbd>Enter</kbd> 로 확정</div>`;
   wireChoices(c, choices, w, ok=>{
     recordAnswer(w, ok);
     if(ok) sess.correct++; else { sess.wrong++; sess.wrongIds.push(w.id); }
     if(sess.pendingWrongWords){ if(ok) sess.pendingWrongWords.delete(w.id); else sess.pendingWrongWords.add(w.id); }
-    $('#detailSlot').appendChild(detailHTML(w));
-    if(ok){
-      $('#quizActions').innerHTML='';
-      const rr = el('div','rate-row');
-      rr.innerHTML = `
-        <button class="rate-btn hard">☆ 어려웠어요</button>
-        <button class="rate-btn mid">△ 알쏭달쏭</button>
-        <button class="rate-btn easy">◯ 완벽해요</button>`;
-      rr.children[0].onclick=()=>{ demoteHalf(w); next(); };
-      rr.children[1].onclick=()=>{ next(); };
-      rr.children[2].onclick=()=>{ promoteExtra(w); next(); };
-      c.appendChild(rr);
-    }else{
-      $('#quizActions').innerHTML = `<button class="btn btn-primary" onclick="next()">확인했어요 →</button>`;
-    }
     saveState();
+    if(ok){
+      $('#detailSlot').appendChild(detailHTML(w));
+      $('#quizActions').innerHTML = `<button class="btn btn-primary" data-role="next-btn" onclick="next()">다음 →</button>`;
+    }else{
+      // 오답 → 각인 팝업(정답 크게 + 해설 타이핑), 닫으면 다음
+      showImprintPopup({
+        badge:'다시 한 번 · 오답',
+        question: format==='e2k' ? `${w.word} 의 뜻은?` : `"${w.mean}" 에 해당하는 단어는?`,
+        answer: format==='e2k' ? w.word : w.word,
+        mean: w.mean,
+        story: `${w.parts.map(p=>p[0]+'('+p[1]+')').join(' + ')} → ${w.storyArrow}`,
+        exEn: w.ex && w.ex.en, exKo: w.ex && w.ex.ko
+      }, ()=>next());
+    }
   });
   return c;
 }
@@ -38714,26 +38978,37 @@ function cardRootQuiz(root){
   wireChoices(c, choices, null, ok=>{
     if(ok) sess.correct++; else { sess.wrong++; }
     if(sess.pendingWrongRoots){ if(ok) sess.pendingWrongRoots.delete(root.id); else sess.pendingWrongRoots.add(root.id); }
-    const detail = el('div','answer-detail',`
-      <div class="ad-block"><span class="k">어원 스토리</span><div class="v"><span id="rootStoryType"></span></div></div>
-      <div class="ad-block" id="rootFamBlock" style="opacity:0;transition:opacity .4s var(--ease)">
-        <span class="k">이 어원에서 자란 단어</span>
-        <div class="v" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${fam.map(f=>`<span class="chiplet">${f}</span>`).join('')}</div></div>`);
-    $('#detailSlot').appendChild(detail);
-    $('#rootActions').innerHTML = `<button class="btn btn-dark" disabled id="rootNextBtn" style="opacity:.35;cursor:not-allowed">스토리를 읽는 중…</button>`;
-    typeText(detail.querySelector('#rootStoryType'), root.story, ()=>{
-      const famBlock = detail.querySelector('#rootFamBlock');
-      if(famBlock) famBlock.style.opacity = '1';
-      const btn = $('#rootNextBtn');
-      if(btn){
-        btn.disabled = false;
-        btn.className = 'btn btn-primary';
-        btn.style.opacity = '';
-        btn.style.cursor = '';
-        btn.textContent = '다음 →';
-        btn.onclick = next;
-      }
-    });
+    if(ok){
+      const detail = el('div','answer-detail',`
+        <div class="ad-block"><span class="k">어원 스토리</span><div class="v"><span id="rootStoryType"></span></div></div>
+        <div class="ad-block" id="rootFamBlock" style="opacity:0;transition:opacity .4s var(--ease)">
+          <span class="k">이 어원에서 자란 단어</span>
+          <div class="v" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${fam.map(f=>`<span class="chiplet">${f}</span>`).join('')}</div></div>`);
+      $('#detailSlot').appendChild(detail);
+      $('#rootActions').innerHTML = `<button class="btn btn-dark" disabled id="rootNextBtn" data-role="next-btn" style="opacity:.35;cursor:not-allowed">스토리를 읽는 중…</button>`;
+      typeText(detail.querySelector('#rootStoryType'), root.story, ()=>{
+        const famBlock = detail.querySelector('#rootFamBlock');
+        if(famBlock) famBlock.style.opacity = '1';
+        const btn = $('#rootNextBtn');
+        if(btn){
+          btn.disabled = false;
+          btn.className = 'btn btn-primary';
+          btn.setAttribute('data-role','next-btn');
+          btn.style.opacity = ''; btn.style.cursor = '';
+          btn.textContent = '다음 →';
+          btn.onclick = next;
+        }
+      });
+    }else{
+      // 오답 → 각인 팝업 (어원 라벨 크게 + 뜻 + 스토리 타이핑)
+      showImprintPopup({
+        badge:'다시 한 번 · 어원 오답',
+        question:'이 어원의 뜻은?',
+        answer: root.label,
+        mean: root.meaning,
+        story: root.story
+      }, ()=>next());
+    }
   });
   return c;
 }
@@ -38771,22 +39046,21 @@ function cardSpell(w, phase){
     input.style.borderColor = ok? 'var(--green)':'var(--red)';
     recordAnswer(w, ok);
     if(ok) sess.correct++; else { sess.wrong++; sess.wrongIds.push(w.id); }
-    $('#detailSlot').appendChild(detailHTML(w));
-    if(ok){
-      $('#spellActions').innerHTML='';
-      const rr = el('div','rate-row');
-      rr.innerHTML = `
-        <button class="rate-btn hard">☆ 어려웠어요</button>
-        <button class="rate-btn mid">△ 알쏭달쏭</button>
-        <button class="rate-btn easy">◯ 완벽해요</button>`;
-      rr.children[0].onclick=()=>{ demoteHalf(w); next(); };
-      rr.children[1].onclick=()=>{ next(); };
-      rr.children[2].onclick=()=>{ promoteExtra(w); next(); };
-      c.appendChild(rr);
-    }else{
-      $('#spellActions').innerHTML = `<button class="btn btn-primary" onclick="next()">확인했어요 →</button>`;
-    }
+    if(sess.pendingWrongWords){ if(ok) sess.pendingWrongWords.delete(w.id); else sess.pendingWrongWords.add(w.id); }
     saveState();
+    if(ok){
+      $('#detailSlot').appendChild(detailHTML(w));
+      $('#spellActions').innerHTML = `<button class="btn btn-primary" data-role="next-btn" onclick="next()">다음 →</button>`;
+    }else{
+      showImprintPopup({
+        badge:'다시 한 번 · 오답',
+        question:`"${w.mean}" 의 철자는?`,
+        answer: w.word,
+        mean: w.mean,
+        story: `${w.parts.map(p=>p[0]+'('+p[1]+')').join(' + ')} → ${w.storyArrow}`,
+        exEn: w.ex && w.ex.en, exKo: w.ex && w.ex.ko
+      }, ()=>next());
+    }
   };
   c.querySelector('#spellCheckBtn').addEventListener('click', check);
   input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); check(); } });
@@ -38820,9 +39094,120 @@ function cardChallenge(ch){
     const slot=$('#detailSlot');
     slot.appendChild(el('div','answer-detail',`
       <div class="ad-block"><span class="k">어원의 힘</span><div class="v">${ch.note}</div></div>`));
-    $('#chActions').innerHTML = `<button class="btn btn-primary" onclick="next()">계속 →</button>`;
+    $('#chActions').innerHTML = `<button class="btn btn-primary" data-role="next-btn" onclick="next()">계속 →</button>`;
   }));
   return c;
+}
+
+/* ---- Day 후반: 혼동어휘 4지선다 (선택→확정, 오답 각인) ---- */
+function cardConfuseMC(item){
+  const c = el('div','study-card');
+  const choices = shuffle(item.choices.map(w=>({text:w, ok: w===item.word})));
+  c.innerHTML = `
+    <span class="phase-tag bonus">혼동어휘 · 빈칸 채우기</span>
+    <div style="text-align:center;margin:8px 0 2px">
+      <div class="quiz-key ko" style="font-size:clamp(18px,2.6vw,24px);font-weight:600;line-height:1.5">${item.blank}</div>
+    </div>
+    <div class="guess-q">빈칸에 알맞은 단어를 고르세요</div>
+    <div class="choices">${choices.map((ch,i)=>`<button class="choice" data-i="${i}"><span class="choice-num">${i+1}</span>${ch.text}</button>`).join('')}</div>
+    <div id="detailSlot"></div>
+    <div class="study-actions" id="confActions"></div>
+    <div class="key-hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 로 선택 · <kbd>Enter</kbd> 로 확정</div>`;
+  wireChoices(c, choices, null, ok=>{
+    if(ok){ sess.correct++; if(sess.pendingWrongConf) sess.pendingWrongConf.delete(item.word); }
+    else { sess.wrong++; if(sess.pendingWrongConf) sess.pendingWrongConf.set(item.word, item); }
+    if(ok){
+      $('#detailSlot').appendChild(el('div','answer-detail',`
+        <div class="ad-word">${item.word}</div>
+        <div class="ad-mean">${item.mean}</div>
+        <div class="ad-block"><span class="k">예문</span><div class="v"><div class="ex-en">${item.ex}</div><div class="ex-ko">${item.ko}</div></div></div>`));
+      $('#confActions').innerHTML = `<button class="btn btn-primary" data-role="next-btn" onclick="next()">다음 →</button>`;
+    }else{
+      showImprintPopup({
+        badge:'다시 한 번 · 혼동어휘',
+        question:'빈칸에 알맞은 단어는?',
+        answer: item.word,
+        mean: item.mean,
+        story: item.ex,
+        exKo: item.ko
+      }, ()=>next());
+    }
+  });
+  return c;
+}
+
+/* ---- Day 후반: 인라인 매칭게임 (그 Day 단어 일부) ---- */
+function cardMatchInline(pool){
+  const c = el('div','study-card');
+  const st = {pairs:pool, solved:new Set(), selected:null, done:false};
+  const wordsShuf = shuffle(pool.map(w=>({id:w.id,text:w.word})));
+  const meansShuf = shuffle(pool.map(w=>({id:w.id,text:w.mean})));
+  c.innerHTML = `
+    <span class="phase-tag bonus">매칭 게임 · 마무리</span>
+    <div class="guess-q">단어와 뜻을 모두 짝지으면 완료됩니다 (${pool.length}쌍)</div>
+    <div class="match-wrap">
+      <div class="choices match-col" id="mWords">${wordsShuf.map(x=>`<button class="choice" data-id="${x.id}" data-side="w">${x.text}</button>`).join('')}</div>
+      <div class="choices match-col" id="mMeans">${meansShuf.map(x=>`<button class="choice" data-id="${x.id}" data-side="m">${x.text}</button>`).join('')}</div>
+    </div>
+    <div class="study-actions" id="matchActions"></div>`;
+  const clickHandler = (btn)=>{
+    if(btn.disabled || st.done) return;
+    const side=btn.dataset.side, id=btn.dataset.id;
+    if(!st.selected){ st.selected={side,id,btn}; btn.classList.add('selected'); return; }
+    if(st.selected.side===side){ st.selected.btn.classList.remove('selected'); st.selected={side,id,btn}; btn.classList.add('selected'); return; }
+    const prev=st.selected.btn; const ok=st.selected.id===id;
+    if(ok){
+      [prev,btn].forEach(b=>{ b.classList.remove('selected'); b.classList.add('correct'); b.disabled=true; });
+      st.solved.add(id);
+      if(st.solved.size===st.pairs.length){
+        st.done=true;
+        $('#matchActions').innerHTML = `<button class="btn btn-primary" data-role="next-btn" onclick="next()">완료! 다음 →</button>`;
+      }
+    }else{
+      [prev,btn].forEach(b=>b.classList.add('wrong'));
+      setTimeout(()=>{ [prev,btn].forEach(b=>{ b.classList.remove('wrong','selected'); }); }, 420);
+    }
+    st.selected=null;
+  };
+  c.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>clickHandler(b)));
+  return c;
+}
+
+/* ---- 오답 각인 팝업 (정답 크게 + 해설 타이핑 + 엔터로 닫기) ---- */
+function showImprintPopup(opts, onClose){
+  // opts: {badge, question, answer, mean, story, exEn, exKo}
+  const old = $('#imprintModal'); if(old) old.remove();
+  const wrap = el('div','imprint-overlay'); wrap.id='imprintModal';
+  wrap.innerHTML = `
+    <div class="imprint-card">
+      <div class="imprint-badge">${opts.badge||'다시 한 번 · 오답'}</div>
+      ${opts.question?`<div class="imprint-q">${opts.question}</div>`:''}
+      <div class="imprint-answer" id="imprintAnswer"></div>
+      ${opts.mean?`<div class="imprint-mean">${opts.mean}</div>`:''}
+      ${opts.story?`<div class="imprint-story"><span class="k">어원 · 해설</span><span id="imprintStory"></span></div>`:''}
+      ${opts.exEn?`<div class="imprint-ex"><div class="en">${opts.exEn}</div>${opts.exKo?`<div class="ko">${opts.exKo}</div>`:''}</div>`:''}
+      <button class="btn btn-primary imprint-next" id="imprintNext" disabled>잠깐, 천천히 읽어요…</button>
+      <div class="imprint-hint"><kbd>Enter</kbd> 를 누르면 다음으로 넘어가요</div>
+    </div>`;
+  document.body.appendChild(wrap);
+  requestAnimationFrame(()=>wrap.classList.add('show'));
+
+  const finishReveal = ()=>{
+    const btn = $('#imprintNext');
+    if(btn){
+      btn.disabled=false;
+      btn.classList.add('ready');
+      btn.textContent = '다음으로 →';
+      btn.onclick = ()=>{ wrap.remove(); if(onClose) onClose(); };
+    }
+  };
+  // 정답 → (완료 후) 스토리 순차 타이핑
+  const ansEl = wrap.querySelector('#imprintAnswer');
+  typeText(ansEl, opts.answer||'', ()=>{
+    const storyEl = wrap.querySelector('#imprintStory');
+    if(storyEl && opts.story){ typeText(storyEl, opts.story, finishReveal); }
+    else finishReveal();
+  });
 }
 
 /* ---- 공용 파츠 ---- */
@@ -38860,14 +39245,26 @@ function makeRootChoices(root){
   return shuffle([{text:root.meaning,ok:true},...others]);
 }
 function wireChoices(cardEl, choices, w, done){
+  const group = cardEl.querySelector('.choices');
   const btns=[...cardEl.querySelectorAll('.choice')];
-  btns.forEach(b=>b.addEventListener('click',()=>{
-    const i=+b.dataset.i, ok=choices[i].ok;
-    btns.forEach(x=>x.classList.add('dim'));
-    b.classList.remove('dim'); b.classList.add(ok?'correct':'wrong');
+  let locked = false;
+  const confirm = (i)=>{
+    if(locked) return;
+    locked = true;
+    const ok=choices[i].ok;
+    btns.forEach(x=>{ x.classList.remove('selected'); x.classList.add('dim'); });
+    btns[i].classList.remove('dim'); btns[i].classList.add(ok?'correct':'wrong');
     if(!ok){ const ci=choices.findIndex(c=>c.ok); btns[ci].classList.remove('dim'); btns[ci].classList.add('reveal-correct'); }
-    done(ok);
-  }));
+    done(ok, choices[i]);
+  };
+  btns.forEach((b,i)=>{
+    b.addEventListener('click',()=>{
+      if(locked) return;
+      if(b.classList.contains('selected')) confirm(i);   // 재클릭 = 확정
+      else selectChoice(group, i);                        // 첫 클릭 = 선택
+    });
+    b.addEventListener('confirm-choice',()=>confirm(i));   // 엔터 확정
+  });
 }
 
 /* ---- SRS 기록 ---- */
@@ -38889,6 +39286,10 @@ function promoteExtra(w){ const c=state.cards[w.id]; c.box=Math.min(INTERVALS.le
 
 /* ---- 세션 종료 ---- */
 function finishSession(){
+  stopTotalTimer(); stopQTimer();
+  const elapsedSec = Math.floor((Date.now()-studyTimer.totalStart)/1000);
+  const em = Math.floor(elapsedSec/60), es = elapsedSec%60;
+  const elapsedStr = em+'분 '+es+'초';
   state.sessions++;
   const today = new Date().toDateString();
   if(state.lastStudy){
@@ -38909,10 +39310,16 @@ function finishSession(){
   const mailBtn = (window.Mail && window.Mail.enabled)
     ? `<button class="btn btn-primary" id="mailReportBtn" onclick="onSendReport()">📧 관리자에게 보고서 메일</button>`
     : '';
-  const titleText = sess.mode==='day' ? `Day ${sess.day} 완료! 🎉` : '오늘도 자랐습니다.';
+  const titleText = sess.mode==='day' ? `Day ${sess.day} 완료! 🎉`
+    : (sess.nextDay ? '복습 완료! 이제 다음 Day로 갈 수 있어요 🎉' : '오늘도 자랐습니다.');
   const subText = sess.mode==='day'
     ? '이 Day의 어원·단어는 전부 맞힐 때까지 반복해 통과했습니다. 오답은 오답노트에 계속 남아 있습니다.'
-    : (sess.wrong? '틀린 '+sess.wrong+'개는 오답함에 담겼고, 다음 세션 맨 앞에서 다시 만납니다.' : '전부 정답! 복습 간격이 넓어졌습니다.');
+    : (sess.nextDay
+        ? '이전에 틀렸던 단어를 전부 맞혔습니다. 아래 버튼으로 이어서 진행하세요.'
+        : (sess.wrong? '틀린 '+sess.wrong+'개는 오답함에 담겼고, 다음 세션 맨 앞에서 다시 만납니다.' : '전부 정답! 복습 간격이 넓어졌습니다.'));
+  const nextDayBtn = sess.nextDay
+    ? `<button class="btn btn-primary" style="background:linear-gradient(90deg,var(--blue),var(--teal))" onclick="enterDaySession(${sess.nextDay})">Day ${sess.nextDay} 이어서 시작하기 →</button>`
+    : '';
   c.innerHTML = `
     <div class="result-hero">
       <div class="emoji">${acc>=90?'🌳':acc>=60?'🌿':'🌱'}</div>
@@ -38923,8 +39330,10 @@ function finishSession(){
         <div class="rs"><div class="n" style="color:var(--red)">${sess.wrong}</div><div class="l">오답</div></div>
         <div class="rs"><div class="n">${acc}%</div><div class="l">정답률</div></div>
       </div>
+      <div style="margin-top:14px;font-size:14px;color:var(--ink-3);font-weight:600">⏱ 총 학습시간 ${elapsedStr}</div>
     </div>
     <div class="study-actions" style="justify-content:center;flex-wrap:wrap">
+      ${nextDayBtn}
       ${mailBtn}
       <button class="btn btn-dark" onclick="go('map')">어원 맵 확인</button>
       <button class="btn btn-primary" onclick="go('home')">홈으로</button>
@@ -39141,6 +39550,7 @@ function startWrongSession(){
   sess={steps,i:0,correct:0,wrong:0,total:steps.length,wrongIds:[],mode:'review'};
   go('study');
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  startTotalTimer();
   renderStep();
 }
 
