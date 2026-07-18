@@ -265,6 +265,18 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 .switch.on{background:var(--green)}
 .switch.on::after{transform:translateX(19px)}
 
+/* 어원 스토리 한 글자씩 등장 — 커서 깜빡임 */
+.typing-cursor::after{
+  content:'▏';display:inline-block;color:var(--blue);
+  animation:cursorBlink .9s step-start infinite;margin-left:1px;
+}
+@keyframes cursorBlink{50%{opacity:0}}
+
+/* 속도조절 미니 세그먼트 */
+.speed-seg{display:inline-flex;gap:3px;background:var(--seg-bg);padding:3px;border-radius:10px}
+.speed-seg button{font-size:12px;font-weight:600;padding:5px 11px;border-radius:7px;color:var(--ink-2);transition:all .2s}
+.speed-seg button.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
 /* speaker button */
 .speak-btn{
   display:inline-flex;align-items:center;justify-content:center;
@@ -741,9 +753,15 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
       <button class="btn btn-ghost" onclick="go('map')">어원 맵 보기 ›</button>
       <button class="btn btn-ghost" onclick="go('plus')">플러스 학습 ›</button>
     </div>
-    <div class="settings-row">
+    <div class="settings-row" style="flex-wrap:wrap;row-gap:12px">
       <span class="lbl">스펠링 입력 모드(복습 전용)</span>
       <button class="switch" id="spellToggle" role="switch" aria-checked="false"></button>
+      <span class="lbl" style="margin-left:8px">어원 등장 속도</span>
+      <div class="speed-seg" id="speedSeg" role="radiogroup" aria-label="어원 등장 속도">
+        <button data-speed="slow">느림</button>
+        <button data-speed="normal">보통</button>
+        <button data-speed="fast">빠름</button>
+      </div>
     </div>
   </section>
 
@@ -37978,7 +37996,8 @@ let state = {
   streak:0, lastStudy:null,
   sessions:0, totAttempts:0, totCorrect:0,
   todayDone:false, todayDate:null,
-  spellMode:false
+  spellMode:false,
+  typeSpeed:'normal'   // 어원 스토리 등장 속도: slow | normal | fast
 };
 let memoryOnly = false;
 
@@ -38067,6 +38086,26 @@ function toast(msg){
   clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2400);
 }
 function starsOf(w){ return w.stars===2?'★★':w.stars===1?'★':''; }
+
+/* ---- 어원 스토리 한 글자씩 등장 (속도조절) ---- */
+const TYPE_SPEED_MS = {slow:88, normal:50, fast:24};
+function currentTypeMs(){ return TYPE_SPEED_MS[state.typeSpeed] || TYPE_SPEED_MS.normal; }
+function typeText(elx, text, onDone){
+  elx.textContent = '';
+  elx.classList.add('typing-cursor');
+  let i = 0;
+  const ms = currentTypeMs();
+  const timer = setInterval(()=>{
+    elx.textContent += text[i];
+    i++;
+    if(i>=text.length){
+      clearInterval(timer);
+      elx.classList.remove('typing-cursor');
+      if(onDone) onDone();
+    }
+  }, ms);
+  return timer;
+}
 function dueCards(){ return WORDS.filter(w=>{const c=state.cards[w.id]; return c.seen && c.box<INTERVALS.length && c.next<=now() && c.streakOk<3;}); }
 function newCards(){ return WORDS.filter(w=>!state.cards[w.id].seen); }
 function masteredCards(){ return WORDS.filter(w=>state.cards[w.id].streakOk>=3); }
@@ -38273,6 +38312,12 @@ function renderHome(){
     : '신규 학습과 복습을 완료하고<br>링을 채워보세요.';
   const st = $('#spellToggle');
   if(st){ st.classList.toggle('on', !!state.spellMode); st.setAttribute('aria-checked', !!state.spellMode); }
+  const speedSeg = $('#speedSeg');
+  if(speedSeg){
+    speedSeg.querySelectorAll('button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.speed === (state.typeSpeed||'normal'));
+    });
+  }
 
   // Day 기반 CTA — 추천 Day 클릭으로 진입
   const rec = recommendedDay();
@@ -38657,7 +38702,7 @@ function cardRootQuiz(root){
   c.innerHTML = `
     <span class="phase-tag warm">어원학습 · 4지선다</span>
     <div style="text-align:center;margin:6px 0 4px">
-      <span style="font-size:clamp(38px,5.5vw,52px);font-weight:800;letter-spacing:-.02em;color:${root.color}">${root.label}</span>
+      <span id="rootLabelType" style="font-size:clamp(38px,5.5vw,52px);font-weight:800;letter-spacing:-.02em;color:${root.color}"></span>
       ${root.variant?`<div style="font-size:13px;color:var(--ink-3);margin-top:4px">${root.variant}</div>`:''}
     </div>
     <div class="guess-q">이 어원의 뜻은 무엇일까요?</div>
@@ -38665,14 +38710,30 @@ function cardRootQuiz(root){
     <div id="detailSlot"></div>
     <div class="study-actions" id="rootActions"></div>
     <div class="key-hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 숫자키로도 선택할 수 있어요</div>`;
+  typeText(c.querySelector('#rootLabelType'), root.label);
   wireChoices(c, choices, null, ok=>{
     if(ok) sess.correct++; else { sess.wrong++; }
     if(sess.pendingWrongRoots){ if(ok) sess.pendingWrongRoots.delete(root.id); else sess.pendingWrongRoots.add(root.id); }
-    $('#detailSlot').appendChild(el('div','answer-detail',`
-      <div class="ad-block"><span class="k">어원 스토리</span><div class="v">${root.story}</div></div>
-      <div class="ad-block"><span class="k">이 어원에서 자란 단어</span>
-        <div class="v" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${fam.map(f=>`<span class="chiplet">${f}</span>`).join('')}</div></div>`));
-    $('#rootActions').innerHTML = `<button class="btn btn-primary" onclick="next()">다음 →</button>`;
+    const detail = el('div','answer-detail',`
+      <div class="ad-block"><span class="k">어원 스토리</span><div class="v"><span id="rootStoryType"></span></div></div>
+      <div class="ad-block" id="rootFamBlock" style="opacity:0;transition:opacity .4s var(--ease)">
+        <span class="k">이 어원에서 자란 단어</span>
+        <div class="v" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${fam.map(f=>`<span class="chiplet">${f}</span>`).join('')}</div></div>`);
+    $('#detailSlot').appendChild(detail);
+    $('#rootActions').innerHTML = `<button class="btn btn-dark" disabled id="rootNextBtn" style="opacity:.35;cursor:not-allowed">스토리를 읽는 중…</button>`;
+    typeText(detail.querySelector('#rootStoryType'), root.story, ()=>{
+      const famBlock = detail.querySelector('#rootFamBlock');
+      if(famBlock) famBlock.style.opacity = '1';
+      const btn = $('#rootNextBtn');
+      if(btn){
+        btn.disabled = false;
+        btn.className = 'btn btn-primary';
+        btn.style.opacity = '';
+        btn.style.cursor = '';
+        btn.textContent = '다음 →';
+        btn.onclick = next;
+      }
+    });
   });
   return c;
 }
@@ -39369,6 +39430,22 @@ async function bootApp(){
       state.spellMode = !state.spellMode;
       st.classList.toggle('on', state.spellMode);
       st.setAttribute('aria-checked', state.spellMode);
+      saveState();
+    });
+  }
+  const speedSeg = $('#speedSeg');
+  if(speedSeg){
+    const syncSpeedUI = ()=>{
+      speedSeg.querySelectorAll('button').forEach(b=>{
+        b.classList.toggle('active', b.dataset.speed === (state.typeSpeed||'normal'));
+      });
+    };
+    syncSpeedUI();
+    speedSeg.addEventListener('click', e=>{
+      const b = e.target.closest('button[data-speed]');
+      if(!b) return;
+      state.typeSpeed = b.dataset.speed;
+      syncSpeedUI();
       saveState();
     });
   }
