@@ -37878,6 +37878,7 @@ const REFERENCE = [
 
 
 </script>
+<!-- Root Voca Mail Fix v2.1: compact report + auto retry -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 /* ==================================================================
@@ -37914,7 +37915,12 @@ const EMAIL_CONFIG = {
   publicKey:  "JJdWMghPhZrilD_ZQ",         // EmailJS: Account → Public Key
   serviceId:  "service_vz3hns6",           // EmailJS: Email Services → Service ID
   templateId: "template_kgxlher",          // EmailJS: Email Templates → Template ID
-  adminEmail: "sk01197375068@gmail.com"    // 보고서를 받을 관리자 메일
+  adminEmails: [                             // 쉼표 문자열보다 배열이 안전함
+    "sk01197375068@gmail.com",
+    "okkdh99@gmail.com"
+  ],
+  autoSend: true,                            // 학습 완료 직후 자동 발송
+  maxPayloadBytes: 45000                     // EmailJS 동적 변수 50KB 제한보다 여유 있게
 };
 
 /* ── 내부 상태 ── */
@@ -38011,48 +38017,208 @@ async function cloudLoadAll(){
 }
 
 /* ==================== EMAIL (EmailJS) ==================== */
-const Mail = { ready:false, enabled:false };
+/*
+   v2.1 메일 안정화
+   - 83개 이상 학습 시 기존 HTML+시험지 본문이 EmailJS 50KB 제한을 넘는 문제 방지
+   - 요약형 보고서만 발송하고 A4 시험지는 앱에서 별도 인쇄
+   - SDK 실패 시 REST API로 1회 폴백
+   - 실패 사유(상태코드/문구)를 화면에 표시
+   - 실패 보고서는 로컬 큐에 보관하고 다음 접속 때 재시도
+*/
+const MAIL_QUEUE_KEY = 'rootvoca-mail-queue-v2';
+const Mail = { ready:false, enabled:false, lastError:null, provider:'EmailJS', version:'2.1' };
 
+function mailRecipients(){
+  const raw = Array.isArray(EMAIL_CONFIG.adminEmails)
+    ? EMAIL_CONFIG.adminEmails
+    : [EMAIL_CONFIG.adminEmail || ''];
+  return raw.map(v=>String(v||'').trim()).filter(Boolean);
+}
+function utf8Bytes(value){
+  try{ return new TextEncoder().encode(String(value||'')).length; }
+  catch(e){ return unescape(encodeURIComponent(String(value||''))).length; }
+}
 function initEmail(){
-  if(!EMAIL_CONFIG.publicKey || !EMAIL_CONFIG.serviceId || !EMAIL_CONFIG.templateId){
-    Mail.enabled = false; return false;
-  }
-  if(typeof emailjs === 'undefined'){
-    console.warn('[mail] EmailJS SDK 미로드'); Mail.enabled = false; return false;
+  const recipients = mailRecipients();
+  if(!EMAIL_CONFIG.publicKey || !EMAIL_CONFIG.serviceId || !EMAIL_CONFIG.templateId || !recipients.length){
+    Mail.enabled = false;
+    Mail.lastError = {status:0, text:'EmailJS 설정값 또는 관리자 이메일이 비어 있습니다.'};
+    return false;
   }
   try{
-    emailjs.init({ publicKey: EMAIL_CONFIG.publicKey });
-    Mail.ready = true; Mail.enabled = true;
+    if(typeof emailjs !== 'undefined'){
+      emailjs.init({
+        publicKey: EMAIL_CONFIG.publicKey,
+        limitRate: { id:'root-voca-report', throttle:1500 }
+      });
+      Mail.ready = true;
+    }else{
+      // CDN이 차단돼도 REST API 폴백을 사용할 수 있음
+      Mail.ready = false;
+      console.warn('[mail] EmailJS SDK 미로드 — REST API 폴백 사용 예정');
+    }
+    Mail.enabled = true;
     return true;
   }catch(e){
-    console.warn('[mail] EmailJS 초기화 실패', e); Mail.enabled = false; return false;
+    console.warn('[mail] EmailJS 초기화 실패 — REST API 폴백 사용 예정', e);
+    Mail.ready = false;
+    Mail.enabled = true;
+    return true;
   }
 }
 
-/* 보고서 발송. params: {subject, html, ...} */
+function normalizeMailError(error){
+  const status = Number(error && (error.status || error.statusCode)) || 0;
+  const text = String((error && (error.text || error.message || error.statusText)) || '알 수 없는 오류');
+  return { status, text };
+}
+function mailErrorGuide(err){
+  const s = Number(err && err.status) || 0;
+  const t = String((err && err.text) || '').trim();
+  if(!navigator.onLine) return '인터넷 연결이 끊어져 있습니다. 연결 후 다시 시도하세요.';
+  if(s===400) return 'EmailJS 템플릿 변수 또는 요청 형식을 확인하세요.';
+  if(s===401) return 'EmailJS Public Key가 올바른지 확인하세요.';
+  if(s===403) return 'EmailJS 허용 도메인 설정에 현재 GitHub Pages 주소를 추가하세요.';
+  if(s===404) return 'EmailJS Service ID 또는 Template ID가 존재하지 않습니다.';
+  if(s===412) return '연결된 Gmail 서비스 인증이 만료되었습니다. EmailJS에서 Gmail을 다시 연결하세요.';
+  if(s===413 || s===422 || /50\s*kb|too large|payload/i.test(t)) return '메일 본문 용량이 제한을 넘었습니다. 이 버전은 자동 축약 후 다시 시도합니다.';
+  if(s===429) return 'EmailJS 발송 간격 또는 월 사용량 제한에 걸렸습니다. 잠시 후 다시 시도하세요.';
+  if(s===0 && /failed to fetch|network|load/i.test(t)) return '메일 서버 연결이 차단되었습니다. 인터넷·광고차단기·브라우저 보안설정을 확인하세요.';
+  return t || 'EmailJS 서비스·템플릿·허용 도메인 설정을 확인하세요.';
+}
+
+function buildTemplateParams(params){
+  const recipients = mailRecipients();
+  const text = String(params.text || params.message || '');
+  let html = String(params.html || '');
+  const limit = Number(EMAIL_CONFIG.maxPayloadBytes) || 45000;
+
+  // HTML이 큰 경우 메일 자체를 텍스트 중심으로 더 축약한다.
+  if(utf8Bytes(html) > limit){
+    html = `<div style="font-family:Arial,sans-serif;white-space:pre-wrap;line-height:1.6">${escapeHtml(text)}</div>`;
+  }
+
+  // EmailJS 템플릿 명칭 차이를 흡수하기 위해 흔히 쓰는 변수명을 함께 보낸다.
+  const out = {
+    to_email: recipients.join(','),
+    to_emails: recipients.join(','),
+    to_name: 'Root Voca 관리자',
+    from_name: 'Root Voca 학습 보고서',
+    reply_to: recipients[0] || '',
+    subject: params.subject || 'Root Voca 학습 보고서',
+    message: text,
+    text_message: text,
+    html_message: html,
+    report_html: html,
+    report_text: text,
+    who: params.who || '학습자',
+    date: params.date || '',
+    correct: params.correct || '',
+    wrong: params.wrong || '',
+    acc: params.acc || '',
+    day_label: params.dayLabel || '',
+    duration: params.duration || ''
+  };
+
+  // 모든 동적 변수 합계가 50KB를 넘지 않도록 최종 방어한다.
+  let bytes = utf8Bytes(JSON.stringify(out));
+  if(bytes > limit){
+    out.html_message = '';
+    out.report_html = '';
+    const room = Math.max(3000, Math.floor(limit * 0.55));
+    out.message = out.message.slice(0, room);
+    out.text_message = out.message;
+    out.report_text = out.message;
+    bytes = utf8Bytes(JSON.stringify(out));
+  }
+  out.payload_bytes = String(bytes);
+  return out;
+}
+
+async function sendViaSdk(templateParams){
+  if(typeof emailjs === 'undefined') throw {status:0, text:'EmailJS SDK를 불러오지 못했습니다.'};
+  return await emailjs.send(
+    EMAIL_CONFIG.serviceId,
+    EMAIL_CONFIG.templateId,
+    templateParams,
+    { publicKey: EMAIL_CONFIG.publicKey }
+  );
+}
+async function sendViaRest(templateParams){
+  const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      service_id: EMAIL_CONFIG.serviceId,
+      template_id: EMAIL_CONFIG.templateId,
+      user_id: EMAIL_CONFIG.publicKey,
+      template_params: templateParams
+    })
+  });
+  const text = await response.text();
+  if(!response.ok) throw {status:response.status, text:text || response.statusText};
+  return {status:response.status, text:text || 'OK'};
+}
+
+/* 보고서 발송. params: {subject, html, text, ...} */
 async function sendReportEmail(params){
-  if(!Mail.enabled || !Mail.ready){
-    return { ok:false, reason:'not_configured' };
+  if(!Mail.enabled){
+    return { ok:false, reason:'not_configured', error:Mail.lastError || {status:0,text:'메일 기능 미설정'} };
+  }
+  if(!navigator.onLine){
+    const error = {status:0, text:'오프라인 상태'};
+    Mail.lastError = error;
+    return {ok:false, reason:'offline', error};
+  }
+  const templateParams = buildTemplateParams(params || {});
+  let firstError = null;
+  try{
+    const response = await sendViaSdk(templateParams);
+    Mail.lastError = null;
+    return {ok:true, response, payloadBytes:Number(templateParams.payload_bytes)||0, channel:'sdk'};
+  }catch(e){
+    firstError = normalizeMailError(e);
+    console.warn('[mail] SDK 발송 실패 — REST 폴백 시도', firstError);
   }
   try{
-    const templateParams = {
-      to_email: EMAIL_CONFIG.adminEmail,
-      subject: params.subject || 'Root Voca 학습 보고서',
-      html_message: params.html || '',
-      ...params
-    };
-    await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateId, templateParams);
-    return { ok:true };
+    const response = await sendViaRest(templateParams);
+    Mail.lastError = null;
+    return {ok:true, response, payloadBytes:Number(templateParams.payload_bytes)||0, channel:'rest'};
   }catch(e){
-    console.warn('[mail] 발송 실패', e);
-    return { ok:false, reason:'send_failed', error:e };
+    const secondError = normalizeMailError(e);
+    Mail.lastError = secondError.status || secondError.text ? secondError : firstError;
+    console.warn('[mail] 최종 발송 실패', Mail.lastError);
+    return {ok:false, reason:'send_failed', error:Mail.lastError, firstError, payloadBytes:Number(templateParams.payload_bytes)||0};
   }
+}
+
+function mailQueueRead(){
+  try{ return JSON.parse(localStorage.getItem(MAIL_QUEUE_KEY)||'null'); }catch(e){ return null; }
+}
+function mailQueueWrite(report){
+  try{
+    localStorage.setItem(MAIL_QUEUE_KEY, JSON.stringify({report, queuedAt:Date.now(), tries:0}));
+    return true;
+  }catch(e){ return false; }
+}
+function mailQueueClear(){ try{ localStorage.removeItem(MAIL_QUEUE_KEY); }catch(e){} }
+function mailQueueBump(){
+  const q = mailQueueRead();
+  if(!q) return;
+  q.tries = (q.tries||0)+1;
+  q.lastTryAt = Date.now();
+  try{ localStorage.setItem(MAIL_QUEUE_KEY, JSON.stringify(q)); }catch(e){}
 }
 
 window.Mail = Mail;
 window.initEmail = initEmail;
 window.sendReportEmail = sendReportEmail;
 window.EMAIL_CONFIG = EMAIL_CONFIG;
+window.mailErrorGuide = mailErrorGuide;
+window.mailQueueRead = mailQueueRead;
+window.mailQueueWrite = mailQueueWrite;
+window.mailQueueClear = mailQueueClear;
+window.mailQueueBump = mailQueueBump;
 
 /* 전역 노출 */
 window.Cloud = Cloud;
@@ -38088,7 +38254,9 @@ let state = {
   sessions:0, totAttempts:0, totCorrect:0,
   todayDone:false, todayDate:null,
   spellMode:false,
-  typeSpeed:'normal'   // 어원 스토리 등장 속도: slow | normal | fast
+  typeSpeed:'normal',  // 어원 스토리 등장 속도: slow | normal | fast
+  lastReportSentId:null,
+  mailLog:[]
 };
 let memoryOnly = false;
 
@@ -39316,14 +39484,15 @@ function finishSession(){
 
   // 오늘 세션 스냅샷을 보고서용으로 저장
   const acc = sess.total? Math.round(sess.correct/(sess.correct+sess.wrong||1)*100):100;
-  window._lastReport = buildReport(sess, acc);
+  window._lastReport = buildReport(sess, acc, elapsedStr);
   saveState();
 
   const stage=$('#studyStage'); stage.innerHTML='';
   const c = el('div','study-card');
   const mailBtn = (window.Mail && window.Mail.enabled)
-    ? `<button class="btn btn-primary" id="mailReportBtn" onclick="onSendReport()">📧 관리자에게 보고서 메일</button>`
-    : '';
+    ? `<button class="btn btn-primary" id="mailReportBtn" onclick="onSendReport(false)">📧 관리자에게 보고서 메일</button>
+       <button class="btn btn-dark" id="mailDiagBtn" onclick="showMailDiagnostics()">🩺 메일 진단</button>`
+    : `<button class="btn btn-dark" id="mailDiagBtn" onclick="showMailDiagnostics()">🩺 메일 설정 확인</button>`;
   const titleText = sess.mode==='day' ? `Day ${sess.day} 완료! 🎉`
     : (sess.nextDay ? '복습 완료! 이제 다음 Day로 갈 수 있어요 🎉' : '오늘도 자랐습니다.');
   const subText = sess.mode==='day'
@@ -39358,7 +39527,15 @@ function finishSession(){
   $('#sessProg').style.width='100%';
   // 오늘 학습분 인쇄용 단어 목록 저장 (세션에서 다룬 실제 단어)
   window._todayWords = collectSessionWords(sess);
+  // 보고서는 먼저 큐에 저장한다. 브라우저가 닫혀도 다음 접속 때 재발송할 수 있다.
+  if(window._lastReport && typeof mailQueueWrite==='function') mailQueueWrite(window._lastReport);
   if(memoryOnly) toast('저장소 미지원 환경 — 이번 세션 기록은 이 창에서만 유지됩니다.');
+
+  // 학습자 세션은 완료 직후 자동 발송. 실패해도 학습기록·진도에는 영향이 없다.
+  const doneAcc = (typeof cloudCurrentAccount==='function') ? cloudCurrentAccount() : null;
+  if(EMAIL_CONFIG.autoSend && (!doneAcc || doneAcc.role==='user')){
+    setTimeout(()=>onSendReport(true), 900);
+  }
 }
 
 /* 세션에서 다룬 단어(중복 제거) 수집 → 인쇄/메일용 */
@@ -39388,7 +39565,7 @@ function printTodayTest(){
 window.printTodayTest = printTodayTest;
 
 /* 오늘 학습 보고서 데이터 집계 */
-function buildReport(session, acc){
+function buildReport(session, acc, elapsedStr){
   const accnt = (typeof cloudCurrentAccount==='function') ? cloudCurrentAccount() : null;
   const who = accnt ? accnt.label : '학습자';
   const now = new Date();
@@ -39410,9 +39587,13 @@ function buildReport(session, acc){
   const todayWords = collectSessionWords(session);
   const dayLabel = session.day ? ('Day '+session.day) : '오늘의 학습';
 
+  const dateKey = [now.getFullYear(), String(now.getMonth()+1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
+  const reportId = `${dateKey}-${session.day||'review'}-${state.sessions}`;
   return {
+    reportId,
     who, dateStr: now.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'}),
     timeStr: now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
+    elapsedStr: elapsedStr || '',
     correct: session.correct, wrong: session.wrong, acc,
     studied: session.correct + session.wrong,
     streak: state.streak, sessions: state.sessions,
@@ -39438,6 +39619,7 @@ function reportToHtml(r){
       <div style="font-size:34px">🌱</div>
       <h1 style="margin:8px 0 4px;font-size:22px">Root Voca 학습 보고서</h1>
       <p style="margin:0;opacity:.9;font-size:14px">${r.dateStr} · ${r.timeStr} 완료</p>
+      <p style="margin:7px 0 0;opacity:.9;font-size:13px">${r.dayLabel||''}${r.elapsedStr ? ' · 학습시간 '+r.elapsedStr : ''}</p>
     </div>
 
     <div style="background:#f5f5f7;border-radius:12px;padding:16px;margin:18px 0;text-align:center">
@@ -39505,7 +39687,10 @@ function reportToHtml(r){
       ${wrongRows}
     </table>
 
-    ${buildMailTestSheet(r)}
+    <div style="margin-top:20px;background:#fff8e8;border:1px solid #f1d28a;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;color:#6b5314">
+      A4 지필시험 문제지와 정답지는 학습 완료 화면의 <b>‘오늘 학습분 시험지 인쇄’</b> 버튼에서 출력합니다.<br>
+      메일 본문은 안정적인 자동 발송을 위해 학습결과 중심으로 축약되었습니다.
+    </div>
 
     <p style="text-align:center;color:#aaa;font-size:12px;margin:24px 0">
       Root Voca · 능률VOCA 어원편 · 자동 생성 보고서
@@ -39561,6 +39746,8 @@ function reportToText(r){
     `[Root Voca 학습 보고서]`,
     `${r.dateStr} ${r.timeStr}`,
     `학습자: ${r.who}`,
+    `학습범위: ${r.dayLabel||'오늘의 학습'}${r.elapsedStr ? ' / 학습시간 '+r.elapsedStr : ''}`,
+    `보고서 ID: ${r.reportId||'-'}`,
     ``,
     `■ 오늘의 세션`,
     `  정답 ${r.correct} / 오답 ${r.wrong} / 정답률 ${r.acc}% / 학습 ${r.studied}단어`,
@@ -39576,41 +39763,98 @@ function reportToText(r){
 }
 
 /* 보고서 메일 발송 핸들러 */
-async function onSendReport(){
-  const r = window._lastReport;
-  const btn = $('#mailReportBtn');
+function setMailStatus(message, ok){
   const status = $('#mailStatus');
-  if(!r){ if(status) status.textContent='보고서 데이터가 없습니다.'; return; }
+  if(!status) return;
+  status.className = 'mail-status ' + (ok===true?'ok':ok===false?'err':'');
+  status.innerHTML = message;
+}
+function showMailDiagnostics(){
+  const q = (typeof mailQueueRead==='function') ? mailQueueRead() : null;
+  const recipients = (typeof mailRecipients==='function') ? mailRecipients() : [];
+  const last = Mail.lastError;
+  const lines = [
+    `메일 모듈: ${Mail.enabled ? '사용 가능' : '설정 필요'} (v${Mail.version||'-'})`,
+    `수신자: ${recipients.join(', ') || '없음'}`,
+    `현재 주소: ${location.origin}`,
+    `인터넷: ${navigator.onLine ? '연결됨' : '오프라인'}`,
+    `대기 보고서: ${q && q.report ? (q.report.reportId||'있음') : '없음'}`,
+    last ? `최근 오류: ${last.status||0} / ${last.text}` : '최근 오류: 없음'
+  ];
+  setMailStatus(`🩺 ${lines.map(escapeHtml).join('<br>')}`, last?false:true);
+}
+window.showMailDiagnostics = showMailDiagnostics;
+
+async function onSendReport(isAuto){
+  const queued = (typeof mailQueueRead==='function') ? mailQueueRead() : null;
+  const r = window._lastReport || (queued && queued.report);
+  const btn = $('#mailReportBtn');
+  if(!r){ setMailStatus('보고서 데이터가 없습니다.', false); return; }
   if(!window.Mail || !window.Mail.enabled){
-    if(status){ status.className='mail-status err'; status.textContent='메일 기능이 아직 설정되지 않았습니다. (EmailJS 설정 필요)'; }
+    setMailStatus('메일 기능 설정을 확인하세요. ‘메일 진단’에서 누락 항목을 볼 수 있습니다.', false);
     return;
   }
-  if(btn){ btn.disabled=true; btn.textContent='발송 중…'; }
-  if(status){ status.className='mail-status'; status.textContent=''; }
+  if(r.reportId && state.lastReportSentId === r.reportId){
+    setMailStatus('✅ 이 학습 보고서는 이미 발송되었습니다.', true);
+    if(btn) btn.textContent='✅ 발송 완료';
+    return;
+  }
+  if(btn){ btn.disabled=true; btn.textContent=isAuto?'자동 발송 중…':'발송 중…'; }
+  setMailStatus(isAuto?'📤 학습 완료 보고서를 자동 발송하고 있습니다…':'📤 보고서를 발송하고 있습니다…', null);
 
+  const compactHtml = reportToHtml(r); // v2.1: 시험지를 제외한 요약형 HTML
   const res = await sendReportEmail({
-    subject: `[Root Voca] ${r.who} 학습 보고서 · ${r.dateStr} (정답률 ${r.acc}%)`,
-    html: reportToHtml(r),
+    subject: `[Root Voca] ${r.who} ${r.dayLabel||'학습'} 보고서 · ${r.dateStr} (정답률 ${r.acc}%)`,
+    html: compactHtml,
     text: reportToText(r),
     who: r.who,
     date: r.dateStr,
     correct: String(r.correct),
     wrong: String(r.wrong),
-    acc: String(r.acc)
+    acc: String(r.acc),
+    dayLabel: r.dayLabel||'',
+    duration: r.elapsedStr||''
   });
 
+  state.mailLog = Array.isArray(state.mailLog) ? state.mailLog : [];
+  state.mailLog.unshift({
+    at:Date.now(), reportId:r.reportId||'', ok:!!res.ok,
+    status:res.error ? res.error.status : (res.response ? res.response.status : 200),
+    text:res.error ? res.error.text : (res.response ? res.response.text : 'OK'),
+    payloadBytes:res.payloadBytes||0
+  });
+  state.mailLog = state.mailLog.slice(0,20);
+
   if(res.ok){
-    if(status){ status.className='mail-status ok'; status.textContent='✅ 관리자 메일로 보고서를 보냈습니다.'; }
-    if(btn){ btn.textContent='✅ 발송 완료'; }
-    // 중복 발송 방지 표시
+    state.lastReportSentId = r.reportId || `${r.dateStr}-${r.timeStr}`;
     state.lastReportSent = new Date().toDateString();
     saveState();
+    if(typeof mailQueueClear==='function') mailQueueClear();
+    const kb = res.payloadBytes ? ` · ${(res.payloadBytes/1024).toFixed(1)}KB` : '';
+    setMailStatus(`✅ 관리자 메일로 보고서를 보냈습니다.${kb}`, true);
+    if(btn){ btn.textContent='✅ 발송 완료'; btn.disabled=true; }
   }else{
-    if(status){ status.className='mail-status err'; status.textContent='❌ 발송 실패 — 잠시 후 다시 시도해 주세요.'; }
+    if(typeof mailQueueBump==='function') mailQueueBump();
+    saveState();
+    const err = res.error || {status:0,text:'알 수 없는 오류'};
+    const guide = mailErrorGuide(err);
+    const kb = res.payloadBytes ? ` / 본문 ${(res.payloadBytes/1024).toFixed(1)}KB` : '';
+    setMailStatus(`❌ 발송 실패 (${err.status||0}${kb})<br><b>${escapeHtml(guide)}</b><br><small>${escapeHtml(err.text||'')}</small>`, false);
     if(btn){ btn.disabled=false; btn.textContent='📧 다시 시도'; }
   }
 }
 window.onSendReport = onSendReport;
+
+async function retryQueuedMailOnBoot(){
+  const q = (typeof mailQueueRead==='function') ? mailQueueRead() : null;
+  if(!q || !q.report || !Mail.enabled || !navigator.onLine) return;
+  // 30초 이내의 반복 호출과 과도한 무한 재시도를 방지
+  if((q.tries||0)>=5) return;
+  if(q.lastTryAt && Date.now()-q.lastTryAt < 30000) return;
+  window._lastReport = q.report;
+  setTimeout(()=>onSendReport(true), 1800);
+}
+window.retryQueuedMailOnBoot = retryQueuedMailOnBoot;
 
 /* ==================== WRONG NOTES ==================== */
 function renderWrong(){
@@ -39958,6 +40202,7 @@ async function bootApp(){
       if(at) at.style.display = '';
     }
   }
+  if(typeof retryQueuedMailOnBoot==='function') retryQueuedMailOnBoot();
 }
 
 (async function(){
