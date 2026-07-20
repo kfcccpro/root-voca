@@ -565,6 +565,15 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
   font-size:13px;font-weight:500;padding:6px 14px;border-radius:980px;
   background:var(--blue-tint);color:var(--blue);
 }
+/* v2.3 — 일일 학습에 복구된 어원 순차 등장 모듈 */
+.warm-progress-note{text-align:center;font-size:12px;color:var(--ink-3);margin:-8px 0 12px}
+.warm-reveal{opacity:0;transform:translateY(12px)}
+.warm-reveal.show{animation:warmReveal .55s var(--ease) forwards}
+.warm-story{min-height:48px}
+.warm-family .warm-chip{opacity:0;transform:translateY(10px) scale(.96)}
+.warm-family.show .warm-chip{animation:warmChipIn .46s var(--spring) forwards;animation-delay:var(--chip-delay)}
+@keyframes warmReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes warmChipIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
 
 /* Etymology breakdown — signature animation */
 .etym-split{display:flex;justify-content:center;align-items:baseline;gap:0;margin:10px 0 4px;flex-wrap:wrap}
@@ -831,6 +840,29 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
     }catch(e){}
   })();
 </script>
+<style>
+/* REVIEW ENGINE v2.4 */
+.review-intro-card{max-width:760px;margin:0 auto;text-align:center}
+.review-intro-icon{font-size:48px;margin:8px 0}
+.review-intro-card h2{font-size:clamp(25px,3.5vw,38px);letter-spacing:-.035em;margin:4px 0 10px}
+.review-intro-card>p{color:var(--ink-2);font-size:15px;line-height:1.7;margin:0 auto 18px;max-width:620px}
+.review-intro-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px auto;max-width:620px}
+.review-intro-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--hairline);border-radius:14px;background:var(--surface-2)}
+.review-intro-row b{color:var(--orange);font-size:16px}.review-intro-row span{font-weight:800}
+.review-rule-box{max-width:620px;margin:0 auto 18px;padding:14px 16px;text-align:left;border-radius:14px;background:var(--orange-tint);color:#6c4c12;font-size:13px;line-height:1.65}
+.review-stage-banner,.same-day-retry-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;border-radius:13px;padding:11px 14px;margin:-2px 0 12px;font-size:13px}
+.review-stage-banner{background:var(--orange-tint);color:#6c4c12;border:1px solid rgba(255,159,10,.24)}
+.review-stage-banner b{font-size:16px}.review-stage-banner span{color:#80601d}
+.same-day-retry-banner{background:rgba(255,59,48,.08);color:var(--red);border:1px solid rgba(255,59,48,.18);font-weight:700;justify-content:center}
+.review-stage-line{display:flex;align-items:center;gap:9px;margin:8px 0 4px;font-size:13px}.review-stage-line b{color:var(--orange)}
+.review-stage-line span{padding:3px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-3)}
+.review-stage-line span.due-now{background:rgba(255,59,48,.1);color:var(--red);font-weight:800}
+.review-admin-line{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--surface-2);font-size:13px;color:var(--ink-2)}
+.saturday-review-only .day-chip.current{filter:saturate(.55);border-style:dashed}
+.saturday-review-only .day-chip.current .dc-status:after{content:' · 토요일 보류';color:var(--orange)}
+@media(max-width:700px){.review-stage-banner{align-items:flex-start;flex-direction:column;gap:3px}.review-intro-list{grid-template-columns:1fr 1fr}}
+
+</style>
 </head>
 <body>
 
@@ -958,7 +990,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
   <div class="plan">
     <div class="plan-item">
       <div class="plan-icon" style="background:var(--purple-tint)">🌰</div>
-      <div><div class="t">어원 워밍업</div><div class="d">오늘 만날 뿌리(어원)의 뜻과 스토리를 먼저 각인</div></div>
+      <div><div class="t">어원 애니메이션 학습</div><div class="d">어원·뜻·스토리·관련 단어가 순서대로 나타난 뒤 확인 퀴즈 진행</div></div>
     </div>
     <div class="plan-item">
       <div class="plan-icon" style="background:var(--orange-tint)">🔁</div>
@@ -38746,7 +38778,7 @@ function renderHome(){
   if(tdNumber) tdNumber.textContent = allCourseDone ? 'DONE' : `DAY ${rec}`;
   if(tdDesc) tdDesc.textContent = allCourseDone
     ? '신규 Day 학습은 종료되었습니다. 이제 오답 노트와 복습 메뉴로 장기기억을 유지하세요.'
-    : `DAY ${rec}을 완료해야 다음 Day가 열립니다. 완료 Day 재진입과 미래 Day 건너뛰기는 차단되어 있습니다.`;
+    : `DAY ${rec} 학습은 어원 애니메이션 → 어원 확인 퀴즈 → 단어 4지선다 순서로 진행됩니다. 완료해야 다음 Day가 열립니다.`;
   const eyebrow = $('#heroEyebrow');
   if(eyebrow) eyebrow.textContent = `능률VOCA 어원편 · 오늘 필수 학습 DAY ${rec}`;
 
@@ -38949,8 +38981,12 @@ function buildDaySession(day){
   const steps = [];
   // 1) 지난 오답 복습(어원 없이, 인출만) — 맨 앞
   prevWrong.forEach(w=>steps.push({type:'quiz', w, phase:'review'}));
-  // 2) 어원 학습(4지선다)
-  roots.forEach(r=>steps.push({type:'rootMC', root:r}));
+  // 2) 어원 학습: 애니메이션 각인 → 바로 4지선다 확인
+  //    v2.2에서 학습형 워밍업이 일일 경로에서 빠졌던 회귀를 복구함.
+  roots.forEach(r=>{
+    steps.push({type:'warm', root:r});
+    steps.push({type:'rootMC', root:r});
+  });
   // 3) 단어 학습(영↔한 4지선다)
   shuffle(dayWords).forEach((w,i)=>steps.push({type:'wordMC', w, phase:'learn', format: i%2? 'k2e':'e2k'}));
   // 4) 후반부: 혼동어휘(있으면) → 매칭게임(그 Day 단어 일부)
@@ -39214,20 +39250,50 @@ function selectChoice(group, idx){
   if(btns[idx]) btns[idx].classList.add('selected');
 }
 
-/* ---- 어원 워밍업 카드(구버전, 미사용 유지) ---- */
+/* ---- 어원 애니메이션 학습 카드: 뜻을 시험하기 전에 먼저 이해·각인 ---- */
 function cardWarm(r){
-  const fam = WORDS.filter(w=>w.root===r.id).map(w=>w.word);
-  const c = el('div','study-card');
+  const fam = WORDS.filter(w=>w.root===r.id).map(w=>w.word).slice(0,10);
+  const c = el('div','study-card etym-warm-card');
   c.innerHTML = `
-    <span class="phase-tag warm">어원 워밍업</span>
+    <span class="phase-tag warm">1단계 · 어원 애니메이션 학습</span>
+    <div class="warm-progress-note">어원 → 핵심 뜻 → 스토리 → 관련 단어 순서로 나타납니다.</div>
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
-      <div class="warm-prefix" style="color:${r.color}">${r.label}</div>
-      <div class="warm-arrow">↓</div>
-      <div class="warm-meaning">${r.meaning} <span style="color:var(--ink-3);font-weight:400">(${r.en})</span></div>
-      <div class="warm-story">${r.story}</div>
-      <div class="warm-family">${fam.map(f=>`<span class="chiplet">${f}</span>`).join('')}</div>
+      <div class="warm-prefix" id="warmPrefixType" style="color:${r.color}"></div>
+      <div class="warm-arrow warm-reveal" id="warmArrowReveal">↓</div>
+      <div class="warm-meaning warm-reveal" id="warmMeaningReveal">${r.meaning} <span style="color:var(--ink-3);font-weight:400">(${r.en})</span></div>
+      <div class="warm-story"><span id="warmStoryType"></span></div>
+      <div class="warm-family" id="warmFamilyReveal">${fam.map((f,i)=>`<span class="chiplet warm-chip" style="--chip-delay:${i*70}ms">${f}</span>`).join('')}</div>
     </div>
-    <div class="study-actions"><button class="btn btn-primary" onclick="next()">각인 완료 →</button></div>`;
+    <div class="study-actions"><button class="btn btn-dark" id="warmNextBtn" data-role="next-btn" disabled style="opacity:.38;cursor:not-allowed">어원을 읽는 중…</button></div>`;
+
+  setTimeout(()=>{
+    const prefix = c.querySelector('#warmPrefixType');
+    const arrow = c.querySelector('#warmArrowReveal');
+    const meaning = c.querySelector('#warmMeaningReveal');
+    const story = c.querySelector('#warmStoryType');
+    const family = c.querySelector('#warmFamilyReveal');
+    const btn = c.querySelector('#warmNextBtn');
+    typeText(prefix, r.label, ()=>{
+      if(arrow) arrow.classList.add('show');
+      setTimeout(()=>{
+        if(meaning) meaning.classList.add('show');
+        setTimeout(()=>{
+          typeText(story, r.story, ()=>{
+            if(family) family.classList.add('show');
+            setTimeout(()=>{
+              if(btn){
+                btn.disabled=false;
+                btn.className='btn btn-primary';
+                btn.style.opacity=''; btn.style.cursor='';
+                btn.textContent='이해했어요 · 확인 퀴즈로 →';
+                btn.onclick=next;
+              }
+            }, Math.min(900, 180 + fam.length*70));
+          });
+        }, 260);
+      }, 220);
+    });
+  }, 120);
   return c;
 }
 
@@ -39707,12 +39773,12 @@ function finishSession(){
   // 오늘 학습분 인쇄용 단어 목록 저장 (세션에서 다룬 실제 단어)
   window._todayWords = collectSessionWords(sess);
   // 보고서는 먼저 큐에 저장한다. 브라우저가 닫혀도 다음 접속 때 재발송할 수 있다.
-  if(window._lastReport && typeof mailQueueWrite==='function') mailQueueWrite(window._lastReport);
+  if(window._lastReport && typeof mailQueueWrite==='function' && !(sess && sess.mode==='review' && sess.nextDay)) mailQueueWrite(window._lastReport);
   if(memoryOnly) toast('저장소 미지원 환경 — 이번 세션 기록은 이 창에서만 유지됩니다.');
 
   // 학습자 세션은 완료 직후 자동 발송. 실패해도 학습기록·진도에는 영향이 없다.
   const doneAcc = (typeof cloudCurrentAccount==='function') ? cloudCurrentAccount() : null;
-  if(EMAIL_CONFIG.autoSend && (!doneAcc || doneAcc.role==='user')){
+  if(EMAIL_CONFIG.autoSend && (!doneAcc || doneAcc.role==='user') && !(sess && sess.mode==='review' && sess.nextDay)){
     setTimeout(()=>onSendReport(true), 900);
   }
 }
@@ -40383,6 +40449,562 @@ async function bootApp(){
   }
   if(typeof retryQueuedMailOnBoot==='function') retryQueuedMailOnBoot();
 }
+
+/* ==================== REVIEW ENGINE v2.4 ====================
+   목적: 학습자가 '오늘 학습 시작' 한 번만 누르면
+   필수 복습 -> 오늘 Day가 자동으로 이어지는 상태 기반 학습 흐름.
+   규칙: 신규 오답 -> 당일 즉시 재학습 -> 3일 후 복습3
+         복습3 계열 오답 -> 당일 재학습 -> 익일 복습3-X
+         복습3 계열 정답 -> 3일 후 복습6-1
+         복습6 계열 오답 -> 당일 재학습 -> 익일 복습6-X
+         복습6 계열 정답 -> 최종 암기완료
+         토요일 -> 신규 Day 금지, 도래한 복습만 진행
+*/
+(function(){
+  const REVIEW_ENGINE_VERSION = 4;
+  const TRACK_NONE = 'NONE';
+  const TRACK_R3 = 'R3';
+  const TRACK_R6 = 'R6';
+  const TRACK_FINAL = 'FINAL';
+  const originalLoadStateV23 = loadState;
+  const originalRenderHomeV23 = renderHome;
+  const originalRenderStepV23 = renderStep;
+  const originalCardQuizV23 = cardQuiz;
+  const originalCardSpellV23 = cardSpell;
+  const originalFinishSessionV23 = finishSession;
+  const originalBuildReportV23 = buildReport;
+  const originalReportToHtmlV23 = reportToHtml;
+  const originalRenderAdminV23 = renderAdmin;
+
+  function localDayStart(ts, addDays){
+    const d = ts ? new Date(ts) : new Date();
+    d.setHours(0,0,0,0);
+    if(addDays) d.setDate(d.getDate()+addDays);
+    return d.getTime();
+  }
+  function localDayEnd(ts){ return localDayStart(ts,1)-1; }
+  function isSaturday(){ return new Date().getDay()===6; }
+  function fmtDate(ts){
+    if(!ts) return '-';
+    return new Date(ts).toLocaleDateString('ko-KR',{month:'numeric',day:'numeric',weekday:'short'});
+  }
+  function ensureReviewCard(c){
+    if(!c || typeof c!=='object') return;
+    if(!('mastery' in c)) c.mastery = (c.streakOk>=3 || c.box>=5) ? 'initial' : 'none';
+    if(!c.reviewTrack){
+      if(c.wrong>0 && c.streakOk<3){
+        c.reviewTrack = TRACK_R3;
+        c.reviewSeq = 0;
+        c.reviewDue = c.next ? Math.max(localDayStart(), localDayStart(c.next)) : localDayStart();
+        c.mastery = 'none';
+        c.streakOk = 0;
+        c.box = 0;
+      }else{
+        c.reviewTrack = TRACK_NONE;
+        c.reviewSeq = 0;
+        c.reviewDue = 0;
+      }
+    }
+    if(!Number.isFinite(Number(c.reviewSeq))) c.reviewSeq = c.reviewTrack===TRACK_R6 ? 1 : 0;
+    c.reviewSeq = Number(c.reviewSeq)||0;
+    c.reviewDue = Number(c.reviewDue)||0;
+    if(!Array.isArray(c.reviewHistory)) c.reviewHistory = [];
+    if(c.reviewTrack===TRACK_FINAL){
+      c.reviewTrack=TRACK_NONE; c.mastery='final'; c.reviewDue=0; c.streakOk=4; c.box=5;
+    }
+    c.next = c.reviewDue || 0;
+  }
+  function migrateReviewEngine(){
+    if(!state.reviewPolicy || typeof state.reviewPolicy!=='object') state.reviewPolicy={};
+    state.reviewPolicy = {
+      version: REVIEW_ENGINE_VERSION,
+      firstWrongDelayDays:3,
+      retryDelayDays:1,
+      r3PassToR6Days:3,
+      saturdayReviewOnly:true,
+      oneButtonFlow:true
+    };
+    state.reviewEngineVersion = REVIEW_ENGINE_VERSION;
+    WORDS.forEach(w=>ensureReviewCard(state.cards[w.id]));
+  }
+  function isActiveReview(c){
+    ensureReviewCard(c);
+    return !!c && (c.reviewTrack===TRACK_R3 || c.reviewTrack===TRACK_R6);
+  }
+  function isMastered(c){
+    ensureReviewCard(c);
+    return !!c && (c.mastery==='initial' || c.mastery==='final' || c.streakOk>=3 || c.box>=5);
+  }
+  function reviewLabelOf(c){
+    ensureReviewCard(c);
+    if(!c) return '복습';
+    if(c.reviewTrack===TRACK_R3) return c.reviewSeq>0 ? `복습3-${c.reviewSeq}` : '복습3';
+    if(c.reviewTrack===TRACK_R6) return `복습6-${Math.max(1,c.reviewSeq||1)}`;
+    if(c.mastery==='final') return '암기완료(확정)';
+    if(c.mastery==='initial') return '암기완료(1차)';
+    return '신규학습';
+  }
+  function pushReviewHistory(c, event, label, result){
+    ensureReviewCard(c);
+    c.reviewHistory.push({at:Date.now(),event,label,result});
+    if(c.reviewHistory.length>40) c.reviewHistory = c.reviewHistory.slice(-40);
+    c.reviewLastLabel = label;
+    c.reviewLastResult = result;
+    c.reviewUpdatedAt = Date.now();
+  }
+  function activeReviewWords(){
+    return WORDS.filter(w=>isActiveReview(state.cards[w.id]));
+  }
+  function dueReviewWords(){
+    const end = localDayEnd();
+    return activeReviewWords().filter(w=>state.cards[w.id].reviewDue<=end)
+      .sort((a,b)=>{
+        const ca=state.cards[a.id], cb=state.cards[b.id];
+        return (ca.reviewDue-cb.reviewDue) || (ca.reviewTrack===TRACK_R3?-1:1) || (cb.wrong-ca.wrong);
+      });
+  }
+  function reviewPlan(words){
+    const counts={};
+    words.forEach(w=>{ const l=reviewLabelOf(state.cards[w.id]); counts[l]=(counts[l]||0)+1; });
+    return counts;
+  }
+  function reviewPlanText(counts){
+    return Object.entries(counts).sort((a,b)=>a[0].localeCompare(b[0],'ko')).map(([k,v])=>`${k} ${v}개`).join(' · ');
+  }
+
+  loadState = async function(){
+    await originalLoadStateV23();
+    migrateReviewEngine();
+    await saveState();
+  };
+
+  dueCards = function(){ return dueReviewWords(); };
+  masteredCards = function(){ return WORDS.filter(w=>isMastered(state.cards[w.id])); };
+
+  class ReviewRetryBag extends Map{
+    add(id){
+      const current = sess && sess.steps ? sess.steps[sess.i] : null;
+      const w = WORDS.find(x=>x.id===id);
+      if(!w) return this;
+      const failedLabel = current && current.reviewLabel
+        ? current.reviewLabel
+        : (current && current.phase==='learn' ? '신규 오답' : reviewLabelOf(state.cards[id]));
+      this.set(id, {
+        type: current && current.type==='wordMC' ? 'wordMC' : 'quiz',
+        w,
+        phase: current && current.phase ? current.phase : 'review',
+        format: current && current.format ? current.format : 'e2k',
+        isRetry:true,
+        scheduled:false,
+        reviewLabel:failedLabel,
+        failedStageLabel:failedLabel
+      });
+      return this;
+    }
+  }
+
+  function markInitialPass(c){
+    c.mastery='initial'; c.reviewTrack=TRACK_NONE; c.reviewSeq=0; c.reviewDue=0;
+    c.streakOk=3; c.box=5; c.next=0;
+    pushReviewHistory(c,'INITIAL','암기완료(1차)','PASS');
+  }
+  function markInitialWrong(c){
+    c.mastery='none'; c.reviewTrack=TRACK_R3; c.reviewSeq=0; c.reviewDue=localDayStart(null,3);
+    c.streakOk=0; c.box=0; c.next=c.reviewDue;
+    pushReviewHistory(c,'INITIAL','복습3','WRONG');
+  }
+  function passScheduledReview(c, label){
+    ensureReviewCard(c);
+    if(c.reviewTrack===TRACK_R3){
+      c.reviewTrack=TRACK_R6; c.reviewSeq=1; c.reviewDue=localDayStart(null,3);
+      c.mastery='none'; c.streakOk=0; c.box=0; c.next=c.reviewDue;
+      pushReviewHistory(c,'REVIEW',label,'PASS_TO_REVIEW6');
+    }else if(c.reviewTrack===TRACK_R6){
+      c.reviewTrack=TRACK_NONE; c.reviewSeq=0; c.reviewDue=0;
+      c.mastery='final'; c.streakOk=4; c.box=5; c.next=0;
+      pushReviewHistory(c,'REVIEW',label,'FINAL_MASTERED');
+    }
+  }
+  function failScheduledReview(c, label){
+    ensureReviewCard(c);
+    if(c.reviewTrack===TRACK_R3){
+      c.reviewSeq=Math.max(0,c.reviewSeq)+1;
+    }else if(c.reviewTrack===TRACK_R6){
+      c.reviewSeq=Math.max(1,c.reviewSeq)+1;
+    }else{
+      c.reviewTrack=TRACK_R3; c.reviewSeq=1;
+    }
+    c.reviewDue=localDayStart(null,1); c.mastery='none'; c.streakOk=0; c.box=0; c.next=c.reviewDue;
+    pushReviewHistory(c,'REVIEW',label,'WRONG_RETEST_TOMORROW');
+  }
+
+  recordAnswer = function(w, ok){
+    const c=state.cards[w.id]; ensureReviewCard(c);
+    const step = sess && sess.steps ? sess.steps[sess.i] : null;
+    const isRetry = !!(step && step.isRetry);
+    const isNewDayQuestion = !!(step && step.type==='wordMC' && step.phase==='learn' && sess && sess.mode==='day');
+    const isReviewQuestion = !!(step && step.phase==='review');
+
+    c.attempts=(c.attempts||0)+1; state.totAttempts=(state.totAttempts||0)+1;
+    c.seen=true; c.lastAnsweredAt=Date.now();
+    if(ok){ c.correct=(c.correct||0)+1; state.totCorrect=(state.totCorrect||0)+1; }
+    else c.wrong=(c.wrong||0)+1;
+
+    if(isRetry){
+      pushReviewHistory(c,'SAME_DAY_RETRY',step.failedStageLabel||step.reviewLabel||'당일 즉시복습',ok?'PASS':'WRONG');
+      return;
+    }
+    if(isNewDayQuestion){
+      if(ok) markInitialPass(c); else markInitialWrong(c);
+      return;
+    }
+    if(isReviewQuestion){
+      const label = step.reviewLabel || reviewLabelOf(c);
+      if(step.scheduled===false){
+        // 자율 복습은 예정 단계를 조기 통과시키지 않는다. 오답이면 다음 날 다시 확인한다.
+        if(!ok){
+          c.reviewDue=Math.min(c.reviewDue||localDayStart(null,1),localDayStart(null,1));
+          c.next=c.reviewDue;
+        }
+        pushReviewHistory(c,'PRACTICE',label,ok?'PASS_NO_ADVANCE':'WRONG_RECHECK');
+      }else{
+        if(ok) passScheduledReview(c,label); else failScheduledReview(c,label);
+      }
+      return;
+    }
+    // 호환용 일반 기록
+    if(ok){ c.streakOk=Math.max(1,c.streakOk||0); }
+    else { c.streakOk=0; }
+  };
+
+  buildDaySession = function(day){
+    const dayWords=wordsForDay(day);
+    const roots=[]; const seenRoot=new Set();
+    dayWords.forEach(w=>{
+      if(!seenRoot.has(w.root)){
+        seenRoot.add(w.root);
+        const r=ROOTS.find(x=>x.id===w.root); if(r) roots.push(r);
+      }
+    });
+    const steps=[];
+    roots.forEach(r=>{ steps.push({type:'warm',root:r}); steps.push({type:'rootMC',root:r}); });
+    shuffle(dayWords).forEach((w,i)=>steps.push({type:'wordMC',w,phase:'learn',format:i%2?'k2e':'e2k',scheduled:true}));
+    buildDayConfuse(dayWords).forEach(it=>steps.push({type:'confuseMC',item:it}));
+    const matchPool=dayWords.slice(0,Math.min(8,dayWords.length));
+    if(matchPool.length>=4) steps.push({type:'match',pool:matchPool});
+    return steps;
+  };
+
+  enterDaySession = function(day){
+    window.__reviewAutoToken=null;
+    const steps=buildDaySession(day);
+    if(!steps.length){ toast('이 Day에 해당하는 단어가 없습니다.'); return; }
+    sess={
+      steps,i:0,correct:0,wrong:0,
+      total:steps.filter(s=>['quiz','wordMC','rootMC','confuseMC'].includes(s.type)).length,
+      wrongIds:[],mode:'day',day,
+      pendingWrongWords:new ReviewRetryBag(),pendingWrongRoots:new Set(),pendingWrongConf:new Map()
+    };
+    go('study');
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    startTotalTimer(); renderStep();
+  };
+
+  appendRetryBatch = function(){
+    const rootRetries=sess.pendingWrongRoots
+      ? shuffle([...sess.pendingWrongRoots]).map(rid=>({type:'rootMC',root:ROOTS.find(r=>r.id===rid),isRetry:true})).filter(s=>s.root)
+      : [];
+    const wordRetries=sess.pendingWrongWords ? [...sess.pendingWrongWords.values()] : [];
+    const confRetries=(sess.pendingWrongConf&&sess.pendingWrongConf.size)
+      ? [...sess.pendingWrongConf.values()].map(it=>({type:'confuseMC',item:it,isRetry:true})) : [];
+    const extra=[...rootRetries,...wordRetries,...confRetries];
+    sess.steps=sess.steps.concat(extra); sess.total+=extra.length;
+  };
+
+  function cardReviewIntro(meta){
+    const counts=meta.counts||{};
+    const c=el('div','study-card review-intro-card');
+    const rows=Object.entries(counts).map(([label,count])=>`<div class="review-intro-row"><b>${label}</b><span>${count}개</span></div>`).join('');
+    c.innerHTML=`
+      <span class="phase-tag review">오늘의 필수 복습</span>
+      <div class="review-intro-icon">🔁</div>
+      <h2>${meta.saturday?'토요일은 복습 전용입니다':'복습을 먼저 끝내고 오늘 Day로 갑니다'}</h2>
+      <p>${meta.saturday?'오늘은 신규 Day를 열지 않습니다. 도래한 복습만 정확히 인출합니다.':'복습 단계는 자동으로 계산됩니다. 학습자는 순서대로 풀기만 하면 됩니다.'}</p>
+      <div class="review-intro-list">${rows||'<div class="review-intro-row"><b>복습</b><span>0개</span></div>'}</div>
+      <div class="review-rule-box">
+        <b>오답 처리 원칙</b><br>
+        틀리면 오늘 바로 다시 만나고, 내일 재시험합니다. 같은 날 다시 맞힌 것은 ‘재학습 통과’이며 예정된 재시험을 없애지 않습니다.
+      </div>
+      <div class="study-actions"><button class="btn btn-primary" data-role="next-btn" onclick="next()">필수 복습 시작 →</button></div>`;
+    return c;
+  }
+
+  renderStep = function(){
+    const s=sess && sess.steps ? sess.steps[sess.i] : null;
+    if(s && s.type==='reviewIntro'){
+      updateTop();
+      const stage=$('#studyStage'); stage.innerHTML=''; stage.appendChild(cardReviewIntro(s.meta||{}));
+      stopQTimer(); return;
+    }
+    originalRenderStepV23();
+  };
+
+  function buildStructuredReviewSteps(words, opts){
+    const counts=reviewPlan(words);
+    const steps=[{type:'reviewIntro',meta:{counts,saturday:!!opts.saturday}}];
+    words.forEach((w,i)=>{
+      const c=state.cards[w.id];
+      steps.push({
+        type:'quiz',w,phase:'review',format:i%2?'k2e':'e2k',
+        reviewLabel:reviewLabelOf(c),scheduled:opts.scheduled!==false,isRetry:false
+      });
+    });
+    return {steps,counts};
+  }
+
+  function startStructuredReview(words, opts){
+    opts=opts||{};
+    if(!words.length){
+      if(opts.nextDay) enterDaySession(opts.nextDay); else toast('오늘 복습할 단어가 없습니다.');
+      return;
+    }
+    const built=buildStructuredReviewSteps(words,opts);
+    sess={
+      steps:built.steps,i:0,correct:0,wrong:0,total:words.length,wrongIds:[],mode:'review',
+      nextDay:opts.nextDay||null,saturday:!!opts.saturday,reviewPlan:built.counts,
+      pendingWrongWords:new ReviewRetryBag(),pendingWrongRoots:new Set(),pendingWrongConf:new Map()
+    };
+    go('study'); document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    startTotalTimer(); renderStep();
+  }
+
+  startReviewSession = function(){
+    const words=dueReviewWords();
+    if(!words.length){ toast('오늘 도래한 복습이 없습니다.'); return; }
+    startStructuredReview(words,{scheduled:true,saturday:isSaturday()});
+  };
+  buildReviewSession = function(){ return buildStructuredReviewSteps(dueReviewWords(),{scheduled:true}).steps; };
+  startWrongOnlyReview = function(nextDay){
+    const words=activeReviewWords().sort((a,b)=>(state.cards[a.id].reviewDue-state.cards[b.id].reviewDue));
+    if(!words.length){ if(nextDay) enterDaySession(nextDay); else toast('복습대상이 없습니다.'); return; }
+    startStructuredReview(words,{scheduled:false,nextDay:nextDay||null});
+  };
+  startWrongSession = function(){ startWrongOnlyReview(null); };
+
+  function startTodayFlow(){
+    const current=getCourseCurrentDay();
+    const completedCount=Object.keys(state.completedDays||{}).filter(d=>Number(d)>=1&&Number(d)<=COURSE_DAYS).length;
+    const due=dueReviewWords();
+    if(isSaturday()){
+      if(due.length) startStructuredReview(due,{scheduled:true,saturday:true});
+      else toast('토요일 복습 대상이 없습니다. 오늘은 신규 Day를 진행하지 않습니다.');
+      return;
+    }
+    if(due.length){
+      startStructuredReview(due,{scheduled:true,nextDay:completedCount>=COURSE_DAYS?null:current});
+      return;
+    }
+    if(completedCount>=COURSE_DAYS){ toast('30일 코스를 완료했습니다. 도래한 복습만 진행합니다.'); return; }
+    enterDaySession(current);
+  }
+  window.startTodayFlow=startTodayFlow;
+
+  startDaySession = function(day){
+    day=Number(day); const current=getCourseCurrentDay();
+    if(isAdminAccount()){ enterDaySession(day); return; }
+    if(day!==current){ explainLockedDay(day); return; }
+    startTodayFlow();
+  };
+
+  function decorateQuizCard(c, step){
+    if(!c || !step) return c;
+    const tag=c.querySelector('.phase-tag');
+    if(step.isRetry){
+      if(tag){ tag.className='phase-tag review'; tag.textContent=`${step.failedStageLabel||step.reviewLabel||'오답'} · 당일 즉시 재학습`; }
+      c.insertAdjacentHTML('afterbegin','<div class="same-day-retry-banner">오늘 틀린 항목입니다. 맞힐 때까지 자동 반복합니다.</div>');
+    }else if(step.phase==='review'){
+      if(tag){ tag.className='phase-tag review'; tag.textContent=`${step.reviewLabel||'복습'} · 필수 재시험`; }
+      c.insertAdjacentHTML('afterbegin',`<div class="review-stage-banner"><b>${step.reviewLabel||'복습'}</b><span>첫 시도 결과가 다음 복습 일정을 결정합니다.</span></div>`);
+    }
+    return c;
+  }
+  cardQuiz = function(w,phase,format){
+    const c=originalCardQuizV23(w,phase,format);
+    return decorateQuizCard(c,sess&&sess.steps?sess.steps[sess.i]:null);
+  };
+  cardSpell = function(w,phase){
+    const c=originalCardSpellV23(w,phase);
+    return decorateQuizCard(c,sess&&sess.steps?sess.steps[sess.i]:null);
+  };
+
+  renderHome = function(){
+    originalRenderHomeV23();
+    const current=getCourseCurrentDay();
+    const due=dueReviewWords();
+    const counts=reviewPlan(due);
+    const saturday=isSaturday();
+    const completedCount=Object.keys(state.completedDays||{}).filter(d=>Number(d)>=1&&Number(d)<=COURSE_DAYS).length;
+    const allDone=completedCount>=COURSE_DAYS;
+    const startBtn=$('#startBtn'), todayStart=$('#todayDayStart');
+    const reviewBtn=$('#reviewBtn'), todayReview=$('#todayReviewStart');
+    if(reviewBtn) reviewBtn.style.display='none';
+    if(todayReview) todayReview.style.display='none';
+    const label=saturday
+      ? (due.length?`토요일 필수 복습 ${due.length}개 시작`:'토요일 · 복습 대상 없음')
+      : (due.length?`필수 복습 ${due.length}개 → DAY ${current} 자동 진행`:(allDone?'30일 코스 완료 ✓':`오늘 DAY ${current} 통합학습 시작`));
+    [startBtn,todayStart].forEach(b=>{
+      if(!b) return;
+      b.textContent=label;
+      b.disabled=saturday&&!due.length || (!saturday&&allDone&&!due.length);
+      b.style.opacity=b.disabled?'.58':'';
+      b.onclick=b.disabled?()=>toast(saturday?'오늘 도래한 복습이 없습니다. 신규 Day는 토요일에 진행하지 않습니다.':'30일 코스를 완료했습니다.'):startTodayFlow;
+    });
+    const title=$('#todayDayTitle'), num=$('#todayDayNumber'), desc=$('#todayDayDesc'), eyebrow=$('#heroEyebrow');
+    if(saturday){
+      if(title) title.textContent='토요일은 복습만 진행합니다';
+      if(num) num.textContent='REVIEW';
+      if(desc) desc.textContent=due.length?`${reviewPlanText(counts)}를 순서대로 끝내면 오늘 학습이 완료됩니다.`:'도래한 복습이 없어 오늘은 쉬어갑니다. 다음 신규 Day는 일요일부터 이어집니다.';
+      if(eyebrow) eyebrow.textContent='능률VOCA 어원편 · 토요일 복습 전용';
+    }else if(due.length){
+      if(title) title.textContent='오늘은 필수 복습부터 시작합니다';
+      if(num) num.textContent=`${due.length}개`;
+      if(desc) desc.textContent=`${reviewPlanText(counts)} → 완료 후 DAY ${current}가 자동으로 시작됩니다.`;
+      if(eyebrow) eyebrow.textContent=`필수 복습 우선 · 이후 DAY ${current}`;
+    }else if(!allDone){
+      if(title) title.textContent=`오늘 반드시 해야 할 학습은 DAY ${current}`;
+      if(num) num.textContent=`DAY ${current}`;
+      if(desc) desc.textContent='버튼 한 번으로 어원 애니메이션 → 확인 퀴즈 → 단어 학습 → 당일 오답 재학습까지 자동 진행됩니다.';
+    }
+    const badge=$('#planDueBadge');
+    if(badge){ badge.textContent=due.length?`필수 ${due.length}`:'없음'; badge.classList.toggle('ok',due.length===0); }
+    const ringDesc=$('#ringDesc');
+    if(ringDesc && due.length) ringDesc.innerHTML=`오늘은 <b>${reviewPlanText(counts)}</b><br>완료 후 DAY ${current}가 이어집니다.`;
+    document.body.classList.toggle('saturday-review-only',saturday);
+  };
+
+  function renderWrongV24(){
+    const list=$('#wrongList'); if(!list) return;
+    list.innerHTML='';
+    const words=activeReviewWords().sort((a,b)=>{
+      const ca=state.cards[a.id],cb=state.cards[b.id];
+      return (ca.reviewDue-cb.reviewDue)||(cb.wrong-ca.wrong);
+    });
+    const action=$('#wrongActions');
+    if(action) action.innerHTML=words.length?`<button class="btn btn-dark btn-sm" onclick="startWrongSession()">복습대상 집중 재학습 (${words.length})</button>`:'';
+    if(!words.length){
+      list.appendChild(el('div','empty','<div class="big-emoji">🎉</div>현재 복습대상이 없습니다.<br>신규학습에서 틀린 단어가 생기면 자동으로 복습3 일정이 생성됩니다.'));
+      return;
+    }
+    words.forEach(w=>{
+      const c=state.cards[w.id];
+      const dueNow=c.reviewDue<=localDayEnd();
+      list.appendChild(el('div','wrong-item',`
+        <div class="w">${w.word} <button class="speak-btn" data-word="${w.word}">🔊</button> ${c.wrong>=5?'<span class="leech-tag">집중 케어</span>':''}</div>
+        <div class="review-stage-line"><b>${reviewLabelOf(c)}</b><span class="${dueNow?'due-now':''}">${dueNow?'오늘 필수':fmtDate(c.reviewDue)+' 예정'}</span></div>
+        <div class="e">${w.parts.map(p=>p[0]).join('+')} → ${w.storyArrow}</div>
+        <div class="m">${w.mean}</div>
+        <div class="miss">누적 오답 ${c.wrong}회 · 같은 날 재학습과 예정 재시험을 분리 관리</div>`));
+    });
+  }
+  renderWrong=renderWrongV24;
+
+  finishSession = function(){
+    const before=sess;
+    const autoNext=before&&before.mode==='review'&&before.nextDay&&!before.saturday ? before.nextDay : null;
+    const reviewSummary=before&&before.mode==='review' ? {
+      at:Date.now(),correct:before.correct||0,wrong:before.wrong||0,
+      labels:before.reviewPlan||{},saturday:!!before.saturday
+    } : null;
+    if(autoNext && reviewSummary) state.pendingReviewReport=reviewSummary;
+    originalFinishSessionV23();
+    if(before&&before.mode==='review'&&autoNext){
+      state.todayDone=false; saveState();
+      const p=document.querySelector('#studyStage .result-hero p');
+      if(p) p.innerHTML=`필수 복습을 완료했습니다. <b>3초 후 DAY ${autoNext}</b>가 자동으로 시작됩니다.`;
+      const token=Date.now(); window.__reviewAutoToken=token;
+      let remain=3;
+      const timer=setInterval(()=>{
+        remain--;
+        if(p&&remain>0) p.innerHTML=`필수 복습을 완료했습니다. <b>${remain}초 후 DAY ${autoNext}</b>가 자동으로 시작됩니다.`;
+        if(remain<=0){
+          clearInterval(timer);
+          const studyVisible=$('#page-study')&&$('#page-study').classList.contains('visible');
+          if(studyVisible&&window.__reviewAutoToken===token) enterDaySession(autoNext);
+        }
+      },1000);
+    }
+    if(before&&before.mode==='day'&&state.pendingReviewReport){
+      // buildReport가 이미 합산했으므로 다음 날 중복을 막기 위해 정리한다.
+      state.pendingReviewReport=null; saveState();
+    }
+  };
+
+  buildReport = function(session,acc,elapsedStr){
+    const r=originalBuildReportV23(session,acc,elapsedStr);
+    const summary=(session&&session.mode==='review')
+      ? {correct:session.correct||0,wrong:session.wrong||0,labels:session.reviewPlan||{},saturday:!!session.saturday}
+      : (state.pendingReviewReport||null);
+    r.reviewSummary=summary;
+    const active=activeReviewWords();
+    r.reviewActive=active.length;
+    r.reviewDue=dueReviewWords().length;
+    r.reviewStageCounts=reviewPlan(active);
+    return r;
+  };
+  reportToHtml = function(r){
+    let html=originalReportToHtmlV23(r);
+    const s=r.reviewSummary;
+    const labels=s&&s.labels?reviewPlanText(s.labels):'';
+    const block=`
+      <h2 style="font-size:16px;margin:22px 0 10px">복습 엔진 현황</h2>
+      <div style="background:#fff8e8;border:1px solid #f1d28a;border-radius:12px;padding:15px;line-height:1.7;font-size:13px;color:#5d4a18">
+        ${s?`<b>오늘 선행 복습:</b> ${labels||'복습'} · 정답 ${s.correct}회 · 오답 ${s.wrong}회<br>`:''}
+        <b>현재 복습대상:</b> ${r.reviewActive||0}개 · <b>오늘 도래:</b> ${r.reviewDue||0}개<br>
+        <b>단계:</b> ${reviewPlanText(r.reviewStageCounts||{})||'없음'}
+      </div>`;
+    const anchor='<h2 style="font-size:16px;margin:22px 0 10px">오늘 틀린 단어';
+    const idx=html.indexOf(anchor);
+    if(idx>=0) html=html.slice(0,idx)+block+html.slice(idx);
+    else html+=block;
+    return html;
+  };
+
+  renderAdmin = async function(){
+    await originalRenderAdminV23();
+    const box=$('#adminBody');
+    const d=window._adminData&&window._adminData.user&&window._adminData.user.data;
+    if(!box||!d||!d.cards) return;
+    const cards=d.cards;
+    const counts={}; let active=0,due=0,final=0,initial=0;
+    WORDS.forEach(w=>{
+      const c=cards[w.id]; if(!c) return;
+      ensureReviewCard(c);
+      if(c.mastery==='final') final++;
+      else if(c.mastery==='initial') initial++;
+      if(isActiveReview(c)){
+        active++; const l=reviewLabelOf(c); counts[l]=(counts[l]||0)+1;
+        if(c.reviewDue<=localDayEnd()) due++;
+      }
+    });
+    const card=el('div','card admin-review-summary',`
+      <div class="ad-word">복습 엔진 v2.4 · 학습자 현황</div>
+      <div class="result-stats" style="margin-top:16px">
+        <div class="rs"><div class="n" style="color:var(--red)">${due}</div><div class="l">오늘 필수복습</div></div>
+        <div class="rs"><div class="n">${active}</div><div class="l">전체 복습대상</div></div>
+        <div class="rs"><div class="n" style="color:var(--green)">${final}</div><div class="l">확정 암기완료</div></div>
+      </div>
+      <div class="review-admin-line"><b>1차 암기완료</b> ${initial}개</div>
+      <div class="review-admin-line"><b>단계별</b> ${reviewPlanText(counts)||'복습대상 없음'}</div>
+      <div class="review-admin-line"><b>운영원칙</b> 필수복습 → 오늘 Day 자동 연결 · 토요일 신규학습 차단</div>`);
+    box.insertBefore(card,box.firstChild);
+  };
+
+  window.reviewLabelOf=reviewLabelOf;
+  window.dueReviewWords=dueReviewWords;
+  window.activeReviewWords=activeReviewWords;
+})();
+
+</script>
 
 (async function(){
   // Firebase 초기화 시도 (설정 없으면 자동 오프라인 모드)
