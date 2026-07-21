@@ -979,9 +979,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
       <div class="sub">망각 주기가 도래한 카드.<br>세션 시작 시 가장 먼저 나옵니다.</div>
     </div>
     <div class="card">
-      <div class="label">완전 암기</div>
+      <div class="label">1차 이상 통과</div>
       <div class="big"><span id="masteredCount">0</span><span style="font-size:22px;color:var(--ink-3)">/<span id="totalCount">1410</span></span></div>
-      <div class="sub">3회 연속 정답 시<br>완전 암기로 전환됩니다.</div>
+      <div class="sub">첫 시도 정답은 1차 통과.<br>오답은 복습3·복습6을 거쳐 확정됩니다.</div>
     </div>
   </div>
 
@@ -1061,7 +1061,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 <!-- ============ WRONG NOTES ============ -->
 <main class="page" id="page-wrong">
   <h2 class="section-title" style="margin-top:54px">오답 노트</h2>
-  <p class="section-sub">틀린 단어는 복습 간격이 리셋되고, 5회 이상 누적 시 집중 케어 대상이 됩니다.</p>
+  <p class="section-sub">틀린 단어는 당일 재학습 후 복습3·복습6 단계로 자동 관리되며, 5회 이상 누적 시 집중 케어 대상이 됩니다.</p>
   <div style="margin-bottom:18px" id="wrongActions"></div>
   <div class="wrong-list" id="wrongList"></div>
 </main>
@@ -1093,7 +1093,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offse
 <footer class="footnote">
   Root Voca · 데이터: 능률VOCA 어원편, 표제어 1,410개 · 30일 완성 코스(하루 신규 47개) ·
   플러스 학습: 핵심 다의어 10개 · 혼동어휘 5쌍(11단어) · 매칭 게임(보스전) · 스펠링 입력 모드 · 브라우저 TTS 발음 ·
-  복습 간격: 당일 → 1일 → 3일 → 7일 → 14일 → 30일 (오답 시 리셋) ·
+  오답 복습: 당일 재학습 → 3일 후 복습3 → 통과 3일 후 복습6 · 실패 시 익일 재시험 ·
   관리자 오답 시험지 A4 인쇄(영↔한) 지원 · 개인 학습용 최종본입니다.
 </footer>
 
@@ -37970,7 +37970,7 @@ const REFERENCE = [
 
 
 </script>
-<!-- Root Voca v2.2: mail fix + strict sequential Day flow -->
+<!-- Root Voca v2.5.1: bootstrap/login repair + mail error-path repair + verified review engine -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 /* ==================================================================
@@ -38012,7 +38012,10 @@ const EMAIL_CONFIG = {
     "okkdh99@gmail.com"
   ],
   autoSend: true,                            // 학습 완료 직후 자동 발송
-  maxPayloadBytes: 45000                     // EmailJS 동적 변수 50KB 제한보다 여유 있게
+  maxPayloadBytes: 45000,                    // EmailJS 동적 변수 50KB 제한보다 여유 있게
+  sendTimeoutMs: 15000,                      // 응답 지연 시 큐에 보관하고 다음 접속에서 재시도
+  recipientDelayMs: 1600,                    // EmailJS 공식 1초당 1회 제한보다 여유 있게
+  maxQueueItems: 14                          // 장기간 장애 시에도 최근 2주 보고서 보존
 };
 
 /* ── 내부 상태 ── */
@@ -38117,18 +38120,37 @@ async function cloudLoadAll(){
    - 실패 사유(상태코드/문구)를 화면에 표시
    - 실패 보고서는 로컬 큐에 보관하고 다음 접속 때 재시도
 */
-const MAIL_QUEUE_KEY = 'rootvoca-mail-queue-v2';
-const Mail = { ready:false, enabled:false, lastError:null, provider:'EmailJS', version:'2.2' };
+const MAIL_QUEUE_KEY = 'rootvoca-mail-queue-v3';
+const LEGACY_MAIL_QUEUE_KEY = 'rootvoca-mail-queue-v2';
+const Mail = { ready:false, enabled:false, lastError:null, provider:'EmailJS', version:'2.5', lastSimulation:null };
 
 function mailRecipients(){
   const raw = Array.isArray(EMAIL_CONFIG.adminEmails)
     ? EMAIL_CONFIG.adminEmails
     : [EMAIL_CONFIG.adminEmail || ''];
-  return raw.map(v=>String(v||'').trim()).filter(Boolean);
+  const out=[];
+  raw.map(v=>String(v||'').trim()).filter(Boolean).forEach(v=>{
+    if(!out.includes(v)) out.push(v);
+  });
+  return out;
 }
+function validEmail(value){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value||'').trim()); }
 function utf8Bytes(value){
   try{ return new TextEncoder().encode(String(value||'')).length; }
   catch(e){ return unescape(encodeURIComponent(String(value||''))).length; }
+}
+function escapeHtml(value){
+  return String(value==null?'':value).replace(/[&<>"']/g, ch=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[ch]));
+}
+function sleep(ms){ return new Promise(resolve=>setTimeout(resolve,ms)); }
+function withTimeout(promise, ms){
+  let timer;
+  const timeout = new Promise((_,reject)=>{
+    timer=setTimeout(()=>reject({status:0,text:`메일 서버 응답시간 초과 (${Math.round(ms/1000)}초)`}),ms);
+  });
+  return Promise.race([promise,timeout]).finally(()=>clearTimeout(timer));
 }
 function initEmail(){
   const recipients = mailRecipients();
@@ -38137,22 +38159,26 @@ function initEmail(){
     Mail.lastError = {status:0, text:'EmailJS 설정값 또는 관리자 이메일이 비어 있습니다.'};
     return false;
   }
+  if(recipients.some(v=>!validEmail(v))){
+    Mail.enabled=false;
+    Mail.lastError={status:0,text:'관리자 이메일 주소 형식이 올바르지 않습니다.'};
+    return false;
+  }
   try{
     if(typeof emailjs !== 'undefined'){
       emailjs.init({
         publicKey: EMAIL_CONFIG.publicKey,
-        limitRate: { id:'root-voca-report', throttle:1500 }
+        limitRate: { id:'root-voca-report', throttle:Math.max(1100,Number(EMAIL_CONFIG.recipientDelayMs)||1600) }
       });
       Mail.ready = true;
     }else{
-      // CDN이 차단돼도 REST API 폴백을 사용할 수 있음
       Mail.ready = false;
-      console.warn('[mail] EmailJS SDK 미로드 — REST API 폴백 사용 예정');
+      console.warn('[mail] EmailJS SDK 미로드 — REST API 단일 경로 사용 예정');
     }
     Mail.enabled = true;
     return true;
   }catch(e){
-    console.warn('[mail] EmailJS 초기화 실패 — REST API 폴백 사용 예정', e);
+    console.warn('[mail] EmailJS 초기화 실패 — REST API 단일 경로 사용 예정', e);
     Mail.ready = false;
     Mail.enabled = true;
     return true;
@@ -38168,41 +38194,38 @@ function mailErrorGuide(err){
   const s = Number(err && err.status) || 0;
   const t = String((err && err.text) || '').trim();
   if(!navigator.onLine) return '인터넷 연결이 끊어져 있습니다. 연결 후 다시 시도하세요.';
-  if(s===400) return 'EmailJS 템플릿 변수 또는 요청 형식을 확인하세요.';
+  if(s===400) return 'EmailJS 템플릿 변수 또는 요청 형식을 확인하세요. To Email은 {{to_email}}이어야 합니다.';
   if(s===401) return 'EmailJS Public Key가 올바른지 확인하세요.';
   if(s===403) return 'EmailJS 허용 도메인 설정에 현재 GitHub Pages 주소를 추가하세요.';
   if(s===404) return 'EmailJS Service ID 또는 Template ID가 존재하지 않습니다.';
   if(s===412) return '연결된 Gmail 서비스 인증이 만료되었습니다. EmailJS에서 Gmail을 다시 연결하세요.';
-  if(s===413 || s===422 || /50\s*kb|too large|payload/i.test(t)) return '메일 본문 용량이 제한을 넘었습니다. 이 버전은 자동 축약 후 다시 시도합니다.';
+  if(s===413 || s===422 || /50\s*kb|too large|payload/i.test(t)) return '메일 본문 용량이 제한을 넘었습니다. 보고서를 더 축약해 다시 시도하세요.';
   if(s===429) return 'EmailJS 발송 간격 또는 월 사용량 제한에 걸렸습니다. 잠시 후 다시 시도하세요.';
-  if(s===0 && /failed to fetch|network|load/i.test(t)) return '메일 서버 연결이 차단되었습니다. 인터넷·광고차단기·브라우저 보안설정을 확인하세요.';
+  if(s===0 && /시간 초과|timeout/i.test(t)) return '메일 서버 응답이 늦어 전송 여부가 불확실합니다. 중복 방지를 위해 즉시 재전송하지 않고 큐에 보관했습니다.';
+  if(s===0 && /failed to fetch|network|load|sdk/i.test(t)) return '메일 서버 연결이 차단되었습니다. 인터넷·광고차단기·브라우저 보안설정을 확인하세요.';
   return t || 'EmailJS 서비스·템플릿·허용 도메인 설정을 확인하세요.';
 }
 
-function buildTemplateParams(params){
-  const recipients = mailRecipients();
+function buildTemplateParams(params, recipient){
   const text = String(params.text || params.message || '');
   let html = String(params.html || '');
   const limit = Number(EMAIL_CONFIG.maxPayloadBytes) || 45000;
-
-  // HTML이 큰 경우 메일 자체를 텍스트 중심으로 더 축약한다.
-  if(utf8Bytes(html) > limit){
+  if(utf8Bytes(html) > Math.floor(limit*0.72)){
     html = `<div style="font-family:Arial,sans-serif;white-space:pre-wrap;line-height:1.6">${escapeHtml(text)}</div>`;
   }
-
-  // EmailJS 템플릿 명칭 차이를 흡수하기 위해 흔히 쓰는 변수명을 함께 보낸다.
   const out = {
-    to_email: recipients.join(','),
-    to_emails: recipients.join(','),
+    to_email: String(recipient||'').trim(),
+    to_emails: String(recipient||'').trim(),
     to_name: 'Root Voca 관리자',
     from_name: 'Root Voca 학습 보고서',
-    reply_to: recipients[0] || '',
+    reply_to: String(recipient||'').trim(),
     subject: params.subject || 'Root Voca 학습 보고서',
     message: text,
     text_message: text,
     html_message: html,
     report_html: html,
     report_text: text,
+    report_id: params.reportId || '',
     who: params.who || '학습자',
     date: params.date || '',
     correct: params.correct || '',
@@ -38211,16 +38234,20 @@ function buildTemplateParams(params){
     day_label: params.dayLabel || '',
     duration: params.duration || ''
   };
-
-  // 모든 동적 변수 합계가 50KB를 넘지 않도록 최종 방어한다.
   let bytes = utf8Bytes(JSON.stringify(out));
   if(bytes > limit){
     out.html_message = '';
     out.report_html = '';
-    const room = Math.max(3000, Math.floor(limit * 0.55));
-    out.message = out.message.slice(0, room);
-    out.text_message = out.message;
-    out.report_text = out.message;
+    // 같은 본문을 3개 변수에 중복하면 한글 UTF-8 바이트가 급증하므로
+    // 기본 message 하나만 유지하고 나머지 별칭은 비운다.
+    out.text_message = '';
+    out.report_text = '';
+    let compact = out.message;
+    const target = Math.floor(limit * 0.72);
+    while(compact && utf8Bytes(JSON.stringify({...out,message:compact})) > target){
+      compact = compact.slice(0, Math.max(500, Math.floor(compact.length*0.72)));
+    }
+    out.message = compact;
     bytes = utf8Bytes(JSON.stringify(out));
   }
   out.payload_bytes = String(bytes);
@@ -38229,15 +38256,15 @@ function buildTemplateParams(params){
 
 async function sendViaSdk(templateParams){
   if(typeof emailjs === 'undefined') throw {status:0, text:'EmailJS SDK를 불러오지 못했습니다.'};
-  return await emailjs.send(
+  return await withTimeout(emailjs.send(
     EMAIL_CONFIG.serviceId,
     EMAIL_CONFIG.templateId,
     templateParams,
     { publicKey: EMAIL_CONFIG.publicKey }
-  );
+  ), Number(EMAIL_CONFIG.sendTimeoutMs)||15000);
 }
 async function sendViaRest(templateParams){
-  const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+  const request = fetch('https://api.emailjs.com/api/v1.0/email/send', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
@@ -38246,60 +38273,156 @@ async function sendViaRest(templateParams){
       user_id: EMAIL_CONFIG.publicKey,
       template_params: templateParams
     })
+  }).then(async response=>{
+    const text=await response.text();
+    if(!response.ok) throw {status:response.status,text:text||response.statusText};
+    return {status:response.status,text:text||'OK'};
   });
-  const text = await response.text();
-  if(!response.ok) throw {status:response.status, text:text || response.statusText};
-  return {status:response.status, text:text || 'OK'};
+  return await withTimeout(request, Number(EMAIL_CONFIG.sendTimeoutMs)||15000);
+}
+async function sendOneRecipient(templateParams){
+  try{
+    const response = (typeof emailjs!=='undefined')
+      ? await sendViaSdk(templateParams)
+      : await sendViaRest(templateParams);
+    return {ok:true,response,channel:(typeof emailjs!=='undefined'?'sdk':'rest')};
+  }catch(e){
+    const error=normalizeMailError(e);
+    // SDK가 시간초과·네트워크 오류를 냈을 때 REST로 즉시 재발송하면 중복 메일 위험이 있다.
+    // 실패 보고서는 큐에 남겨 다음 접속에서 한 번만 재시도한다.
+    return {ok:false,error,channel:(typeof emailjs!=='undefined'?'sdk':'rest')};
+  }
 }
 
-/* 보고서 발송. params: {subject, html, text, ...} */
-async function sendReportEmail(params){
+/* 보고서 발송: 수신자별로 1건씩 순차 발송하여 쉼표 수신자 해석 문제를 제거 */
+async function sendReportEmail(params, requestedRecipients){
   if(!Mail.enabled){
-    return { ok:false, reason:'not_configured', error:Mail.lastError || {status:0,text:'메일 기능 미설정'} };
+    return { ok:false, reason:'not_configured', error:Mail.lastError || {status:0,text:'메일 기능 미설정'}, results:[] };
   }
   if(!navigator.onLine){
     const error = {status:0, text:'오프라인 상태'};
     Mail.lastError = error;
-    return {ok:false, reason:'offline', error};
+    return {ok:false, reason:'offline', error, results:[]};
   }
-  const templateParams = buildTemplateParams(params || {});
-  let firstError = null;
-  try{
-    const response = await sendViaSdk(templateParams);
-    Mail.lastError = null;
-    return {ok:true, response, payloadBytes:Number(templateParams.payload_bytes)||0, channel:'sdk'};
-  }catch(e){
-    firstError = normalizeMailError(e);
-    console.warn('[mail] SDK 발송 실패 — REST 폴백 시도', firstError);
+  const recipients=(requestedRecipients&&requestedRecipients.length?requestedRecipients:mailRecipients())
+    .map(v=>String(v||'').trim()).filter(validEmail);
+  if(!recipients.length){
+    const error={status:0,text:'발송할 관리자 이메일이 없습니다.'};
+    Mail.lastError=error;
+    return {ok:false,reason:'no_recipient',error,results:[]};
   }
-  try{
-    const response = await sendViaRest(templateParams);
-    Mail.lastError = null;
-    return {ok:true, response, payloadBytes:Number(templateParams.payload_bytes)||0, channel:'rest'};
-  }catch(e){
-    const secondError = normalizeMailError(e);
-    Mail.lastError = secondError.status || secondError.text ? secondError : firstError;
-    console.warn('[mail] 최종 발송 실패', Mail.lastError);
-    return {ok:false, reason:'send_failed', error:Mail.lastError, firstError, payloadBytes:Number(templateParams.payload_bytes)||0};
+  const results=[];
+  for(let i=0;i<recipients.length;i++){
+    const recipient=recipients[i];
+    const templateParams=buildTemplateParams(params||{},recipient);
+    const r=await sendOneRecipient(templateParams);
+    results.push({recipient,...r,payloadBytes:Number(templateParams.payload_bytes)||0});
+    if(i<recipients.length-1) await sleep(Math.max(1100,Number(EMAIL_CONFIG.recipientDelayMs)||1600));
   }
+  const failed=results.filter(r=>!r.ok);
+  const sent=results.filter(r=>r.ok);
+  Mail.lastError=failed.length?failed[0].error:null;
+  return {
+    ok:failed.length===0,
+    partial:sent.length>0&&failed.length>0,
+    reason:failed.length?'send_failed':'sent',
+    results,sent,failed,
+    error:failed.length?failed[0].error:null,
+    payloadBytes:Math.max(0,...results.map(r=>r.payloadBytes||0))
+  };
 }
 
-function mailQueueRead(){
-  try{ return JSON.parse(localStorage.getItem(MAIL_QUEUE_KEY)||'null'); }catch(e){ return null; }
+function emptyMailQueue(){ return {version:3,items:[]}; }
+function mailQueueLoad(){
+  let q=null;
+  try{ q=JSON.parse(localStorage.getItem(MAIL_QUEUE_KEY)||'null'); }catch(e){}
+  if(!q){
+    // v2 단일 큐를 v3 다중 큐로 한 번만 이전
+    let old=null;
+    try{ old=JSON.parse(localStorage.getItem(LEGACY_MAIL_QUEUE_KEY)||'null'); }catch(e){}
+    if(old&&old.report){
+      q={version:3,items:[{...old,pendingRecipients:mailRecipients()}]};
+      try{ localStorage.removeItem(LEGACY_MAIL_QUEUE_KEY); }catch(e){}
+    }
+  }
+  if(!q||!Array.isArray(q.items)) q=emptyMailQueue();
+  q.items=q.items.filter(x=>x&&x.report).map(x=>({
+    report:x.report, queuedAt:Number(x.queuedAt)||Date.now(), tries:Number(x.tries)||0,
+    lastTryAt:Number(x.lastTryAt)||0,
+    pendingRecipients:(Array.isArray(x.pendingRecipients)?x.pendingRecipients:mailRecipients()).filter(validEmail)
+  }));
+  return q;
 }
-function mailQueueWrite(report){
-  try{
-    localStorage.setItem(MAIL_QUEUE_KEY, JSON.stringify({report, queuedAt:Date.now(), tries:0}));
-    return true;
-  }catch(e){ return false; }
+function mailQueueSave(q){
+  try{ localStorage.setItem(MAIL_QUEUE_KEY,JSON.stringify(q)); return true; }catch(e){ return false; }
 }
-function mailQueueClear(){ try{ localStorage.removeItem(MAIL_QUEUE_KEY); }catch(e){} }
-function mailQueueBump(){
-  const q = mailQueueRead();
-  if(!q) return;
-  q.tries = (q.tries||0)+1;
-  q.lastTryAt = Date.now();
-  try{ localStorage.setItem(MAIL_QUEUE_KEY, JSON.stringify(q)); }catch(e){}
+function mailQueueItems(){ return mailQueueLoad().items; }
+function reportKey(report){ return String(report&&report.reportId||'').trim() || `${report&&report.dateStr||'date'}-${report&&report.timeStr||'time'}`; }
+function mailQueueFind(reportId){ return mailQueueItems().find(x=>reportKey(x.report)===String(reportId||''))||null; }
+function mailQueueWrite(report, recipients){
+  if(!report) return false;
+  const q=mailQueueLoad(); const id=reportKey(report);
+  const pending=(recipients&&recipients.length?recipients:mailRecipients()).filter(validEmail);
+  const found=q.items.find(x=>reportKey(x.report)===id);
+  if(found){
+    found.report=report;
+    found.pendingRecipients=[...new Set([...(found.pendingRecipients||[]),...pending])];
+  }else{
+    q.items.push({report,queuedAt:Date.now(),tries:0,lastTryAt:0,pendingRecipients:[...new Set(pending)]});
+  }
+  const max=Math.max(3,Number(EMAIL_CONFIG.maxQueueItems)||14);
+  if(q.items.length>max) q.items=q.items.slice(-max);
+  return mailQueueSave(q);
+}
+function mailQueueUpdatePending(reportId, recipients){
+  const q=mailQueueLoad(); const id=String(reportId||'');
+  const item=q.items.find(x=>reportKey(x.report)===id);
+  if(!item) return false;
+  item.pendingRecipients=[...new Set((recipients||[]).filter(validEmail))];
+  if(!item.pendingRecipients.length) q.items=q.items.filter(x=>reportKey(x.report)!==id);
+  return mailQueueSave(q);
+}
+function mailQueueClear(reportId){
+  const q=mailQueueLoad();
+  if(reportId) q.items=q.items.filter(x=>reportKey(x.report)!==String(reportId));
+  else q.items=[];
+  return mailQueueSave(q);
+}
+function mailQueueBump(reportId){
+  const q=mailQueueLoad();
+  const item=q.items.find(x=>reportKey(x.report)===String(reportId||''));
+  if(!item) return false;
+  item.tries=(item.tries||0)+1; item.lastTryAt=Date.now();
+  return mailQueueSave(q);
+}
+/* 이전 호출부 호환: 첫 대기 항목을 반환 */
+function mailQueueRead(){ return mailQueueItems()[0]||null; }
+
+function runMailDrySimulation(sampleReport){
+  const recipients=mailRecipients();
+  const sample=sampleReport||{
+    reportId:'SIM-'+Date.now(),who:'학습자',dateStr:new Date().toLocaleDateString('ko-KR'),
+    timeStr:new Date().toLocaleTimeString('ko-KR'),dayLabel:'DAY 시뮬레이션',elapsedStr:'8분 12초',
+    correct:68,wrong:14,acc:83,studied:83,streak:3,sessions:3,mastered:47,learning:36,seen:188,total:1410,
+    overallPct:3,seenPct:13,soon:7,wrongList:[],todayWords:[]
+  };
+  const text=typeof reportToText==='function'?reportToText(sample):'Root Voca dry-run';
+  const html=typeof reportToHtml==='function'?reportToHtml(sample):`<b>${escapeHtml(text)}</b>`;
+  const params={subject:'[DRY-RUN] Root Voca 메일 시뮬레이션',html,text,reportId:sample.reportId,who:sample.who,date:sample.dateStr,correct:String(sample.correct),wrong:String(sample.wrong),acc:String(sample.acc),dayLabel:sample.dayLabel,duration:sample.elapsedStr};
+  const payloads=recipients.map(r=>buildTemplateParams(params,r));
+  const checks={
+    configured:!!(EMAIL_CONFIG.publicKey&&EMAIL_CONFIG.serviceId&&EMAIL_CONFIG.templateId),
+    recipientsValid:recipients.length>0&&recipients.every(validEmail),
+    recipientCount:recipients.length,
+    payloadUnderLimit:payloads.every(x=>Number(x.payload_bytes)<=(Number(EMAIL_CONFIG.maxPayloadBytes)||45000)),
+    largestPayloadBytes:Math.max(0,...payloads.map(x=>Number(x.payload_bytes)||0)),
+    autoSend:EMAIL_CONFIG.autoSend===true,
+    sdkLoaded:typeof emailjs!=='undefined',
+    queueWritable:(()=>{ try{ const k='rootvoca-mail-dryrun';localStorage.setItem(k,'1');localStorage.removeItem(k);return true;}catch(e){return false;} })()
+  };
+  checks.pass=checks.configured&&checks.recipientsValid&&checks.payloadUnderLimit&&checks.autoSend&&checks.queueWritable;
+  Mail.lastSimulation={at:Date.now(),checks};
+  return checks;
 }
 
 window.Mail = Mail;
@@ -38311,7 +38434,10 @@ window.mailQueueRead = mailQueueRead;
 window.mailQueueWrite = mailQueueWrite;
 window.mailQueueClear = mailQueueClear;
 window.mailQueueBump = mailQueueBump;
-
+window.mailQueueItems = mailQueueItems;
+window.mailQueueFind = mailQueueFind;
+window.mailQueueUpdatePending = mailQueueUpdatePending;
+window.runMailDrySimulation = runMailDrySimulation;
 /* 전역 노출 */
 window.Cloud = Cloud;
 window.initFirebase = initFirebase;
@@ -38349,6 +38475,7 @@ let state = {
   typeSpeed:'normal',  // 어원 스토리 등장 속도: slow | normal | fast
   lastReportSentId:null,
   mailLog:[],
+  mailSentByReport:{},       // reportId -> 발송 완료 수신자 배열
   courseCurrentDay:1,     // 학습자가 오늘 진행할 유일한 Day
   completedDays:{},       // day -> {completedAt, correct, wrong, elapsedSec}
   courseFlowVersion:2
@@ -38851,7 +38978,7 @@ function renderMap(sel){
       <div class="prefix" style="color:${r.color}">${r.label} <span style="font-size:14px;color:var(--ink-3);font-weight:500">${r.variant}</span></div>
       <div class="meaning">${r.meaning} · ${r.en}</div>
       <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${r.color}"></div></div>
-      <div class="count">완전 암기 ${done} · 학습 중 ${learning} · 전체 ${ws.length}</div>`;
+      <div class="count">1차 이상 통과 ${done} · 학습 중 ${learning} · 전체 ${ws.length}</div>`;
     c.addEventListener('click',()=>renderMap(r.id));
     g.appendChild(c);
   });
@@ -39744,7 +39871,7 @@ function finishSession(){
     ? '이 Day의 어원·단어는 전부 맞힐 때까지 반복해 통과했습니다. 오답은 오답노트에 계속 남아 있습니다.'
     : (sess.nextDay
         ? '이전에 틀렸던 단어를 전부 맞혔습니다. 아래 버튼으로 이어서 진행하세요.'
-        : (sess.wrong? '틀린 '+sess.wrong+'개는 오답함에 담겼고, 다음 세션 맨 앞에서 다시 만납니다.' : '전부 정답! 복습 간격이 넓어졌습니다.'));
+        : (sess.wrong? '틀린 '+sess.wrong+'개는 오답함에 담겼고, 복습 단계와 다음 재시험일이 자동 갱신됩니다.' : '전부 정답! 복습 단계가 자동 갱신되었습니다.'));
   const nextDayBtn = sess.nextDay
     ? `<button class="btn btn-primary" style="background:linear-gradient(90deg,var(--blue),var(--teal))" onclick="enterDaySession(${sess.nextDay})">Day ${sess.nextDay} 이어서 시작하기 →</button>`
     : '';
@@ -39824,7 +39951,8 @@ function buildReport(session, acc, elapsedStr){
   // 다음 복습 예정(24시간 내)
   const soon = Object.values(cards).filter(c=>c.next && c.next>Date.now() && c.next < Date.now()+DAY).length;
   // 오늘 틀린 단어 상세
-  const wrongList = (session.wrongIds||[]).map(id=>{
+  const wrongIdsUnique = [...new Set(session.wrongIds||[])];
+  const wrongList = wrongIdsUnique.map(id=>{
     const w = WORDS.find(x=>x.id===id);
     return w ? { word:w.word, mean:(w.mean||'').split('/')[0].trim(), root:w.parts.map(p=>p[0]).join('+'), arrow:w.storyArrow } : null;
   }).filter(Boolean);
@@ -39840,7 +39968,7 @@ function buildReport(session, acc, elapsedStr){
     timeStr: now.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
     elapsedStr: elapsedStr || '',
     correct: session.correct, wrong: session.wrong, acc,
-    studied: session.correct + session.wrong,
+    studied: todayWords.length,
     streak: state.streak, sessions: state.sessions,
     mastered, learning, seen, total, overallPct, seenPct, soon,
     totCorrect: state.totCorrect||0, totAttempts: state.totAttempts||0,
@@ -40015,43 +40143,70 @@ function setMailStatus(message, ok){
   status.innerHTML = message;
 }
 function showMailDiagnostics(){
-  const q = (typeof mailQueueRead==='function') ? mailQueueRead() : null;
+  const items = (typeof mailQueueItems==='function') ? mailQueueItems() : [];
   const recipients = (typeof mailRecipients==='function') ? mailRecipients() : [];
   const last = Mail.lastError;
+  const sim = (typeof runMailDrySimulation==='function') ? runMailDrySimulation(window._lastReport||null) : null;
   const lines = [
     `메일 모듈: ${Mail.enabled ? '사용 가능' : '설정 필요'} (v${Mail.version||'-'})`,
-    `수신자: ${recipients.join(', ') || '없음'}`,
+    `자동 발송: ${EMAIL_CONFIG.autoSend ? '켜짐' : '꺼짐'}`,
+    `수신자: ${recipients.join(', ') || '없음'} (${recipients.length}명 · 개별 순차 발송)`,
+    `SDK: ${typeof emailjs!=='undefined' ? '로드됨' : '미로드 · REST 사용'}`,
     `현재 주소: ${location.origin}`,
     `인터넷: ${navigator.onLine ? '연결됨' : '오프라인'}`,
-    `대기 보고서: ${q && q.report ? (q.report.reportId||'있음') : '없음'}`,
+    `대기 보고서: ${items.length}건`,
+    sim ? `내부 시뮬레이션: ${sim.pass?'PASS':'FAIL'} / 최대 ${(sim.largestPayloadBytes/1024).toFixed(1)}KB` : '내부 시뮬레이션: 실행 불가',
     last ? `최근 오류: ${last.status||0} / ${last.text}` : '최근 오류: 없음'
   ];
-  setMailStatus(`🩺 ${lines.map(escapeHtml).join('<br>')}`, last?false:true);
+  const button = Mail.enabled && navigator.onLine
+    ? `<div style="margin-top:10px"><button class="btn btn-dark btn-sm" onclick="sendMailConnectionTest()">실제 테스트 메일 1회 발송</button></div>` : '';
+  setMailStatus(`🩺 ${lines.map(escapeHtml).join('<br>')}${button}`, last?false:(sim&&sim.pass));
 }
 window.showMailDiagnostics = showMailDiagnostics;
 
-async function onSendReport(isAuto){
-  const queued = (typeof mailQueueRead==='function') ? mailQueueRead() : null;
-  const r = window._lastReport || (queued && queued.report);
+function getSentRecipients(reportId){
+  if(!state.mailSentByReport||typeof state.mailSentByReport!=='object') state.mailSentByReport={};
+  return Array.isArray(state.mailSentByReport[reportId]) ? state.mailSentByReport[reportId] : [];
+}
+function addSentRecipient(reportId,email){
+  if(!state.mailSentByReport||typeof state.mailSentByReport!=='object') state.mailSentByReport={};
+  const list=getSentRecipients(reportId);
+  if(!list.includes(email)) list.push(email);
+  state.mailSentByReport[reportId]=list;
+}
+async function onSendReport(isAuto, requestedReportId){
+  const item = requestedReportId && typeof mailQueueFind==='function' ? mailQueueFind(requestedReportId) : null;
+  const firstQueued = !item && typeof mailQueueRead==='function' ? mailQueueRead() : null;
+  const r = (item&&item.report) || window._lastReport || (firstQueued&&firstQueued.report);
   const btn = $('#mailReportBtn');
-  if(!r){ setMailStatus('보고서 데이터가 없습니다.', false); return; }
+  if(!r){ setMailStatus('보고서 데이터가 없습니다.', false); return {ok:false}; }
   if(!window.Mail || !window.Mail.enabled){
     setMailStatus('메일 기능 설정을 확인하세요. ‘메일 진단’에서 누락 항목을 볼 수 있습니다.', false);
-    return;
+    return {ok:false};
   }
-  if(r.reportId && state.lastReportSentId === r.reportId){
-    setMailStatus('✅ 이 학습 보고서는 이미 발송되었습니다.', true);
+  const id=String(r.reportId||`${r.dateStr}-${r.timeStr}`);
+  const queuedItem=(typeof mailQueueFind==='function')?mailQueueFind(id):null;
+  const already=getSentRecipients(id);
+  const pendingBase=(queuedItem&&queuedItem.pendingRecipients&&queuedItem.pendingRecipients.length
+    ? queuedItem.pendingRecipients
+    : mailRecipients());
+  const pending=[...new Set(pendingBase)].filter(e=>!already.includes(e));
+  if(!pending.length){
+    if(typeof mailQueueClear==='function') mailQueueClear(id);
+    state.lastReportSentId=id; saveState();
+    setMailStatus('✅ 이 학습 보고서는 모든 관리자 주소로 이미 발송되었습니다.', true);
     if(btn) btn.textContent='✅ 발송 완료';
-    return;
+    return {ok:true,duplicate:true};
   }
   if(btn){ btn.disabled=true; btn.textContent=isAuto?'자동 발송 중…':'발송 중…'; }
-  setMailStatus(isAuto?'📤 학습 완료 보고서를 자동 발송하고 있습니다…':'📤 보고서를 발송하고 있습니다…', null);
+  setMailStatus(`${isAuto?'📤 학습 완료 보고서를 자동 발송하고 있습니다…':'📤 보고서를 발송하고 있습니다…'}<br><small>${pending.length}개 관리자 주소에 순차 발송</small>`, null);
 
-  const compactHtml = reportToHtml(r); // v2.1: 시험지를 제외한 요약형 HTML
+  const compactHtml = reportToHtml(r);
   const res = await sendReportEmail({
     subject: `[Root Voca] ${r.who} ${r.dayLabel||'학습'} 보고서 · ${r.dateStr} (정답률 ${r.acc}%)`,
     html: compactHtml,
     text: reportToText(r),
+    reportId:id,
     who: r.who,
     date: r.dateStr,
     correct: String(r.correct),
@@ -40059,45 +40214,76 @@ async function onSendReport(isAuto){
     acc: String(r.acc),
     dayLabel: r.dayLabel||'',
     duration: r.elapsedStr||''
-  });
+  }, pending);
 
   state.mailLog = Array.isArray(state.mailLog) ? state.mailLog : [];
-  state.mailLog.unshift({
-    at:Date.now(), reportId:r.reportId||'', ok:!!res.ok,
-    status:res.error ? res.error.status : (res.response ? res.response.status : 200),
-    text:res.error ? res.error.text : (res.response ? res.response.text : 'OK'),
-    payloadBytes:res.payloadBytes||0
+  (res.results||[]).forEach(x=>{
+    state.mailLog.unshift({
+      at:Date.now(), reportId:id, recipient:x.recipient, ok:!!x.ok,
+      status:x.error?x.error.status:(x.response?x.response.status:200),
+      text:x.error?x.error.text:(x.response?x.response.text:'OK'),
+      payloadBytes:x.payloadBytes||0, channel:x.channel||''
+    });
+    if(x.ok) addSentRecipient(id,x.recipient);
   });
-  state.mailLog = state.mailLog.slice(0,20);
-
-  if(res.ok){
-    state.lastReportSentId = r.reportId || `${r.dateStr}-${r.timeStr}`;
-    state.lastReportSent = new Date().toDateString();
-    saveState();
-    if(typeof mailQueueClear==='function') mailQueueClear();
-    const kb = res.payloadBytes ? ` · ${(res.payloadBytes/1024).toFixed(1)}KB` : '';
-    setMailStatus(`✅ 관리자 메일로 보고서를 보냈습니다.${kb}`, true);
-    if(btn){ btn.textContent='✅ 발송 완료'; btn.disabled=true; }
+  state.mailLog = state.mailLog.slice(0,40);
+  const failed=(res.failed||[]).map(x=>x.recipient);
+  if(failed.length){
+    if(typeof mailQueueWrite==='function') mailQueueWrite(r,failed);
+    if(typeof mailQueueUpdatePending==='function') mailQueueUpdatePending(id,failed);
+    if(typeof mailQueueBump==='function') mailQueueBump(id);
   }else{
-    if(typeof mailQueueBump==='function') mailQueueBump();
-    saveState();
-    const err = res.error || {status:0,text:'알 수 없는 오류'};
-    const guide = mailErrorGuide(err);
-    const kb = res.payloadBytes ? ` / 본문 ${(res.payloadBytes/1024).toFixed(1)}KB` : '';
-    setMailStatus(`❌ 발송 실패 (${err.status||0}${kb})<br><b>${escapeHtml(guide)}</b><br><small>${escapeHtml(err.text||'')}</small>`, false);
-    if(btn){ btn.disabled=false; btn.textContent='📧 다시 시도'; }
+    if(typeof mailQueueClear==='function') mailQueueClear(id);
+    state.lastReportSentId=id;
+    state.lastReportSent=new Date().toDateString();
   }
+  saveState();
+
+  const sent=(res.sent||[]).map(x=>x.recipient);
+  if(res.ok){
+    const kb=res.payloadBytes?` · 최대 ${(res.payloadBytes/1024).toFixed(1)}KB`:'';
+    setMailStatus(`✅ 관리자 이메일 ${sent.length}곳으로 발송 요청이 완료되었습니다.${kb}`,true);
+    if(btn){btn.textContent='✅ 발송 완료';btn.disabled=true;}
+  }else{
+    const err=res.error||{status:0,text:'알 수 없는 오류'};
+    const guide=mailErrorGuide(err);
+    const partial=sent.length?`<br><small>성공: ${sent.map(escapeHtml).join(', ')}</small>`:'';
+    setMailStatus(`❌ 일부 또는 전체 발송 실패 (${err.status||0})<br><b>${escapeHtml(guide)}</b>${partial}<br><small>재시도 대기: ${failed.map(escapeHtml).join(', ')}</small>`,false);
+    if(btn){btn.disabled=false;btn.textContent='📧 실패 주소 다시 시도';}
+  }
+  return res;
 }
 window.onSendReport = onSendReport;
 
+async function sendMailConnectionTest(){
+  if(!Mail.enabled){ setMailStatus('메일 설정이 완료되지 않았습니다.',false); return; }
+  const now=new Date();
+  const r={
+    reportId:`MAIL-TEST-${Date.now()}`,who:'학습자(테스트)',dateStr:now.toLocaleDateString('ko-KR'),
+    timeStr:now.toLocaleTimeString('ko-KR'),elapsedStr:'0분 10초',correct:4,wrong:1,acc:80,studied:5,
+    streak:state.streak||0,sessions:state.sessions||0,mastered:0,learning:0,seen:0,total:WORDS.length,
+    overallPct:0,seenPct:0,soon:0,wrongList:[],todayWords:[],dayLabel:'메일 연결 테스트',reviewActive:0,reviewDue:0,reviewStageCounts:{}
+  };
+  mailQueueWrite(r);
+  window._lastReport=r;
+  setMailStatus('🧪 실제 테스트 메일을 발송합니다. 실제 성적이 아닌 점검용입니다.',null);
+  return await onSendReport(false,r.reportId);
+}
+window.sendMailConnectionTest=sendMailConnectionTest;
+
 async function retryQueuedMailOnBoot(){
-  const q = (typeof mailQueueRead==='function') ? mailQueueRead() : null;
-  if(!q || !q.report || !Mail.enabled || !navigator.onLine) return;
-  // 30초 이내의 반복 호출과 과도한 무한 재시도를 방지
-  if((q.tries||0)>=5) return;
-  if(q.lastTryAt && Date.now()-q.lastTryAt < 30000) return;
-  window._lastReport = q.report;
-  setTimeout(()=>onSendReport(true), 1800);
+  if(!Mail.enabled || !navigator.onLine || typeof mailQueueItems!=='function') return;
+  const items=mailQueueItems().filter(x=>(x.tries||0)<5 && (!x.lastTryAt||Date.now()-x.lastTryAt>=30000)).slice(0,3);
+  if(!items.length) return;
+  setTimeout(async()=>{
+    for(const item of items){
+      const id=String(item.report&&item.report.reportId||'');
+      if(!id) continue;
+      window._lastReport=item.report;
+      await onSendReport(true,id);
+      await new Promise(r=>setTimeout(r,1800));
+    }
+  },1800);
 }
 window.retryQueuedMailOnBoot = retryQueuedMailOnBoot;
 
@@ -41006,6 +41192,7 @@ async function bootApp(){
 
 </script>
 
+<script>
 (async function(){
   // Firebase 초기화 시도 (설정 없으면 자동 오프라인 모드)
   if(typeof initFirebase === 'function'){ try{ await initFirebase(); }catch(e){} }
