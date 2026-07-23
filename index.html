@@ -37970,7 +37970,7 @@ const REFERENCE = [
 
 
 </script>
-<!-- Root Voca v2.5.1: bootstrap/login repair + mail error-path repair + verified review engine -->
+<!-- Root Voca v2.5.2: progress persistence + local/cloud conflict repair + verified review engine -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 /* ==================================================================
@@ -38478,11 +38478,84 @@ let state = {
   mailSentByReport:{},       // reportId -> 발송 완료 수신자 배열
   courseCurrentDay:1,     // 학습자가 오늘 진행할 유일한 Day
   completedDays:{},       // day -> {completedAt, correct, wrong, elapsedSec}
-  courseFlowVersion:2
+  courseFlowVersion:3,
+  _stateUpdatedAt:0,        // 로컬/클라우드 최신 상태 판정용
+  _progressRecoveredAt:0   // 완료 Day 자동복구 시각
 };
 let memoryOnly = false;
 
 const STORAGE_KEY = 'rootvoca-state';
+
+function parseStoredState(raw){
+  if(!raw) return null;
+  try{
+    const parsed = typeof raw==='string' ? JSON.parse(raw) : raw;
+    return parsed && typeof parsed==='object' ? parsed : null;
+  }catch(e){ return null; }
+}
+function progressScoreOf(data){
+  if(!data || typeof data!=='object') return 0;
+  const completed = data.completedDays && typeof data.completedDays==='object'
+    ? Object.keys(data.completedDays).filter(d=>Number(d)>=1 && Number(d)<=30).length : 0;
+  const seen = data.cards && typeof data.cards==='object'
+    ? Object.values(data.cards).filter(c=>c && c.seen).length : 0;
+  return completed*1e9 + (Number(data.courseCurrentDay)||1)*1e7 + (Number(data.sessions)||0)*1e5 + seen*100 + (Number(data.totAttempts)||0);
+}
+function sourceUpdatedAt(data){
+  if(!data || typeof data!=='object') return 0;
+  return Math.max(Number(data._stateUpdatedAt)||0, Number(data._updatedAt)||0);
+}
+function mergeCompletedDays(a,b){
+  const out={};
+  [a,b].forEach(src=>{
+    if(!src || typeof src!=='object') return;
+    Object.entries(src).forEach(([day,rec])=>{
+      const d=Number(day);
+      if(!(d>=1 && d<=30)) return;
+      const prev=out[d];
+      const t=Number(rec && rec.completedAt)||0;
+      const pt=Number(prev && prev.completedAt)||0;
+      if(!prev || t>=pt) out[d]={...(prev||{}),...(rec||{})};
+    });
+  });
+  return out;
+}
+function chooseNewestState(localData,cloudData){
+  if(localData && !cloudData) return localData;
+  if(cloudData && !localData) return cloudData;
+  if(!localData && !cloudData) return null;
+  const lt=sourceUpdatedAt(localData), ct=sourceUpdatedAt(cloudData);
+  const lp=progressScoreOf(localData), cp=progressScoreOf(cloudData);
+  const localModern=Number(localData._stateUpdatedAt)>0;
+  const cloudModern=Number(cloudData._stateUpdatedAt)>0;
+  let chosen;
+  // 구버전 데이터는 최신시각 필드가 없어 클라우드의 오래된 값이 로컬 진도를 덮을 수 있었다.
+  // 양쪽이 새 버전일 때만 시각을 우선하고, 구버전이 섞이면 더 많이 진행된 상태를 우선한다.
+  if(localModern && cloudModern && lt!==ct) chosen = lt>ct ? localData : cloudData;
+  else if(lp!==cp) chosen = lp>cp ? localData : cloudData;
+  else chosen = lt>=ct ? localData : cloudData;
+  // 완료한 Day는 절대 후퇴시키지 않는다. 두 저장소의 완료 이력을 합친다.
+  chosen={...chosen, completedDays:mergeCompletedDays(localData.completedDays, cloudData.completedDays)};
+  return chosen;
+}
+function recoverCompletedDaysFromSeen(){
+  if(!state.completedDays || typeof state.completedDays!=='object') state.completedDays={};
+  let recovered=0;
+  for(let d=1; d<=COURSE_DAYS; d++){
+    if(state.completedDays[d]) continue;
+    const ws=wordsForDay(d);
+    const allSeen=ws.length>0 && ws.every(w=>state.cards[w.id] && state.cards[w.id].seen);
+    const enoughHistory=(Number(state.sessions)||0)>0 || (Number(state.totAttempts)||0)>=ws.length;
+    if(allSeen && enoughHistory){
+      state.completedDays[d]={completedAt:0,recovered:true,recoveredAt:Date.now()};
+      recovered++;
+      continue;
+    }
+    break; // 순차 코스이므로 첫 미완료 Day 이후는 자동복구하지 않는다.
+  }
+  if(recovered){ state._progressRecoveredAt=Date.now(); }
+  return recovered;
+}
 
 async function loadState(){
   const acc = (typeof cloudCurrentAccount === 'function') ? cloudCurrentAccount() : null;
@@ -38490,40 +38563,38 @@ async function loadState(){
   let raw = null;
   let cloudData = null;
 
-  // 1) 클라우드 우선: 로그인 상태 + Firebase 사용 가능 시
+  // 1) 로컬 상태를 먼저 읽는다. 완료 직후 브라우저를 닫아도 이 값은 즉시 남는다.
+  try{ raw = window.localStorage.getItem(key); }catch(e){ memoryOnly = true; }
+  let localData = parseStoredState(raw);
+
+  // 계정별 키가 비어 있고 과거 공용 키에 기록이 남아 있으면 학습자 계정으로 1회 이전한다.
+  if(!localData && acc && acc.id==='user'){
+    try{
+      const legacyRaw=window.localStorage.getItem(STORAGE_KEY);
+      const legacyData=parseStoredState(legacyRaw);
+      if(legacyData){ localData=legacyData; window.localStorage.setItem(key,JSON.stringify(legacyData)); }
+    }catch(e){}
+  }
+
+  // 2) 클라우드 상태를 읽는다.
   if(acc && typeof cloudLoad === 'function' && window.Cloud && window.Cloud.enabled){
     try{ cloudData = await cloudLoad(acc.id); }catch(e){}
   }
 
-  // 2) 로컬 폴백 (계정별 키)
-  try{
-    raw = window.localStorage.getItem(key);
-  }catch(e){ memoryOnly = true; }
-
-  // 이전 Claude 아티팩트 저장값이 있으면 한 번만 가져와 일반 브라우저 저장소로 이전한다.
-  if(!raw && !cloudData && window.storage && typeof window.storage.get === 'function'){
+  // 이전 Claude 아티팩트 저장값도 최후 폴백으로 이전한다.
+  if(!localData && !cloudData && window.storage && typeof window.storage.get === 'function'){
     try{
       const legacy = await window.storage.get(STORAGE_KEY);
       if(legacy && legacy.value){
-        raw = legacy.value;
-        try{ window.localStorage.setItem(key, raw); memoryOnly = false; }catch(e){}
+        localData = parseStoredState(legacy.value);
+        if(localData) try{ window.localStorage.setItem(key, JSON.stringify(localData)); memoryOnly = false; }catch(e){}
       }
     }catch(e){}
   }
 
-  // 클라우드 데이터가 있으면 그것을 우선 채택 (가장 최신 기기 기록)
-  if(cloudData && typeof cloudData === 'object'){
-    state = {...state, ...cloudData};
-    // 로컬에도 캐시
-    try{ window.localStorage.setItem(key, JSON.stringify(state)); }catch(e){}
-  }else if(raw){
-    try{
-      const parsed = JSON.parse(raw);
-      if(parsed && typeof parsed === 'object') state = {...state, ...parsed};
-    }catch(e){
-      try{ window.localStorage.removeItem(key); }catch(_){}
-    }
-  }
+  // 로컬/클라우드 중 최신 상태를 선택하되 완료 Day는 합집합으로 보존한다.
+  const selected=chooseNewestState(localData, cloudData);
+  if(selected) state={...state,...selected};
 
   if(!state.cards || typeof state.cards !== 'object') state.cards = {};
   WORDS.forEach(w=>{
@@ -38551,28 +38622,44 @@ async function loadState(){
   }
   state.courseCurrentDay = Math.max(1, Math.min(30, Number(state.courseCurrentDay)||1));
 
+  // v2.5.1 이전에 완료 이력이 누락된 경우, 모든 단어를 실제로 본 연속 Day만 안전하게 복구한다.
+  recoverCompletedDaysFromSeen();
+  const firstIncomplete=Array.from({length:COURSE_DAYS},(_,i)=>i+1).find(d=>!state.completedDays[d]);
+  state.courseCurrentDay=firstIncomplete || COURSE_DAYS;
+
   // 날짜가 바뀌면 오늘 목표를 리셋한다.
   const today = new Date().toDateString();
   if(state.todayDate !== today){ state.todayDone=false; state.todayDate=today; }
 }
 let _cloudSaveTimer = null;
-async function saveState(){
+async function saveState(options){
+  options=options||{};
   const acc = (typeof cloudCurrentAccount === 'function') ? cloudCurrentAccount() : null;
   const key = acc ? (STORAGE_KEY + ':' + acc.id) : STORAGE_KEY;
+  state._stateUpdatedAt=Date.now();
   // 1) 로컬 즉시 저장 (오프라인 폴백)
   try{
     window.localStorage.setItem(key, JSON.stringify(state));
     memoryOnly = false;
   }catch(e){ memoryOnly = true; }
 
-  // 2) 클라우드 디바운스 저장 (잦은 쓰기 방지 — 1.2초 묶음)
+  // 2) Day 완료/관리자 변경은 즉시 클라우드 저장, 일반 답안은 1.2초 디바운스 저장
   if(acc && typeof cloudSave === 'function' && window.Cloud && window.Cloud.enabled){
-    if(_cloudSaveTimer) clearTimeout(_cloudSaveTimer);
+    if(_cloudSaveTimer){ clearTimeout(_cloudSaveTimer); _cloudSaveTimer=null; }
+    if(options.immediateCloud){
+      try{ return await cloudSave(acc.id, state); }catch(e){ return false; }
+    }
     _cloudSaveTimer = setTimeout(()=>{
       cloudSave(acc.id, state).catch(()=>{});
+      _cloudSaveTimer=null;
     }, 1200);
   }
+  return !memoryOnly;
 }
+async function flushStateToCloud(){
+  return saveState({immediateCloud:true});
+}
+window.flushStateToCloud=flushStateToCloud;
 
 /* ==================== HELPERS ==================== */
 const $ = s=>document.querySelector(s);
@@ -38714,7 +38801,8 @@ async function adminSetLearnerDay(){
     else delete d.completedDays[i];
   }
   d.courseCurrentDay = day;
-  d.courseFlowVersion = 2;
+  d.courseFlowVersion = 3;
+  d._stateUpdatedAt=Date.now();
   let ok = false;
   if(window.Cloud && window.Cloud.enabled && typeof cloudSave==='function') ok = await cloudSave('user', d);
   try{ localStorage.setItem(STORAGE_KEY+':user', JSON.stringify(d)); }catch(e){}
@@ -39857,7 +39945,7 @@ function finishSession(){
   // 오늘 세션 스냅샷을 보고서용으로 저장
   const acc = sess.total? Math.round(sess.correct/(sess.correct+sess.wrong||1)*100):100;
   window._lastReport = buildReport(sess, acc, elapsedStr);
-  saveState();
+  saveState({immediateCloud:true});
 
   const stage=$('#studyStage'); stage.innerHTML='';
   const c = el('div','study-card');
@@ -40591,12 +40679,23 @@ function initTheme(){
   }
 }
 
+// 화면 전환·탭 종료 직전에도 최신 진도를 로컬에 즉시 고정하고 클라우드 저장을 시도한다.
+window.addEventListener('pagehide',()=>{ try{ saveState({immediateCloud:true}); }catch(e){} });
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='hidden'){ try{ saveState({immediateCloud:true}); }catch(e){} }
+});
+
 /* ==================== INIT ==================== */
 async function bootApp(){
   await loadState();
   await saveState();
   initTheme();
   renderHome();
+  if(state._progressRecoveredAt && !state._progressRecoveryNotified){
+    state._progressRecoveryNotified=true;
+    saveState({immediateCloud:true});
+    setTimeout(()=>toast(`기존 학습기록을 복구했습니다. DAY ${getCourseCurrentDay()}부터 이어서 진행합니다.`),450);
+  }
   const st = $('#spellToggle');
   if(st){
     st.classList.toggle('on', !!state.spellMode);
