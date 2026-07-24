@@ -1,0 +1,1084 @@
+{
+  "schema_version": 2,
+  "totals": {
+    "roots": 360,
+    "headwords": 1410,
+    "estimated_first_pass_minutes": 975.0,
+    "new_days": 18
+  },
+  "method": {
+    "root_minutes": 0.75,
+    "word_minutes": 0.5,
+    "sequence_preserved": true,
+    "root_unit_splitting": false,
+    "suffix_variants_merged": true,
+    "note": "시각적으로 한 묶음인 접미사 변이형(-er/-ee/-or 등)을 하나의 학습 단위로 병합한 뒤, 실제 표제어 수와 예상시간으로 균등 배치했습니다."
+  },
+  "days": [
+    {
+      "new_day": 1,
+      "unit_start": 1,
+      "unit_end": 15,
+      "root_start": "pro-",
+      "root_end": "under-",
+      "roots": 15,
+      "words": 84,
+      "estimated_minutes": 53.2,
+      "source_days": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "source_day_range": "01-04",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 1,
+          "unit_end": 5,
+          "root_start": "pro-",
+          "root_end": "in-",
+          "roots": 5,
+          "words": 23,
+          "estimated_minutes": 15.2
+        },
+        {
+          "block": 2,
+          "unit_start": 6,
+          "unit_end": 8,
+          "root_start": "out-",
+          "root_end": "extra-",
+          "roots": 3,
+          "words": 20,
+          "estimated_minutes": 12.2
+        },
+        {
+          "block": 3,
+          "unit_start": 9,
+          "unit_end": 11,
+          "root_start": "mis-",
+          "root_end": "inter-",
+          "roots": 3,
+          "words": 19,
+          "estimated_minutes": 11.8
+        },
+        {
+          "block": 4,
+          "unit_start": 12,
+          "unit_end": 15,
+          "root_start": "dia-",
+          "root_end": "under-",
+          "roots": 4,
+          "words": 22,
+          "estimated_minutes": 14.0
+        }
+      ]
+    },
+    {
+      "new_day": 2,
+      "unit_start": 16,
+      "unit_end": 30,
+      "root_start": "ex-",
+      "root_end": "tele-",
+      "roots": 15,
+      "words": 86,
+      "estimated_minutes": 54.2,
+      "source_days": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "source_day_range": "04-08",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 16,
+          "unit_end": 18,
+          "root_start": "ex-",
+          "root_end": "dis-",
+          "roots": 3,
+          "words": 24,
+          "estimated_minutes": 14.2
+        },
+        {
+          "block": 2,
+          "unit_start": 19,
+          "unit_end": 22,
+          "root_start": "in-",
+          "root_end": "sub-",
+          "roots": 4,
+          "words": 21,
+          "estimated_minutes": 13.5
+        },
+        {
+          "block": 3,
+          "unit_start": 23,
+          "unit_end": 25,
+          "root_start": "anti-",
+          "root_end": "com-",
+          "roots": 3,
+          "words": 21,
+          "estimated_minutes": 12.8
+        },
+        {
+          "block": 4,
+          "unit_start": 26,
+          "unit_end": 30,
+          "root_start": "sym-",
+          "root_end": "tele-",
+          "roots": 5,
+          "words": 20,
+          "estimated_minutes": 13.8
+        }
+      ]
+    },
+    {
+      "new_day": 3,
+      "unit_start": 31,
+      "unit_end": 49,
+      "root_start": "auto-",
+      "root_end": "-(e)ty/-ity",
+      "roots": 19,
+      "words": 81,
+      "estimated_minutes": 54.8,
+      "source_days": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "source_day_range": "08-11",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 31,
+          "unit_end": 34,
+          "root_start": "auto-",
+          "root_end": "ad-",
+          "roots": 4,
+          "words": 23,
+          "estimated_minutes": 14.5
+        },
+        {
+          "block": 2,
+          "unit_start": 35,
+          "unit_end": 38,
+          "root_start": "a-",
+          "root_end": "contra-",
+          "roots": 4,
+          "words": 20,
+          "estimated_minutes": 13.0
+        },
+        {
+          "block": 3,
+          "unit_start": 39,
+          "unit_end": 42,
+          "root_start": "mono-/uni-",
+          "root_end": "-er/-ee/-or",
+          "roots": 4,
+          "words": 19,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 4,
+          "unit_start": 43,
+          "unit_end": 49,
+          "root_start": "-ant/-ent",
+          "root_end": "-(e)ty/-ity",
+          "roots": 7,
+          "words": 19,
+          "estimated_minutes": 14.8
+        }
+      ]
+    },
+    {
+      "new_day": 4,
+      "unit_start": 50,
+      "unit_end": 83,
+      "root_start": "-y/-ry",
+      "root_end": "-ful",
+      "roots": 34,
+      "words": 54,
+      "estimated_minutes": 52.5,
+      "source_days": [
+        11,
+        12
+      ],
+      "source_day_range": "11-12",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 50,
+          "unit_end": 55,
+          "root_start": "-y/-ry",
+          "root_end": "-th/-t",
+          "roots": 6,
+          "words": 16,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 2,
+          "unit_start": 56,
+          "unit_end": 62,
+          "root_start": "-ness",
+          "root_end": "-le/-el",
+          "roots": 7,
+          "words": 17,
+          "estimated_minutes": 13.8
+        },
+        {
+          "block": 3,
+          "unit_start": 63,
+          "unit_end": 72,
+          "root_start": "-ish",
+          "root_end": "-ical",
+          "roots": 10,
+          "words": 10,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 4,
+          "unit_start": 73,
+          "unit_end": 83,
+          "root_start": "-ic",
+          "root_end": "-ful",
+          "roots": 11,
+          "words": 11,
+          "estimated_minutes": 13.8
+        }
+      ]
+    },
+    {
+      "new_day": 5,
+      "unit_start": 84,
+      "unit_end": 113,
+      "root_start": "-ive",
+      "root_end": "-ly",
+      "roots": 30,
+      "words": 63,
+      "estimated_minutes": 54.0,
+      "source_days": [
+        12,
+        13
+      ],
+      "source_day_range": "12-13",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 84,
+          "unit_end": 94,
+          "root_start": "-ive",
+          "root_end": "-ous",
+          "roots": 11,
+          "words": 11,
+          "estimated_minutes": 13.8
+        },
+        {
+          "block": 2,
+          "unit_start": 95,
+          "unit_end": 100,
+          "root_start": "-able/-ible",
+          "root_end": "-ous",
+          "roots": 6,
+          "words": 17,
+          "estimated_minutes": 13.0
+        },
+        {
+          "block": 3,
+          "unit_start": 101,
+          "unit_end": 106,
+          "root_start": "-ate",
+          "root_end": "-y",
+          "roots": 6,
+          "words": 17,
+          "estimated_minutes": 13.0
+        },
+        {
+          "block": 4,
+          "unit_start": 107,
+          "unit_end": 113,
+          "root_start": "-less",
+          "root_end": "-ly",
+          "roots": 7,
+          "words": 18,
+          "estimated_minutes": 14.2
+        }
+      ]
+    },
+    {
+      "new_day": 6,
+      "unit_start": 114,
+      "unit_end": 134,
+      "root_start": "-ward",
+      "root_end": "centr",
+      "roots": 21,
+      "words": 77,
+      "estimated_minutes": 54.2,
+      "source_days": [
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "source_day_range": "13-17",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 114,
+          "unit_end": 118,
+          "root_start": "-ward",
+          "root_end": "alter",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 2,
+          "unit_start": 119,
+          "unit_end": 124,
+          "root_start": "ang",
+          "root_end": "audey",
+          "roots": 6,
+          "words": 16,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 3,
+          "unit_start": 125,
+          "unit_end": 129,
+          "root_start": "band",
+          "root_end": "cap",
+          "roots": 5,
+          "words": 22,
+          "estimated_minutes": 14.8
+        },
+        {
+          "block": 4,
+          "unit_start": 130,
+          "unit_end": 134,
+          "root_start": "car",
+          "root_end": "centr",
+          "roots": 5,
+          "words": 20,
+          "estimated_minutes": 13.8
+        }
+      ]
+    },
+    {
+      "new_day": 7,
+      "unit_start": 135,
+      "unit_end": 154,
+      "root_start": "cern",
+      "root_end": "deb",
+      "roots": 20,
+      "words": 79,
+      "estimated_minutes": 54.5,
+      "source_days": [
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "source_day_range": "17-21",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 135,
+          "unit_end": 139,
+          "root_start": "cern",
+          "root_end": "cide",
+          "roots": 5,
+          "words": 18,
+          "estimated_minutes": 12.8
+        },
+        {
+          "block": 2,
+          "unit_start": 140,
+          "unit_end": 145,
+          "root_start": "circul",
+          "root_end": "clud",
+          "roots": 6,
+          "words": 21,
+          "estimated_minutes": 15.0
+        },
+        {
+          "block": 3,
+          "unit_start": 146,
+          "unit_end": 149,
+          "root_start": "cogn",
+          "root_end": "crea",
+          "roots": 4,
+          "words": 20,
+          "estimated_minutes": 13.0
+        },
+        {
+          "block": 4,
+          "unit_start": 150,
+          "unit_end": 154,
+          "root_start": "cred",
+          "root_end": "deb",
+          "roots": 5,
+          "words": 20,
+          "estimated_minutes": 13.8
+        }
+      ]
+    },
+    {
+      "new_day": 8,
+      "unit_start": 155,
+      "unit_end": 171,
+      "root_start": "der",
+      "root_end": "fin",
+      "roots": 17,
+      "words": 85,
+      "estimated_minutes": 55.2,
+      "source_days": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "source_day_range": "21-24",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 155,
+          "unit_end": 158,
+          "root_start": "der",
+          "root_end": "don",
+          "roots": 4,
+          "words": 18,
+          "estimated_minutes": 12.0
+        },
+        {
+          "block": 2,
+          "unit_start": 159,
+          "unit_end": 163,
+          "root_start": "duc",
+          "root_end": "estim",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 3,
+          "unit_start": 164,
+          "unit_end": 165,
+          "root_start": "fa",
+          "root_end": "fac",
+          "roots": 2,
+          "words": 25,
+          "estimated_minutes": 14.0
+        },
+        {
+          "block": 4,
+          "unit_start": 166,
+          "unit_end": 171,
+          "root_start": "fals",
+          "root_end": "fin",
+          "roots": 6,
+          "words": 23,
+          "estimated_minutes": 16.0
+        }
+      ]
+    },
+    {
+      "new_day": 9,
+      "unit_start": 172,
+      "unit_end": 190,
+      "root_start": "flect",
+      "root_end": "hered",
+      "roots": 19,
+      "words": 77,
+      "estimated_minutes": 52.8,
+      "source_days": [
+        24,
+        25,
+        26,
+        27
+      ],
+      "source_day_range": "24-27",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 172,
+          "unit_end": 176,
+          "root_start": "flect",
+          "root_end": "form",
+          "roots": 5,
+          "words": 16,
+          "estimated_minutes": 11.8
+        },
+        {
+          "block": 2,
+          "unit_start": 177,
+          "unit_end": 181,
+          "root_start": "fort",
+          "root_end": "gard",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 3,
+          "unit_start": 182,
+          "unit_end": 185,
+          "root_start": "gener",
+          "root_end": "grad",
+          "roots": 4,
+          "words": 23,
+          "estimated_minutes": 14.5
+        },
+        {
+          "block": 4,
+          "unit_start": 186,
+          "unit_end": 190,
+          "root_start": "graph",
+          "root_end": "hered",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        }
+      ]
+    },
+    {
+      "new_day": 10,
+      "unit_start": 191,
+      "unit_end": 210,
+      "root_start": "host",
+      "root_end": "log",
+      "roots": 20,
+      "words": 78,
+      "estimated_minutes": 54.0,
+      "source_days": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "source_day_range": "28-31",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 191,
+          "unit_end": 195,
+          "root_start": "host",
+          "root_end": "ject",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 2,
+          "unit_start": 196,
+          "unit_end": 200,
+          "root_start": "jus",
+          "root_end": "laxly",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 3,
+          "unit_start": 201,
+          "unit_end": 205,
+          "root_start": "lect",
+          "root_end": "liber",
+          "roots": 5,
+          "words": 20,
+          "estimated_minutes": 13.8
+        },
+        {
+          "block": 4,
+          "unit_start": 206,
+          "unit_end": 210,
+          "root_start": "lig",
+          "root_end": "log",
+          "roots": 5,
+          "words": 20,
+          "estimated_minutes": 13.8
+        }
+      ]
+    },
+    {
+      "new_day": 11,
+      "unit_start": 211,
+      "unit_end": 227,
+      "root_start": "long",
+      "root_end": "mod",
+      "roots": 17,
+      "words": 84,
+      "estimated_minutes": 54.8,
+      "source_days": [
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "source_day_range": "31-35",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 211,
+          "unit_end": 214,
+          "root_start": "long",
+          "root_end": "mand",
+          "roots": 4,
+          "words": 19,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 2,
+          "unit_start": 215,
+          "unit_end": 219,
+          "root_start": "manu",
+          "root_end": "ment",
+          "roots": 5,
+          "words": 24,
+          "estimated_minutes": 15.8
+        },
+        {
+          "block": 3,
+          "unit_start": 220,
+          "unit_end": 224,
+          "root_start": "merc",
+          "root_end": "min",
+          "roots": 5,
+          "words": 20,
+          "estimated_minutes": 13.8
+        },
+        {
+          "block": 4,
+          "unit_start": 225,
+          "unit_end": 227,
+          "root_start": "mir",
+          "root_end": "mod",
+          "roots": 3,
+          "words": 21,
+          "estimated_minutes": 12.8
+        }
+      ]
+    },
+    {
+      "new_day": 12,
+      "unit_start": 228,
+      "unit_end": 249,
+      "root_start": "mort",
+      "root_end": "pass",
+      "roots": 22,
+      "words": 74,
+      "estimated_minutes": 53.5,
+      "source_days": [
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "source_day_range": "35-39",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 228,
+          "unit_end": 232,
+          "root_start": "mort",
+          "root_end": "nat",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 2,
+          "unit_start": 233,
+          "unit_end": 238,
+          "root_start": "neg",
+          "root_end": "numer",
+          "roots": 6,
+          "words": 17,
+          "estimated_minutes": 13.0
+        },
+        {
+          "block": 3,
+          "unit_start": 239,
+          "unit_end": 244,
+          "root_start": "nutri",
+          "root_end": "ori",
+          "roots": 6,
+          "words": 16,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 4,
+          "unit_start": 245,
+          "unit_end": 249,
+          "root_start": "par",
+          "root_end": "pass",
+          "roots": 5,
+          "words": 22,
+          "estimated_minutes": 14.8
+        }
+      ]
+    },
+    {
+      "new_day": 13,
+      "unit_start": 250,
+      "unit_end": 267,
+      "root_start": "path",
+      "root_end": "pos",
+      "roots": 18,
+      "words": 84,
+      "estimated_minutes": 55.5,
+      "source_days": [
+        39,
+        40,
+        41,
+        42
+      ],
+      "source_day_range": "39-42",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 250,
+          "unit_end": 254,
+          "root_start": "path",
+          "root_end": "pen",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 2,
+          "unit_start": 255,
+          "unit_end": 259,
+          "root_start": "pend",
+          "root_end": "plaud",
+          "roots": 5,
+          "words": 21,
+          "estimated_minutes": 14.2
+        },
+        {
+          "block": 3,
+          "unit_start": 260,
+          "unit_end": 264,
+          "root_start": "ple",
+          "root_end": "polit",
+          "roots": 5,
+          "words": 22,
+          "estimated_minutes": 14.8
+        },
+        {
+          "block": 4,
+          "unit_start": 265,
+          "unit_end": 267,
+          "root_start": "popul",
+          "root_end": "pos",
+          "roots": 3,
+          "words": 22,
+          "estimated_minutes": 13.2
+        }
+      ]
+    },
+    {
+      "new_day": 14,
+      "unit_start": 268,
+      "unit_end": 286,
+      "root_start": "poss",
+      "root_end": "sci",
+      "roots": 19,
+      "words": 78,
+      "estimated_minutes": 53.2,
+      "source_days": [
+        43,
+        44,
+        45,
+        46
+      ],
+      "source_day_range": "43-46",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 268,
+          "unit_end": 271,
+          "root_start": "poss",
+          "root_end": "press",
+          "roots": 4,
+          "words": 17,
+          "estimated_minutes": 11.5
+        },
+        {
+          "block": 2,
+          "unit_start": 272,
+          "unit_end": 277,
+          "root_start": "prim",
+          "root_end": "put",
+          "roots": 6,
+          "words": 20,
+          "estimated_minutes": 14.5
+        },
+        {
+          "block": 3,
+          "unit_start": 278,
+          "unit_end": 281,
+          "root_start": "quir",
+          "root_end": "rect",
+          "roots": 4,
+          "words": 22,
+          "estimated_minutes": 14.0
+        },
+        {
+          "block": 4,
+          "unit_start": 282,
+          "unit_end": 286,
+          "root_start": "rot",
+          "root_end": "sci",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        }
+      ]
+    },
+    {
+      "new_day": 15,
+      "unit_start": 287,
+      "unit_end": 304,
+      "root_start": "scrib",
+      "root_end": "spond",
+      "roots": 18,
+      "words": 82,
+      "estimated_minutes": 54.5,
+      "source_days": [
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "source_day_range": "46-50",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 287,
+          "unit_end": 290,
+          "root_start": "scrib",
+          "root_end": "sequ",
+          "roots": 4,
+          "words": 19,
+          "estimated_minutes": 12.5
+        },
+        {
+          "block": 2,
+          "unit_start": 291,
+          "unit_end": 294,
+          "root_start": "sert",
+          "root_end": "sign",
+          "roots": 4,
+          "words": 23,
+          "estimated_minutes": 14.5
+        },
+        {
+          "block": 3,
+          "unit_start": 295,
+          "unit_end": 299,
+          "root_start": "simil",
+          "root_end": "soph",
+          "roots": 5,
+          "words": 17,
+          "estimated_minutes": 12.2
+        },
+        {
+          "block": 4,
+          "unit_start": 300,
+          "unit_end": 304,
+          "root_start": "spect",
+          "root_end": "spond",
+          "roots": 5,
+          "words": 23,
+          "estimated_minutes": 15.2
+        }
+      ]
+    },
+    {
+      "new_day": 16,
+      "unit_start": 305,
+      "unit_end": 319,
+      "root_start": "sta",
+      "root_end": "temper",
+      "roots": 15,
+      "words": 87,
+      "estimated_minutes": 54.8,
+      "source_days": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "source_day_range": "50-54",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 305,
+          "unit_end": 306,
+          "root_start": "sta",
+          "root_end": "sta",
+          "roots": 2,
+          "words": 29,
+          "estimated_minutes": 16.0
+        },
+        {
+          "block": 2,
+          "unit_start": 307,
+          "unit_end": 309,
+          "root_start": "sting",
+          "root_end": "struct",
+          "roots": 3,
+          "words": 21,
+          "estimated_minutes": 12.8
+        },
+        {
+          "block": 3,
+          "unit_start": 310,
+          "unit_end": 315,
+          "root_start": "sult",
+          "root_end": "tact",
+          "roots": 6,
+          "words": 20,
+          "estimated_minutes": 14.5
+        },
+        {
+          "block": 4,
+          "unit_start": 316,
+          "unit_end": 319,
+          "root_start": "tail",
+          "root_end": "temper",
+          "roots": 4,
+          "words": 17,
+          "estimated_minutes": 11.5
+        }
+      ]
+    },
+    {
+      "new_day": 17,
+      "unit_start": 320,
+      "unit_end": 341,
+      "root_start": "tempor",
+      "root_end": "us",
+      "roots": 22,
+      "words": 76,
+      "estimated_minutes": 54.5,
+      "source_days": [
+        54,
+        55,
+        56,
+        57
+      ],
+      "source_day_range": "54-57",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 320,
+          "unit_end": 324,
+          "root_start": "tempor",
+          "root_end": "terr",
+          "roots": 5,
+          "words": 19,
+          "estimated_minutes": 13.2
+        },
+        {
+          "block": 2,
+          "unit_start": 325,
+          "unit_end": 330,
+          "root_start": "terr",
+          "root_end": "ton",
+          "roots": 6,
+          "words": 18,
+          "estimated_minutes": 13.5
+        },
+        {
+          "block": 3,
+          "unit_start": 331,
+          "unit_end": 334,
+          "root_start": "tort",
+          "root_end": "trem",
+          "roots": 4,
+          "words": 20,
+          "estimated_minutes": 13.0
+        },
+        {
+          "block": 4,
+          "unit_start": 335,
+          "unit_end": 341,
+          "root_start": "tribut",
+          "root_end": "us",
+          "roots": 7,
+          "words": 19,
+          "estimated_minutes": 14.8
+        }
+      ]
+    },
+    {
+      "new_day": 18,
+      "unit_start": 342,
+      "unit_end": 360,
+      "root_start": "vad",
+      "root_end": "ward",
+      "roots": 19,
+      "words": 81,
+      "estimated_minutes": 54.8,
+      "source_days": [
+        57,
+        58,
+        59,
+        60
+      ],
+      "source_day_range": "57-60",
+      "blocks": [
+        {
+          "block": 1,
+          "unit_start": 342,
+          "unit_end": 347,
+          "root_start": "vad",
+          "root_end": "venge",
+          "roots": 6,
+          "words": 19,
+          "estimated_minutes": 14.0
+        },
+        {
+          "block": 2,
+          "unit_start": 348,
+          "unit_end": 350,
+          "root_start": "vent",
+          "root_end": "via",
+          "roots": 3,
+          "words": 24,
+          "estimated_minutes": 14.2
+        },
+        {
+          "block": 3,
+          "unit_start": 351,
+          "unit_end": 355,
+          "root_start": "vict",
+          "root_end": "viv",
+          "roots": 5,
+          "words": 21,
+          "estimated_minutes": 14.2
+        },
+        {
+          "block": 4,
+          "unit_start": 356,
+          "unit_end": 360,
+          "root_start": "voc",
+          "root_end": "ward",
+          "roots": 5,
+          "words": 17,
+          "estimated_minutes": 12.2
+        }
+      ]
+    }
+  ]
+}

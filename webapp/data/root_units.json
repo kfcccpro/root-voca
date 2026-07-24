@@ -1,0 +1,7549 @@
+[
+  {
+    "id": 1,
+    "source_day": 1,
+    "page_start": 18,
+    "page_end": 19,
+    "root": "pro-",
+    "source_roots": [
+      "pro-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 18,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "progress",
+      "propose",
+      "produce",
+      "protect",
+      "purchase"
+    ]
+  },
+  {
+    "id": 2,
+    "source_day": 1,
+    "page_start": 19,
+    "page_end": 20,
+    "root": "pre-",
+    "source_roots": [
+      "pre-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 19,
+    "root_y": 259.4,
+    "root_x": 104.8,
+    "start_y": 259.4,
+    "words": [
+      "predict",
+      "precaution",
+      "premature",
+      "preview"
+    ]
+  },
+  {
+    "id": 3,
+    "source_day": 1,
+    "page_start": 20,
+    "page_end": 20,
+    "root": "fore-",
+    "source_roots": [
+      "fore-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 20,
+    "root_y": 253.0,
+    "root_x": 76.3,
+    "start_y": 253.0,
+    "words": [
+      "forehead",
+      "forefather",
+      "foremost",
+      "foresee"
+    ]
+  },
+  {
+    "id": 4,
+    "source_day": 1,
+    "page_start": 21,
+    "page_end": 21,
+    "root": "post-",
+    "source_roots": [
+      "post-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 21,
+    "root_y": 52.5,
+    "root_x": 104.8,
+    "start_y": 52.5,
+    "words": [
+      "postpone",
+      "postwar"
+    ]
+  },
+  {
+    "id": 5,
+    "source_day": 1,
+    "page_start": 21,
+    "page_end": 23,
+    "root": "in-",
+    "source_roots": [
+      "in-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 21,
+    "root_y": 495.3,
+    "root_x": 104.8,
+    "start_y": 495.3,
+    "words": [
+      "income",
+      "intake",
+      "infection",
+      "insight",
+      "inherent",
+      "investment",
+      "investigate",
+      "illustrate"
+    ]
+  },
+  {
+    "id": 6,
+    "source_day": 2,
+    "page_start": 24,
+    "page_end": 25,
+    "root": "out-",
+    "source_roots": [
+      "out-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 24,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "outcome",
+      "outline",
+      "outlook",
+      "outstanding",
+      "outlet",
+      "utter",
+      "utmost"
+    ]
+  },
+  {
+    "id": 7,
+    "source_day": 2,
+    "page_start": 26,
+    "page_end": 27,
+    "root": "over-",
+    "source_roots": [
+      "over-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 26,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "overcome",
+      "overlook",
+      "overseas",
+      "overhead",
+      "overtake",
+      "overwhelm",
+      "overlap",
+      "overflow"
+    ]
+  },
+  {
+    "id": 8,
+    "source_day": 2,
+    "page_start": 27,
+    "page_end": 28,
+    "root": "extra-",
+    "source_roots": [
+      "extra-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 27,
+    "root_y": 537.4,
+    "root_x": 104.8,
+    "start_y": 537.4,
+    "words": [
+      "extracurricular",
+      "extraterrestrial",
+      "extraordinary",
+      "extrovert",
+      "external"
+    ]
+  },
+  {
+    "id": 9,
+    "source_day": 2,
+    "page_start": 28,
+    "page_end": 29,
+    "root": "mis-",
+    "source_roots": [
+      "mis-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 28,
+    "root_y": 532.8,
+    "root_x": 76.3,
+    "start_y": 532.8,
+    "words": [
+      "misfortune",
+      "mislead",
+      "misbehave"
+    ]
+  },
+  {
+    "id": 10,
+    "source_day": 3,
+    "page_start": 30,
+    "page_end": 32,
+    "root": "re-",
+    "source_roots": [
+      "re-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 30,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "recall",
+      "record",
+      "recover",
+      "recycle",
+      "research",
+      "replace",
+      "reproduce",
+      "revive",
+      "remove",
+      "retire",
+      "remain",
+      "represent"
+    ]
+  },
+  {
+    "id": 11,
+    "source_day": 3,
+    "page_start": 33,
+    "page_end": 33,
+    "root": "inter-",
+    "source_roots": [
+      "inter-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 33,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "international",
+      "interpret",
+      "interfere",
+      "interaction"
+    ]
+  },
+  {
+    "id": 12,
+    "source_day": 3,
+    "page_start": 34,
+    "page_end": 34,
+    "root": "dia-",
+    "source_roots": [
+      "dia-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 34,
+    "root_y": 162.1,
+    "root_x": 76.3,
+    "start_y": 162.1,
+    "words": [
+      "dialogue",
+      "dialect",
+      "diameter"
+    ]
+  },
+  {
+    "id": 13,
+    "source_day": 3,
+    "page_start": 34,
+    "page_end": 35,
+    "root": "trans-",
+    "source_roots": [
+      "trans-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 34,
+    "root_y": 518.6,
+    "root_x": 76.3,
+    "start_y": 518.6,
+    "words": [
+      "transfer",
+      "transform",
+      "translate",
+      "transplant"
+    ]
+  },
+  {
+    "id": 14,
+    "source_day": 4,
+    "page_start": 36,
+    "page_end": 38,
+    "root": "de-",
+    "source_roots": [
+      "de-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 36,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "depress",
+      "despise",
+      "depart",
+      "derive",
+      "detect",
+      "detach",
+      "develop",
+      "declare",
+      "debate",
+      "demonstrate",
+      "depict"
+    ]
+  },
+  {
+    "id": 15,
+    "source_day": 4,
+    "page_start": 38,
+    "page_end": 39,
+    "root": "under-",
+    "source_roots": [
+      "under-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 38,
+    "root_y": 309.9,
+    "root_x": 76.3,
+    "start_y": 309.9,
+    "words": [
+      "undergraduate",
+      "undergo",
+      "undertake",
+      "underlie"
+    ]
+  },
+  {
+    "id": 16,
+    "source_day": 4,
+    "page_start": 39,
+    "page_end": 40,
+    "root": "ex-",
+    "source_roots": [
+      "ex-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 39,
+    "root_y": 154.0,
+    "root_x": 104.8,
+    "start_y": 154.0,
+    "words": [
+      "exhale",
+      "expand",
+      "explicit",
+      "explain",
+      "expose",
+      "exaggerate",
+      "exchange",
+      "exhaust",
+      "evaporation"
+    ]
+  },
+  {
+    "id": 17,
+    "source_day": 5,
+    "page_start": 42,
+    "page_end": 43,
+    "root": "un-",
+    "source_roots": [
+      "un-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 42,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "uneasy",
+      "unfair",
+      "unfortunate",
+      "unlikely",
+      "unusual",
+      "unlock"
+    ]
+  },
+  {
+    "id": 18,
+    "source_day": 5,
+    "page_start": 43,
+    "page_end": 45,
+    "root": "dis-",
+    "source_roots": [
+      "dis-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 43,
+    "root_y": 141.0,
+    "root_x": 104.8,
+    "start_y": 141.0,
+    "words": [
+      "disagree",
+      "disappear",
+      "disorder",
+      "discount",
+      "discourage",
+      "dismiss",
+      "dispose",
+      "display",
+      "differ"
+    ]
+  },
+  {
+    "id": 19,
+    "source_day": 5,
+    "page_start": 46,
+    "page_end": 47,
+    "root": "in-",
+    "source_roots": [
+      "in-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 46,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "independent",
+      "inevitable",
+      "inexpensive",
+      "illegal",
+      "immoral",
+      "immune",
+      "irrelevant"
+    ]
+  },
+  {
+    "id": 20,
+    "source_day": 6,
+    "page_start": 49,
+    "page_end": 50,
+    "root": "super-",
+    "source_roots": [
+      "super-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 49,
+    "root_y": 109.6,
+    "root_x": 104.8,
+    "start_y": 109.6,
+    "words": [
+      "superior",
+      "superb",
+      "superficial",
+      "sovereign",
+      "surface"
+    ]
+  },
+  {
+    "id": 21,
+    "source_day": 6,
+    "page_start": 50,
+    "page_end": 50,
+    "root": "up-",
+    "source_roots": [
+      "up-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 50,
+    "root_y": 236.6,
+    "root_x": 76.3,
+    "start_y": 236.6,
+    "words": [
+      "uphold",
+      "upright",
+      "upset",
+      "upside"
+    ]
+  },
+  {
+    "id": 22,
+    "source_day": 6,
+    "page_start": 51,
+    "page_end": 52,
+    "root": "sub-",
+    "source_roots": [
+      "sub-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 51,
+    "root_y": 146.6,
+    "root_x": 104.8,
+    "start_y": 146.6,
+    "words": [
+      "submarine",
+      "suffer",
+      "suggest",
+      "support",
+      "suppress"
+    ]
+  },
+  {
+    "id": 23,
+    "source_day": 6,
+    "page_start": 52,
+    "page_end": 52,
+    "root": "anti-",
+    "source_roots": [
+      "anti-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 52,
+    "root_y": 288.6,
+    "root_x": 76.3,
+    "start_y": 288.6,
+    "words": [
+      "antibiotic",
+      "antibody",
+      "antarctic"
+    ]
+  },
+  {
+    "id": 24,
+    "source_day": 6,
+    "page_start": 53,
+    "page_end": 54,
+    "root": "ante-",
+    "source_roots": [
+      "ante-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 53,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "anticipate",
+      "antique",
+      "advantage",
+      "ancestor",
+      "ancient",
+      "advance"
+    ]
+  },
+  {
+    "id": 25,
+    "source_day": 7,
+    "page_start": 55,
+    "page_end": 57,
+    "root": "com-",
+    "source_roots": [
+      "com-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 55,
+    "root_y": 109.6,
+    "root_x": 104.8,
+    "start_y": 109.6,
+    "words": [
+      "combine",
+      "company",
+      "compile",
+      "compose",
+      "compromise",
+      "complain",
+      "conform",
+      "confront",
+      "confirm",
+      "condense",
+      "correspond",
+      "collapse"
+    ]
+  },
+  {
+    "id": 26,
+    "source_day": 7,
+    "page_start": 57,
+    "page_end": 58,
+    "root": "sym-",
+    "source_roots": [
+      "sym-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 57,
+    "root_y": 549.5,
+    "root_x": 104.8,
+    "start_y": 549.5,
+    "words": [
+      "symphony",
+      "synthetic"
+    ]
+  },
+  {
+    "id": 27,
+    "source_day": 7,
+    "page_start": 58,
+    "page_end": 58,
+    "root": "multi-",
+    "source_roots": [
+      "multi-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 58,
+    "root_y": 139.1,
+    "root_x": 76.3,
+    "start_y": 139.1,
+    "words": [
+      "multimedia",
+      "multiple",
+      "multitude"
+    ]
+  },
+  {
+    "id": 28,
+    "source_day": 7,
+    "page_start": 59,
+    "page_end": 59,
+    "root": "ab-",
+    "source_roots": [
+      "ab-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 59,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "absorb",
+      "abnormal",
+      "absolute",
+      "absurd"
+    ]
+  },
+  {
+    "id": 29,
+    "source_day": 8,
+    "page_start": 60,
+    "page_end": 62,
+    "root": "en-",
+    "source_roots": [
+      "en-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 60,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "enable",
+      "enforce",
+      "enhance",
+      "enlarge",
+      "enrich",
+      "entitle",
+      "enclose",
+      "encounter",
+      "engage",
+      "embrace"
+    ]
+  },
+  {
+    "id": 30,
+    "source_day": 8,
+    "page_start": 62,
+    "page_end": 62,
+    "root": "tele-",
+    "source_roots": [
+      "tele-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 62,
+    "root_y": 156.1,
+    "root_x": 76.3,
+    "start_y": 156.1,
+    "words": [
+      "telescope"
+    ]
+  },
+  {
+    "id": 31,
+    "source_day": 8,
+    "page_start": 62,
+    "page_end": 63,
+    "root": "auto-",
+    "source_roots": [
+      "auto-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 62,
+    "root_y": 295.8,
+    "root_x": 76.3,
+    "start_y": 295.8,
+    "words": [
+      "autograph",
+      "autobiography",
+      "automobile"
+    ]
+  },
+  {
+    "id": 32,
+    "source_day": 8,
+    "page_start": 63,
+    "page_end": 64,
+    "root": "per-",
+    "source_roots": [
+      "per-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 63,
+    "root_y": 261.7,
+    "root_x": 104.8,
+    "start_y": 261.7,
+    "words": [
+      "perfect",
+      "permanent",
+      "persevere",
+      "persist",
+      "persuade",
+      "perspective"
+    ]
+  },
+  {
+    "id": 33,
+    "source_day": 8,
+    "page_start": 64,
+    "page_end": 66,
+    "root": "se-",
+    "source_roots": [
+      "se-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 64,
+    "root_y": 495.0,
+    "root_x": 76.3,
+    "start_y": 495.0,
+    "words": [
+      "separate",
+      "secure",
+      "select",
+      "segregation"
+    ]
+  },
+  {
+    "id": 34,
+    "source_day": 9,
+    "page_start": 67,
+    "page_end": 69,
+    "root": "ad-",
+    "source_roots": [
+      "ad-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 67,
+    "root_y": 109.6,
+    "root_x": 104.8,
+    "start_y": 109.6,
+    "words": [
+      "adjust",
+      "accompany",
+      "account",
+      "accumulate",
+      "accustomed",
+      "appoint",
+      "approach",
+      "await",
+      "abandon",
+      "arrogant"
+    ]
+  },
+  {
+    "id": 35,
+    "source_day": 9,
+    "page_start": 69,
+    "page_end": 71,
+    "root": "a-",
+    "source_roots": [
+      "a-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 69,
+    "root_y": 364.4,
+    "root_x": 104.8,
+    "start_y": 364.4,
+    "words": [
+      "aboard",
+      "abroad",
+      "alike",
+      "arise",
+      "arouse",
+      "amaze",
+      "ashamed",
+      "afford"
+    ]
+  },
+  {
+    "id": 36,
+    "source_day": 9,
+    "page_start": 71,
+    "page_end": 71,
+    "root": "with-",
+    "source_roots": [
+      "with-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 71,
+    "root_y": 189.5,
+    "root_x": 104.8,
+    "start_y": 189.5,
+    "words": [
+      "withdraw",
+      "withhold",
+      "withstand"
+    ]
+  },
+  {
+    "id": 37,
+    "source_day": 9,
+    "page_start": 72,
+    "page_end": 72,
+    "root": "geo-",
+    "source_roots": [
+      "geo-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 72,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "geography",
+      "geology",
+      "geometry"
+    ]
+  },
+  {
+    "id": 38,
+    "source_day": 10,
+    "page_start": 73,
+    "page_end": 74,
+    "root": "contra-",
+    "source_roots": [
+      "contra-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 73,
+    "root_y": 109.6,
+    "root_x": 104.8,
+    "start_y": 109.6,
+    "words": [
+      "contrary",
+      "contrast",
+      "controversy",
+      "counterattack",
+      "counterfeit",
+      "counterpart"
+    ]
+  },
+  {
+    "id": 39,
+    "source_day": 10,
+    "page_start": 74,
+    "page_end": 75,
+    "root": "mono-/uni-",
+    "source_roots": [
+      "mono-/uni-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 74,
+    "root_y": 314.4,
+    "root_x": 76.3,
+    "start_y": 314.4,
+    "words": [
+      "monologue",
+      "union",
+      "unique",
+      "unify",
+      "unite",
+      "unit",
+      "universe"
+    ]
+  },
+  {
+    "id": 40,
+    "source_day": 10,
+    "page_start": 75,
+    "page_end": 76,
+    "root": "bi-/du-/twi-",
+    "source_roots": [
+      "bi-/du-/twi-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 75,
+    "root_y": 530.5,
+    "root_x": 104.8,
+    "start_y": 530.5,
+    "words": [
+      "bilingual",
+      "balance",
+      "duplicate",
+      "twilight",
+      "twist"
+    ]
+  },
+  {
+    "id": 41,
+    "source_day": 10,
+    "page_start": 77,
+    "page_end": 77,
+    "root": "tri-",
+    "source_roots": [
+      "tri-"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 77,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "triangle",
+      "tribe",
+      "trivial"
+    ]
+  },
+  {
+    "id": 42,
+    "source_day": 11,
+    "page_start": 82,
+    "page_end": 82,
+    "root": "-er/-ee/-or",
+    "source_roots": [
+      "-er",
+      "-ee",
+      "-or"
+    ],
+    "type": "suffix",
+    "root_page": 82,
+    "root_y": 164.0,
+    "root_x": 56.1,
+    "start_y": 124.0,
+    "words": [
+      "interviewer",
+      "interviewee",
+      "inventor",
+      "supervisor"
+    ]
+  },
+  {
+    "id": 43,
+    "source_day": 11,
+    "page_start": 82,
+    "page_end": 83,
+    "root": "-ant/-ent",
+    "source_roots": [
+      "-ant",
+      "-ent"
+    ],
+    "type": "suffix",
+    "root_page": 82,
+    "root_y": 559.7,
+    "root_x": 56.1,
+    "start_y": 519.7,
+    "words": [
+      "assistant",
+      "attendant",
+      "servant",
+      "resident"
+    ]
+  },
+  {
+    "id": 44,
+    "source_day": 11,
+    "page_start": 83,
+    "page_end": 83,
+    "root": "-ist",
+    "source_roots": [
+      "-ist"
+    ],
+    "type": "suffix",
+    "root_page": 83,
+    "root_y": 381.6,
+    "root_x": 86.3,
+    "start_y": 341.6,
+    "words": [
+      "journalist",
+      "psychologist"
+    ]
+  },
+  {
+    "id": 45,
+    "source_day": 11,
+    "page_start": 83,
+    "page_end": 84,
+    "root": "-ive",
+    "source_roots": [
+      "-ive"
+    ],
+    "type": "suffix",
+    "root_page": 83,
+    "root_y": 577.6,
+    "root_x": 86.3,
+    "start_y": 537.6,
+    "words": [
+      "relative",
+      "representative"
+    ]
+  },
+  {
+    "id": 46,
+    "source_day": 11,
+    "page_start": 84,
+    "page_end": 84,
+    "root": "-ary",
+    "source_roots": [
+      "-ary"
+    ],
+    "type": "suffix",
+    "root_page": 84,
+    "root_y": 164.1,
+    "root_x": 56.1,
+    "start_y": 124.1,
+    "words": [
+      "boundary",
+      "secretary",
+      "missionary"
+    ]
+  },
+  {
+    "id": 47,
+    "source_day": 11,
+    "page_start": 84,
+    "page_end": 84,
+    "root": "-ic(s)",
+    "source_roots": [
+      "-ic(s)"
+    ],
+    "type": "suffix",
+    "root_page": 84,
+    "root_y": 418.4,
+    "root_x": 56.1,
+    "start_y": 378.4,
+    "words": [
+      "economics",
+      "politics",
+      "physics"
+    ]
+  },
+  {
+    "id": 48,
+    "source_day": 11,
+    "page_start": 85,
+    "page_end": 85,
+    "root": "-ance/-ence",
+    "source_roots": [
+      "-ance",
+      "-ence"
+    ],
+    "type": "suffix",
+    "root_page": 85,
+    "root_y": 48.6,
+    "root_x": 86.3,
+    "start_y": 8.6,
+    "words": [
+      "appearance",
+      "conference"
+    ]
+  },
+  {
+    "id": 49,
+    "source_day": 11,
+    "page_start": 85,
+    "page_end": 85,
+    "root": "-(e)ty/-ity",
+    "source_roots": [
+      "-(e)ty",
+      "-ity"
+    ],
+    "type": "suffix",
+    "root_page": 85,
+    "root_y": 260.0,
+    "root_x": 86.3,
+    "start_y": 220.0,
+    "words": [
+      "variety",
+      "ability",
+      "authority"
+    ]
+  },
+  {
+    "id": 50,
+    "source_day": 11,
+    "page_start": 85,
+    "page_end": 86,
+    "root": "-y/-ry",
+    "source_roots": [
+      "-y",
+      "-ry"
+    ],
+    "type": "suffix",
+    "root_page": 85,
+    "root_y": 599.2,
+    "root_x": 86.3,
+    "start_y": 559.2,
+    "words": [
+      "discovery",
+      "theory",
+      "surgery"
+    ]
+  },
+  {
+    "id": 51,
+    "source_day": 11,
+    "page_start": 86,
+    "page_end": 86,
+    "root": "-al",
+    "source_roots": [
+      "-al"
+    ],
+    "type": "suffix",
+    "root_page": 86,
+    "root_y": 252.7,
+    "root_x": 56.1,
+    "start_y": 212.7,
+    "words": [
+      "arrival",
+      "proposal"
+    ]
+  },
+  {
+    "id": 52,
+    "source_day": 11,
+    "page_start": 86,
+    "page_end": 86,
+    "root": "-ure",
+    "source_roots": [
+      "-ure"
+    ],
+    "type": "suffix",
+    "root_page": 86,
+    "root_y": 422.3,
+    "root_x": 56.1,
+    "start_y": 382.3,
+    "words": [
+      "creature",
+      "failure"
+    ]
+  },
+  {
+    "id": 53,
+    "source_day": 11,
+    "page_start": 86,
+    "page_end": 87,
+    "root": "-ment",
+    "source_roots": [
+      "-ment"
+    ],
+    "type": "suffix",
+    "root_page": 86,
+    "root_y": 603.4,
+    "root_x": 56.1,
+    "start_y": 563.4,
+    "words": [
+      "agreement",
+      "assessment",
+      "document"
+    ]
+  },
+  {
+    "id": 54,
+    "source_day": 11,
+    "page_start": 87,
+    "page_end": 87,
+    "root": "-ion",
+    "source_roots": [
+      "-ion"
+    ],
+    "type": "suffix",
+    "root_page": 87,
+    "root_y": 279.2,
+    "root_x": 86.3,
+    "start_y": 239.2,
+    "words": [
+      "pollution",
+      "translation",
+      "introduction",
+      "invitation"
+    ]
+  },
+  {
+    "id": 55,
+    "source_day": 11,
+    "page_start": 88,
+    "page_end": 88,
+    "root": "-th/-t",
+    "source_roots": [
+      "-th",
+      "-t"
+    ],
+    "type": "suffix",
+    "root_page": 88,
+    "root_y": 48.6,
+    "root_x": 56.1,
+    "start_y": 8.6,
+    "words": [
+      "wealth",
+      "weight"
+    ]
+  },
+  {
+    "id": 56,
+    "source_day": 11,
+    "page_start": 88,
+    "page_end": 88,
+    "root": "-ness",
+    "source_roots": [
+      "-ness"
+    ],
+    "type": "suffix",
+    "root_page": 88,
+    "root_y": 284.2,
+    "root_x": 56.1,
+    "start_y": 244.2,
+    "words": [
+      "witness",
+      "fitness"
+    ]
+  },
+  {
+    "id": 57,
+    "source_day": 11,
+    "page_start": 88,
+    "page_end": 88,
+    "root": "-(a)cy",
+    "source_roots": [
+      "-(a)cy"
+    ],
+    "type": "suffix",
+    "root_page": 88,
+    "root_y": 508.5,
+    "root_x": 56.1,
+    "start_y": 468.5,
+    "words": [
+      "accuracy",
+      "privacy"
+    ]
+  },
+  {
+    "id": 58,
+    "source_day": 11,
+    "page_start": 89,
+    "page_end": 89,
+    "root": "-ship",
+    "source_roots": [
+      "-ship"
+    ],
+    "type": "suffix",
+    "root_page": 89,
+    "root_y": 48.6,
+    "root_x": 86.3,
+    "start_y": 8.6,
+    "words": [
+      "citizenship",
+      "leadership"
+    ]
+  },
+  {
+    "id": 59,
+    "source_day": 11,
+    "page_start": 89,
+    "page_end": 89,
+    "root": "-hood",
+    "source_roots": [
+      "-hood"
+    ],
+    "type": "suffix",
+    "root_page": 89,
+    "root_y": 237.8,
+    "root_x": 86.3,
+    "start_y": 197.8,
+    "words": [
+      "childhood",
+      "neighborhood"
+    ]
+  },
+  {
+    "id": 60,
+    "source_day": 11,
+    "page_start": 89,
+    "page_end": 89,
+    "root": "-ism",
+    "source_roots": [
+      "-ism"
+    ],
+    "type": "suffix",
+    "root_page": 89,
+    "root_y": 427.1,
+    "root_x": 86.3,
+    "start_y": 387.1,
+    "words": [
+      "realism",
+      "optimism",
+      "criticism"
+    ]
+  },
+  {
+    "id": 61,
+    "source_day": 11,
+    "page_start": 90,
+    "page_end": 90,
+    "root": "-(l)et/-ette",
+    "source_roots": [
+      "-(l)et",
+      "-ette"
+    ],
+    "type": "suffix",
+    "root_page": 90,
+    "root_y": 48.6,
+    "root_x": 56.1,
+    "start_y": 8.6,
+    "words": [
+      "target",
+      "booklet",
+      "leaflet",
+      "etiquette"
+    ]
+  },
+  {
+    "id": 62,
+    "source_day": 11,
+    "page_start": 90,
+    "page_end": 90,
+    "root": "-le/-el",
+    "source_roots": [
+      "-le",
+      "-el"
+    ],
+    "type": "suffix",
+    "root_page": 90,
+    "root_y": 376.3,
+    "root_x": 56.1,
+    "start_y": 336.3,
+    "words": [
+      "angle",
+      "label"
+    ]
+  },
+  {
+    "id": 63,
+    "source_day": 12,
+    "page_start": 91,
+    "page_end": 91,
+    "root": "-ish",
+    "source_roots": [
+      "-ish"
+    ],
+    "type": "suffix",
+    "root_page": 91,
+    "root_y": 188.0,
+    "root_x": 86.3,
+    "start_y": 148.0,
+    "words": [
+      "childish"
+    ]
+  },
+  {
+    "id": 64,
+    "source_day": 12,
+    "page_start": 91,
+    "page_end": 91,
+    "root": "-like",
+    "source_roots": [
+      "-like"
+    ],
+    "type": "suffix",
+    "root_page": 91,
+    "root_y": 220.4,
+    "root_x": 86.3,
+    "start_y": 180.4,
+    "words": [
+      "childlike"
+    ]
+  },
+  {
+    "id": 65,
+    "source_day": 12,
+    "page_start": 91,
+    "page_end": 91,
+    "root": "-able",
+    "source_roots": [
+      "-able"
+    ],
+    "type": "suffix",
+    "root_page": 91,
+    "root_y": 320.4,
+    "root_x": 86.3,
+    "start_y": 280.4,
+    "words": [
+      "comparable"
+    ]
+  },
+  {
+    "id": 66,
+    "source_day": 12,
+    "page_start": 91,
+    "page_end": 91,
+    "root": "-ative",
+    "source_roots": [
+      "-ative"
+    ],
+    "type": "suffix",
+    "root_page": 91,
+    "root_y": 379.3,
+    "root_x": 86.3,
+    "start_y": 339.3,
+    "words": [
+      "comparative"
+    ]
+  },
+  {
+    "id": 67,
+    "source_day": 12,
+    "page_start": 91,
+    "page_end": 91,
+    "root": "-able",
+    "source_roots": [
+      "-able"
+    ],
+    "type": "suffix",
+    "root_page": 91,
+    "root_y": 505.8,
+    "root_x": 86.3,
+    "start_y": 465.8,
+    "words": [
+      "considerable"
+    ]
+  },
+  {
+    "id": 68,
+    "source_day": 12,
+    "page_start": 91,
+    "page_end": 91,
+    "root": "-ate",
+    "source_roots": [
+      "-ate"
+    ],
+    "type": "suffix",
+    "root_page": 91,
+    "root_y": 567.0,
+    "root_x": 86.3,
+    "start_y": 527.0,
+    "words": [
+      "considerate"
+    ]
+  },
+  {
+    "id": 69,
+    "source_day": 12,
+    "page_start": 92,
+    "page_end": 92,
+    "root": "-al",
+    "source_roots": [
+      "-al"
+    ],
+    "type": "suffix",
+    "root_page": 92,
+    "root_y": 72.6,
+    "root_x": 56.1,
+    "start_y": 32.6,
+    "words": [
+      "continual"
+    ]
+  },
+  {
+    "id": 70,
+    "source_day": 12,
+    "page_start": 92,
+    "page_end": 92,
+    "root": "-ous",
+    "source_roots": [
+      "-ous"
+    ],
+    "type": "suffix",
+    "root_page": 92,
+    "root_y": 146.6,
+    "root_x": 56.1,
+    "start_y": 106.6,
+    "words": [
+      "continuous"
+    ]
+  },
+  {
+    "id": 71,
+    "source_day": 12,
+    "page_start": 92,
+    "page_end": 92,
+    "root": "-ic",
+    "source_roots": [
+      "-ic"
+    ],
+    "type": "suffix",
+    "root_page": 92,
+    "root_y": 278.1,
+    "root_x": 56.1,
+    "start_y": 238.1,
+    "words": [
+      "economic"
+    ]
+  },
+  {
+    "id": 72,
+    "source_day": 12,
+    "page_start": 92,
+    "page_end": 92,
+    "root": "-ical",
+    "source_roots": [
+      "-ical"
+    ],
+    "type": "suffix",
+    "root_page": 92,
+    "root_y": 343.6,
+    "root_x": 56.1,
+    "start_y": 303.6,
+    "words": [
+      "economical"
+    ]
+  },
+  {
+    "id": 73,
+    "source_day": 12,
+    "page_start": 92,
+    "page_end": 92,
+    "root": "-ic",
+    "source_roots": [
+      "-ic"
+    ],
+    "type": "suffix",
+    "root_page": 92,
+    "root_y": 470.1,
+    "root_x": 56.1,
+    "start_y": 430.1,
+    "words": [
+      "historic"
+    ]
+  },
+  {
+    "id": 74,
+    "source_day": 12,
+    "page_start": 92,
+    "page_end": 92,
+    "root": "-ical",
+    "source_roots": [
+      "-ical"
+    ],
+    "type": "suffix",
+    "root_page": 92,
+    "root_y": 509.2,
+    "root_x": 56.1,
+    "start_y": 469.2,
+    "words": [
+      "historical"
+    ]
+  },
+  {
+    "id": 75,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-ual",
+    "source_roots": [
+      "-ual"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 72.6,
+    "root_x": 86.3,
+    "start_y": 32.6,
+    "words": [
+      "intellectual"
+    ]
+  },
+  {
+    "id": 76,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-ent",
+    "source_roots": [
+      "-ent"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 131.5,
+    "root_x": 86.3,
+    "start_y": 91.5,
+    "words": [
+      "intelligent"
+    ]
+  },
+  {
+    "id": 77,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-able",
+    "source_roots": [
+      "-able"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 263.0,
+    "root_x": 86.3,
+    "start_y": 223.0,
+    "words": [
+      "respectable"
+    ]
+  },
+  {
+    "id": 78,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-ful",
+    "source_roots": [
+      "-ful"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 310.8,
+    "root_x": 86.3,
+    "start_y": 270.8,
+    "words": [
+      "respectful"
+    ]
+  },
+  {
+    "id": 79,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-ible",
+    "source_roots": [
+      "-ible"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 437.2,
+    "root_x": 86.3,
+    "start_y": 397.2,
+    "words": [
+      "sensible"
+    ]
+  },
+  {
+    "id": 80,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-tive",
+    "source_roots": [
+      "-tive"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 480.7,
+    "root_x": 86.3,
+    "start_y": 440.7,
+    "words": [
+      "sensitive"
+    ]
+  },
+  {
+    "id": 81,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-al",
+    "source_roots": [
+      "-al"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 591.8,
+    "root_x": 86.3,
+    "start_y": 551.8,
+    "words": [
+      "social"
+    ]
+  },
+  {
+    "id": 82,
+    "source_day": 12,
+    "page_start": 93,
+    "page_end": 93,
+    "root": "-able",
+    "source_roots": [
+      "-able"
+    ],
+    "type": "suffix",
+    "root_page": 93,
+    "root_y": 635.3,
+    "root_x": 86.3,
+    "start_y": 595.3,
+    "words": [
+      "sociable"
+    ]
+  },
+  {
+    "id": 83,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-ful",
+    "source_roots": [
+      "-ful"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 83.3,
+    "root_x": 56.1,
+    "start_y": 43.3,
+    "words": [
+      "successful"
+    ]
+  },
+  {
+    "id": 84,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-ive",
+    "source_roots": [
+      "-ive"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 131.5,
+    "root_x": 56.1,
+    "start_y": 91.5,
+    "words": [
+      "successive"
+    ]
+  },
+  {
+    "id": 85,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-al",
+    "source_roots": [
+      "-al"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 257.9,
+    "root_x": 56.1,
+    "start_y": 217.9,
+    "words": [
+      "literal"
+    ]
+  },
+  {
+    "id": 86,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-ary",
+    "source_roots": [
+      "-ary"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 293.9,
+    "root_x": 56.1,
+    "start_y": 253.9,
+    "words": [
+      "literary"
+    ]
+  },
+  {
+    "id": 87,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-ate",
+    "source_roots": [
+      "-ate"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 361.4,
+    "root_x": 56.1,
+    "start_y": 321.4,
+    "words": [
+      "literate"
+    ]
+  },
+  {
+    "id": 88,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-able",
+    "source_roots": [
+      "-able"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 478.1,
+    "root_x": 56.1,
+    "start_y": 438.1,
+    "words": [
+      "imaginable"
+    ]
+  },
+  {
+    "id": 89,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-ative",
+    "source_roots": [
+      "-ative"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 528.3,
+    "root_x": 56.1,
+    "start_y": 488.3,
+    "words": [
+      "imaginative"
+    ]
+  },
+  {
+    "id": 90,
+    "source_day": 12,
+    "page_start": 94,
+    "page_end": 94,
+    "root": "-ary",
+    "source_roots": [
+      "-ary"
+    ],
+    "type": "suffix",
+    "root_page": 94,
+    "root_y": 600.1,
+    "root_x": 56.1,
+    "start_y": 560.1,
+    "words": [
+      "imaginary"
+    ]
+  },
+  {
+    "id": 91,
+    "source_day": 12,
+    "page_start": 95,
+    "page_end": 95,
+    "root": "-ful",
+    "source_roots": [
+      "-ful"
+    ],
+    "type": "suffix",
+    "root_page": 95,
+    "root_y": 72.6,
+    "root_x": 86.3,
+    "start_y": 32.6,
+    "words": [
+      "regretful"
+    ]
+  },
+  {
+    "id": 92,
+    "source_day": 12,
+    "page_start": 95,
+    "page_end": 95,
+    "root": "-able",
+    "source_roots": [
+      "-able"
+    ],
+    "type": "suffix",
+    "root_page": 95,
+    "root_y": 116.1,
+    "root_x": 86.3,
+    "start_y": 76.1,
+    "words": [
+      "regrettable"
+    ]
+  },
+  {
+    "id": 93,
+    "source_day": 12,
+    "page_start": 95,
+    "page_end": 95,
+    "root": "-al",
+    "source_roots": [
+      "-al"
+    ],
+    "type": "suffix",
+    "root_page": 95,
+    "root_y": 242.1,
+    "root_x": 86.3,
+    "start_y": 202.1,
+    "words": [
+      "industrial"
+    ]
+  },
+  {
+    "id": 94,
+    "source_day": 12,
+    "page_start": 95,
+    "page_end": 95,
+    "root": "-ous",
+    "source_roots": [
+      "-ous"
+    ],
+    "type": "suffix",
+    "root_page": 95,
+    "root_y": 275.0,
+    "root_x": 86.3,
+    "start_y": 235.0,
+    "words": [
+      "industrious"
+    ]
+  },
+  {
+    "id": 95,
+    "source_day": 12,
+    "page_start": 95,
+    "page_end": 95,
+    "root": "-able/-ible",
+    "source_roots": [
+      "-able",
+      "-ible"
+    ],
+    "type": "suffix",
+    "root_page": 95,
+    "root_y": 404.1,
+    "root_x": 86.3,
+    "start_y": 364.1,
+    "words": [
+      "favorable",
+      "reliable",
+      "visible"
+    ]
+  },
+  {
+    "id": 96,
+    "source_day": 12,
+    "page_start": 96,
+    "page_end": 96,
+    "root": "-ful",
+    "source_roots": [
+      "-ful"
+    ],
+    "type": "suffix",
+    "root_page": 96,
+    "root_y": 48.6,
+    "root_x": 56.1,
+    "start_y": 8.6,
+    "words": [
+      "hopeful",
+      "doubtful",
+      "forceful"
+    ]
+  },
+  {
+    "id": 97,
+    "source_day": 12,
+    "page_start": 96,
+    "page_end": 96,
+    "root": "-ic/-ical",
+    "source_roots": [
+      "-ic",
+      "-ical"
+    ],
+    "type": "suffix",
+    "root_page": 96,
+    "root_y": 319.1,
+    "root_x": 56.1,
+    "start_y": 279.1,
+    "words": [
+      "basic",
+      "characteristic",
+      "typical"
+    ]
+  },
+  {
+    "id": 98,
+    "source_day": 12,
+    "page_start": 97,
+    "page_end": 97,
+    "root": "-ar(y)/-ory",
+    "source_roots": [
+      "-ar(y)",
+      "-ory"
+    ],
+    "type": "suffix",
+    "root_page": 97,
+    "root_y": 48.6,
+    "root_x": 86.3,
+    "start_y": 8.6,
+    "words": [
+      "familiar",
+      "peculiar",
+      "supplementary",
+      "satisfactory"
+    ]
+  },
+  {
+    "id": 99,
+    "source_day": 13,
+    "page_start": 98,
+    "page_end": 98,
+    "root": "-ly",
+    "source_roots": [
+      "-ly"
+    ],
+    "type": "suffix",
+    "root_page": 98,
+    "root_y": 164.0,
+    "root_x": 56.1,
+    "start_y": 124.0,
+    "words": [
+      "costly",
+      "timely"
+    ]
+  },
+  {
+    "id": 100,
+    "source_day": 13,
+    "page_start": 98,
+    "page_end": 98,
+    "root": "-ous",
+    "source_roots": [
+      "-ous"
+    ],
+    "type": "suffix",
+    "root_page": 98,
+    "root_y": 344.3,
+    "root_x": 56.1,
+    "start_y": 304.3,
+    "words": [
+      "furious",
+      "ambitious"
+    ]
+  },
+  {
+    "id": 101,
+    "source_day": 13,
+    "page_start": 98,
+    "page_end": 98,
+    "root": "-ate",
+    "source_roots": [
+      "-ate"
+    ],
+    "type": "suffix",
+    "root_page": 98,
+    "root_y": 513.8,
+    "root_x": 56.1,
+    "start_y": 473.8,
+    "words": [
+      "fortunate",
+      "intimate"
+    ]
+  },
+  {
+    "id": 102,
+    "source_day": 13,
+    "page_start": 99,
+    "page_end": 99,
+    "root": "-ant/-ent",
+    "source_roots": [
+      "-ant",
+      "-ent"
+    ],
+    "type": "suffix",
+    "root_page": 99,
+    "root_y": 48.6,
+    "root_x": 86.3,
+    "start_y": 8.6,
+    "words": [
+      "pleasant",
+      "violent",
+      "urgent"
+    ]
+  },
+  {
+    "id": 103,
+    "source_day": 13,
+    "page_start": 99,
+    "page_end": 99,
+    "root": "-ish",
+    "source_roots": [
+      "-ish"
+    ],
+    "type": "suffix",
+    "root_page": 99,
+    "root_y": 358.1,
+    "root_x": 86.3,
+    "start_y": 318.1,
+    "words": [
+      "foolish",
+      "reddish",
+      "selfish"
+    ]
+  },
+  {
+    "id": 104,
+    "source_day": 13,
+    "page_start": 100,
+    "page_end": 100,
+    "root": "-al/-ial/-ual",
+    "source_roots": [
+      "-al",
+      "-ial",
+      "-ual"
+    ],
+    "type": "suffix",
+    "root_page": 100,
+    "root_y": 48.6,
+    "root_x": 56.1,
+    "start_y": 8.6,
+    "words": [
+      "ideal",
+      "verbal",
+      "internal",
+      "racial",
+      "spiritual"
+    ]
+  },
+  {
+    "id": 105,
+    "source_day": 13,
+    "page_start": 101,
+    "page_end": 101,
+    "root": "-ive/-ative",
+    "source_roots": [
+      "-ive",
+      "-ative"
+    ],
+    "type": "suffix",
+    "root_page": 101,
+    "root_y": 48.6,
+    "root_x": 86.3,
+    "start_y": 8.6,
+    "words": [
+      "active",
+      "informative"
+    ]
+  },
+  {
+    "id": 106,
+    "source_day": 13,
+    "page_start": 101,
+    "page_end": 101,
+    "root": "-y",
+    "source_roots": [
+      "-y"
+    ],
+    "type": "suffix",
+    "root_page": 101,
+    "root_y": 255.6,
+    "root_x": 86.3,
+    "start_y": 215.6,
+    "words": [
+      "hasty",
+      "gloomy"
+    ]
+  },
+  {
+    "id": 107,
+    "source_day": 13,
+    "page_start": 101,
+    "page_end": 101,
+    "root": "-less",
+    "source_roots": [
+      "-less"
+    ],
+    "type": "suffix",
+    "root_page": 101,
+    "root_y": 418.9,
+    "root_x": 86.3,
+    "start_y": 378.9,
+    "words": [
+      "countless",
+      "endless"
+    ]
+  },
+  {
+    "id": 108,
+    "source_day": 13,
+    "page_start": 102,
+    "page_end": 102,
+    "root": "-ize",
+    "source_roots": [
+      "-ize"
+    ],
+    "type": "suffix",
+    "root_page": 102,
+    "root_y": 100.9,
+    "root_x": 56.1,
+    "start_y": 60.9,
+    "words": [
+      "realize",
+      "civilize"
+    ]
+  },
+  {
+    "id": 109,
+    "source_day": 13,
+    "page_start": 102,
+    "page_end": 103,
+    "root": "-ate",
+    "source_roots": [
+      "-ate"
+    ],
+    "type": "suffix",
+    "root_page": 102,
+    "root_y": 273.5,
+    "root_x": 56.1,
+    "start_y": 233.5,
+    "words": [
+      "fascinate",
+      "frustrate",
+      "imitate",
+      "irritate",
+      "motivate",
+      "originate"
+    ]
+  },
+  {
+    "id": 110,
+    "source_day": 13,
+    "page_start": 103,
+    "page_end": 103,
+    "root": "-(i)fy",
+    "source_roots": [
+      "-(i)fy"
+    ],
+    "type": "suffix",
+    "root_page": 103,
+    "root_y": 257.2,
+    "root_x": 86.3,
+    "start_y": 217.2,
+    "words": [
+      "justify",
+      "simplify"
+    ]
+  },
+  {
+    "id": 111,
+    "source_day": 13,
+    "page_start": 103,
+    "page_end": 103,
+    "root": "-en",
+    "source_roots": [
+      "-en"
+    ],
+    "type": "suffix",
+    "root_page": 103,
+    "root_y": 480.3,
+    "root_x": 86.3,
+    "start_y": 440.3,
+    "words": [
+      "strengthen",
+      "frighten"
+    ]
+  },
+  {
+    "id": 112,
+    "source_day": 13,
+    "page_start": 104,
+    "page_end": 104,
+    "root": "-le",
+    "source_roots": [
+      "-le"
+    ],
+    "type": "suffix",
+    "root_page": 104,
+    "root_y": 48.6,
+    "root_x": 56.1,
+    "start_y": 8.6,
+    "words": [
+      "struggle",
+      "wrestle"
+    ]
+  },
+  {
+    "id": 113,
+    "source_day": 13,
+    "page_start": 104,
+    "page_end": 104,
+    "root": "-ly",
+    "source_roots": [
+      "-ly"
+    ],
+    "type": "suffix",
+    "root_page": 104,
+    "root_y": 281.2,
+    "root_x": 56.1,
+    "start_y": 241.2,
+    "words": [
+      "extremely",
+      "rarely"
+    ]
+  },
+  {
+    "id": 114,
+    "source_day": 13,
+    "page_start": 104,
+    "page_end": 104,
+    "root": "-ward",
+    "source_roots": [
+      "-ward"
+    ],
+    "type": "suffix",
+    "root_page": 104,
+    "root_y": 485.7,
+    "root_x": 56.1,
+    "start_y": 445.7,
+    "words": [
+      "homeward",
+      "upward"
+    ]
+  },
+  {
+    "id": 115,
+    "source_day": 13,
+    "page_start": 105,
+    "page_end": 105,
+    "root": "-way/-wise",
+    "source_roots": [
+      "-way",
+      "-wise"
+    ],
+    "type": "suffix",
+    "root_page": 105,
+    "root_y": 48.6,
+    "root_x": 86.3,
+    "start_y": 8.6,
+    "words": [
+      "halfway",
+      "likewise",
+      "otherwise"
+    ]
+  },
+  {
+    "id": 116,
+    "source_day": 14,
+    "page_start": 108,
+    "page_end": 109,
+    "root": "ag",
+    "source_roots": [
+      "ag"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 108,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "agent",
+      "agony",
+      "active",
+      "actual",
+      "exact",
+      "react",
+      "ambiguous",
+      "navigate"
+    ]
+  },
+  {
+    "id": 117,
+    "source_day": 14,
+    "page_start": 109,
+    "page_end": 110,
+    "root": "alt",
+    "source_roots": [
+      "alt"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 109,
+    "root_y": 530.1,
+    "root_x": 104.8,
+    "start_y": 530.1,
+    "words": [
+      "altitude",
+      "abolish",
+      "adolescent"
+    ]
+  },
+  {
+    "id": 118,
+    "source_day": 14,
+    "page_start": 110,
+    "page_end": 111,
+    "root": "alter",
+    "source_roots": [
+      "alter"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 110,
+    "root_y": 257.2,
+    "root_x": 76.3,
+    "start_y": 257.2,
+    "words": [
+      "alter",
+      "alternative",
+      "alien"
+    ]
+  },
+  {
+    "id": 119,
+    "source_day": 14,
+    "page_start": 111,
+    "page_end": 112,
+    "root": "ang",
+    "source_roots": [
+      "ang"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 111,
+    "root_y": 446.6,
+    "root_x": 104.8,
+    "start_y": 446.6,
+    "words": [
+      "anguish",
+      "anxious"
+    ]
+  },
+  {
+    "id": 120,
+    "source_day": 14,
+    "page_start": 112,
+    "page_end": 112,
+    "root": "ann",
+    "source_roots": [
+      "ann"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 112,
+    "root_y": 389.1,
+    "root_x": 76.3,
+    "start_y": 389.1,
+    "words": [
+      "anniversary",
+      "annual"
+    ]
+  },
+  {
+    "id": 121,
+    "source_day": 14,
+    "page_start": 113,
+    "page_end": 113,
+    "root": "apt",
+    "source_roots": [
+      "apt"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 113,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "apt",
+      "adapt",
+      "attitude"
+    ]
+  },
+  {
+    "id": 122,
+    "source_day": 15,
+    "page_start": 114,
+    "page_end": 114,
+    "root": "art",
+    "source_roots": [
+      "art"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 114,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "artificial",
+      "artistic"
+    ]
+  },
+  {
+    "id": 123,
+    "source_day": 15,
+    "page_start": 114,
+    "page_end": 115,
+    "root": "aster",
+    "source_roots": [
+      "aster"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 114,
+    "root_y": 370.0,
+    "root_x": 76.3,
+    "start_y": 370.0,
+    "words": [
+      "disaster",
+      "astronomy",
+      "astronaut",
+      "astrology",
+      "consider"
+    ]
+  },
+  {
+    "id": 124,
+    "source_day": 15,
+    "page_start": 115,
+    "page_end": 116,
+    "root": "audey",
+    "source_roots": [
+      "audey"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 115,
+    "root_y": 476.1,
+    "root_x": 104.8,
+    "start_y": 476.1,
+    "words": [
+      "audience",
+      "obey"
+    ]
+  },
+  {
+    "id": 125,
+    "source_day": 15,
+    "page_start": 116,
+    "page_end": 117,
+    "root": "band",
+    "source_roots": [
+      "band"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 116,
+    "root_y": 252.2,
+    "root_x": 76.3,
+    "start_y": 252.2,
+    "words": [
+      "bandage",
+      "bond",
+      "bundle",
+      "bind"
+    ]
+  },
+  {
+    "id": 126,
+    "source_day": 15,
+    "page_start": 117,
+    "page_end": 117,
+    "root": "bar",
+    "source_roots": [
+      "bar"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 117,
+    "root_y": 237.6,
+    "root_x": 104.8,
+    "start_y": 237.6,
+    "words": [
+      "bar",
+      "embarrass",
+      "barrier"
+    ]
+  },
+  {
+    "id": 127,
+    "source_day": 15,
+    "page_start": 118,
+    "page_end": 118,
+    "root": "bio",
+    "source_roots": [
+      "bio"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 118,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "biography",
+      "biology"
+    ]
+  },
+  {
+    "id": 128,
+    "source_day": 16,
+    "page_start": 120,
+    "page_end": 120,
+    "root": "cap",
+    "source_roots": [
+      "cap"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 120,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "capital",
+      "chief",
+      "achieve"
+    ]
+  },
+  {
+    "id": 129,
+    "source_day": 16,
+    "page_start": 121,
+    "page_end": 123,
+    "root": "cap",
+    "source_roots": [
+      "cap"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 121,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "capable",
+      "capture",
+      "occupy",
+      "participate",
+      "accept",
+      "except",
+      "conceive",
+      "deceive",
+      "perceive",
+      "receive"
+    ]
+  },
+  {
+    "id": 130,
+    "source_day": 16,
+    "page_start": 124,
+    "page_end": 126,
+    "root": "car",
+    "source_roots": [
+      "car"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 124,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "career",
+      "carpenter",
+      "carriage",
+      "carrier",
+      "charge",
+      "discharge"
+    ]
+  },
+  {
+    "id": 131,
+    "source_day": 17,
+    "page_start": 127,
+    "page_end": 127,
+    "root": "cast",
+    "source_roots": [
+      "cast"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 127,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "cast",
+      "broadcast",
+      "forecast"
+    ]
+  },
+  {
+    "id": 132,
+    "source_day": 17,
+    "page_start": 128,
+    "page_end": 128,
+    "root": "cause",
+    "source_roots": [
+      "cause"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 128,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "cause",
+      "accuse",
+      "excuse"
+    ]
+  },
+  {
+    "id": 133,
+    "source_day": 17,
+    "page_start": 129,
+    "page_end": 131,
+    "root": "cede",
+    "source_roots": [
+      "cede"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 129,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "precede",
+      "exceed",
+      "proceed",
+      "succeed",
+      "predecessor",
+      "access",
+      "cease"
+    ]
+  },
+  {
+    "id": 134,
+    "source_day": 17,
+    "page_start": 131,
+    "page_end": 131,
+    "root": "centr",
+    "source_roots": [
+      "centr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 131,
+    "root_y": 409.8,
+    "root_x": 104.8,
+    "start_y": 409.8,
+    "words": [
+      "concentrate"
+    ]
+  },
+  {
+    "id": 135,
+    "source_day": 17,
+    "page_start": 132,
+    "page_end": 133,
+    "root": "cern",
+    "source_roots": [
+      "cern"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 132,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "concern",
+      "discern",
+      "crisis",
+      "criticize",
+      "discriminate"
+    ]
+  },
+  {
+    "id": 136,
+    "source_day": 17,
+    "page_start": 133,
+    "page_end": 133,
+    "root": "cert",
+    "source_roots": [
+      "cert"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 133,
+    "root_y": 221.4,
+    "root_x": 104.8,
+    "start_y": 221.4,
+    "words": [
+      "certain",
+      "certificate"
+    ]
+  },
+  {
+    "id": 137,
+    "source_day": 18,
+    "page_start": 134,
+    "page_end": 134,
+    "root": "char",
+    "source_roots": [
+      "char"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 134,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "charity",
+      "cherish"
+    ]
+  },
+  {
+    "id": 138,
+    "source_day": 18,
+    "page_start": 134,
+    "page_end": 136,
+    "root": "cid",
+    "source_roots": [
+      "cid"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 134,
+    "root_y": 347.5,
+    "root_x": 76.3,
+    "start_y": 347.5,
+    "words": [
+      "accident",
+      "coincidence",
+      "incident",
+      "casual",
+      "occasion",
+      "decay"
+    ]
+  },
+  {
+    "id": 139,
+    "source_day": 18,
+    "page_start": 136,
+    "page_end": 136,
+    "root": "cide",
+    "source_roots": [
+      "cide"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 136,
+    "root_y": 156.1,
+    "root_x": 76.3,
+    "start_y": 156.1,
+    "words": [
+      "suicide",
+      "decision",
+      "precise"
+    ]
+  },
+  {
+    "id": 140,
+    "source_day": 18,
+    "page_start": 137,
+    "page_end": 137,
+    "root": "circul",
+    "source_roots": [
+      "circul"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 137,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "circulate",
+      "circumstance",
+      "circuit"
+    ]
+  },
+  {
+    "id": 141,
+    "source_day": 18,
+    "page_start": 137,
+    "page_end": 138,
+    "root": "cit",
+    "source_roots": [
+      "cit"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 137,
+    "root_y": 475.4,
+    "root_x": 104.8,
+    "start_y": 475.4,
+    "words": [
+      "cite",
+      "recite",
+      "excite"
+    ]
+  },
+  {
+    "id": 142,
+    "source_day": 18,
+    "page_start": 138,
+    "page_end": 138,
+    "root": "civi",
+    "source_roots": [
+      "civi"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 138,
+    "root_y": 198.3,
+    "root_x": 76.3,
+    "start_y": 198.3,
+    "words": [
+      "civil",
+      "civilize",
+      "citizen"
+    ]
+  },
+  {
+    "id": 143,
+    "source_day": 18,
+    "page_start": 139,
+    "page_end": 139,
+    "root": "claim",
+    "source_roots": [
+      "claim"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 139,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "claim",
+      "exclaim",
+      "proclaim",
+      "council"
+    ]
+  },
+  {
+    "id": 144,
+    "source_day": 19,
+    "page_start": 140,
+    "page_end": 141,
+    "root": "clin",
+    "source_roots": [
+      "clin"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 140,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "decline",
+      "incline",
+      "climate"
+    ]
+  },
+  {
+    "id": 145,
+    "source_day": 19,
+    "page_start": 141,
+    "page_end": 142,
+    "root": "clud",
+    "source_roots": [
+      "clud"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 141,
+    "root_y": 178.1,
+    "root_x": 104.8,
+    "start_y": 178.1,
+    "words": [
+      "conclude",
+      "include",
+      "exclude",
+      "closet",
+      "disclose"
+    ]
+  },
+  {
+    "id": 146,
+    "source_day": 19,
+    "page_start": 142,
+    "page_end": 143,
+    "root": "cogn",
+    "source_roots": [
+      "cogn"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 142,
+    "root_y": 248.2,
+    "root_x": 76.3,
+    "start_y": 248.2,
+    "words": [
+      "recognize",
+      "diagnose",
+      "ignore",
+      "noble",
+      "acknowledge",
+      "acquaint"
+    ]
+  },
+  {
+    "id": 147,
+    "source_day": 19,
+    "page_start": 143,
+    "page_end": 144,
+    "root": "cord",
+    "source_roots": [
+      "cord"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 143,
+    "root_y": 473.6,
+    "root_x": 104.8,
+    "start_y": 473.6,
+    "words": [
+      "discord",
+      "accord",
+      "courage",
+      "encourage",
+      "core"
+    ]
+  },
+  {
+    "id": 148,
+    "source_day": 19,
+    "page_start": 145,
+    "page_end": 145,
+    "root": "corp",
+    "source_roots": [
+      "corp"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 145,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "corporate",
+      "incorporate",
+      "corps"
+    ]
+  },
+  {
+    "id": 149,
+    "source_day": 20,
+    "page_start": 146,
+    "page_end": 147,
+    "root": "crea",
+    "source_roots": [
+      "crea"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 146,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "create",
+      "recreate",
+      "increase",
+      "decrease",
+      "concrete",
+      "recruit"
+    ]
+  },
+  {
+    "id": 150,
+    "source_day": 20,
+    "page_start": 147,
+    "page_end": 148,
+    "root": "cred",
+    "source_roots": [
+      "cred"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 147,
+    "root_y": 278.8,
+    "root_x": 104.8,
+    "start_y": 278.8,
+    "words": [
+      "credit",
+      "incredible",
+      "creed",
+      "grant"
+    ]
+  },
+  {
+    "id": 151,
+    "source_day": 20,
+    "page_start": 148,
+    "page_end": 149,
+    "root": "cult",
+    "source_roots": [
+      "cult"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 148,
+    "root_y": 219.0,
+    "root_x": 76.3,
+    "start_y": 219.0,
+    "words": [
+      "cultivate",
+      "culture",
+      "agriculture",
+      "colony"
+    ]
+  },
+  {
+    "id": 152,
+    "source_day": 20,
+    "page_start": 149,
+    "page_end": 151,
+    "root": "cur",
+    "source_roots": [
+      "cur"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 149,
+    "root_y": 157.0,
+    "root_x": 104.8,
+    "start_y": 157.0,
+    "words": [
+      "current",
+      "curriculum",
+      "excursion",
+      "occur",
+      "cure",
+      "curious",
+      "accurate"
+    ]
+  },
+  {
+    "id": 153,
+    "source_day": 20,
+    "page_start": 151,
+    "page_end": 151,
+    "root": "dam",
+    "source_roots": [
+      "dam"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 151,
+    "root_y": 165.1,
+    "root_x": 104.8,
+    "start_y": 165.1,
+    "words": [
+      "damage",
+      "condemn"
+    ]
+  },
+  {
+    "id": 154,
+    "source_day": 21,
+    "page_start": 153,
+    "page_end": 153,
+    "root": "deb",
+    "source_roots": [
+      "deb"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 153,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "debt",
+      "due",
+      "duty"
+    ]
+  },
+  {
+    "id": 155,
+    "source_day": 21,
+    "page_start": 153,
+    "page_end": 155,
+    "root": "der",
+    "source_roots": [
+      "der"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 153,
+    "root_y": 542.6,
+    "root_x": 104.8,
+    "start_y": 542.6,
+    "words": [
+      "render",
+      "surrender",
+      "rent",
+      "add",
+      "edit"
+    ]
+  },
+  {
+    "id": 156,
+    "source_day": 21,
+    "page_start": 155,
+    "page_end": 156,
+    "root": "dict",
+    "source_roots": [
+      "dict"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 155,
+    "root_y": 171.2,
+    "root_x": 104.8,
+    "start_y": 171.2,
+    "words": [
+      "dictate",
+      "addiction",
+      "contradict",
+      "dedicate",
+      "indicate",
+      "index"
+    ]
+  },
+  {
+    "id": 157,
+    "source_day": 21,
+    "page_start": 156,
+    "page_end": 157,
+    "root": "dom",
+    "source_roots": [
+      "dom"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 156,
+    "root_y": 534.8,
+    "root_x": 76.3,
+    "start_y": 534.8,
+    "words": [
+      "domain",
+      "domestic",
+      "dominate",
+      "predominant"
+    ]
+  },
+  {
+    "id": 158,
+    "source_day": 21,
+    "page_start": 157,
+    "page_end": 158,
+    "root": "don",
+    "source_roots": [
+      "don"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 157,
+    "root_y": 508.5,
+    "root_x": 104.8,
+    "start_y": 508.5,
+    "words": [
+      "donate",
+      "anecdote",
+      "dose"
+    ]
+  },
+  {
+    "id": 159,
+    "source_day": 22,
+    "page_start": 159,
+    "page_end": 160,
+    "root": "duc",
+    "source_roots": [
+      "duc"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 159,
+    "root_y": 110.0,
+    "root_x": 104.8,
+    "start_y": 110.0,
+    "words": [
+      "conduct",
+      "educate",
+      "deduct",
+      "deduce",
+      "induce",
+      "introduce",
+      "reduce"
+    ]
+  },
+  {
+    "id": 160,
+    "source_day": 22,
+    "page_start": 160,
+    "page_end": 161,
+    "root": "electr",
+    "source_roots": [
+      "electr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 160,
+    "root_y": 477.9,
+    "root_x": 76.3,
+    "start_y": 477.9,
+    "words": [
+      "electric",
+      "electronic"
+    ]
+  },
+  {
+    "id": 161,
+    "source_day": 22,
+    "page_start": 161,
+    "page_end": 162,
+    "root": "equident",
+    "source_roots": [
+      "equident"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 161,
+    "root_y": 157.0,
+    "root_x": 104.8,
+    "start_y": 157.0,
+    "words": [
+      "equal",
+      "equivalent",
+      "adequate",
+      "identify"
+    ]
+  },
+  {
+    "id": 162,
+    "source_day": 22,
+    "page_start": 162,
+    "page_end": 162,
+    "root": "ess",
+    "source_roots": [
+      "ess"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 162,
+    "root_y": 215.5,
+    "root_x": 76.3,
+    "start_y": 215.5,
+    "words": [
+      "essence",
+      "absent",
+      "present"
+    ]
+  },
+  {
+    "id": 163,
+    "source_day": 22,
+    "page_start": 163,
+    "page_end": 163,
+    "root": "estim",
+    "source_roots": [
+      "estim"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 163,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "estimate",
+      "overestimate",
+      "esteem"
+    ]
+  },
+  {
+    "id": 164,
+    "source_day": 22,
+    "page_start": 164,
+    "page_end": 165,
+    "root": "fa",
+    "source_roots": [
+      "fa"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 164,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "fable",
+      "fate",
+      "fame",
+      "infant",
+      "confess",
+      "professional"
+    ]
+  },
+  {
+    "id": 165,
+    "source_day": 23,
+    "page_start": 166,
+    "page_end": 170,
+    "root": "fac",
+    "source_roots": [
+      "fac"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 166,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "manufacture",
+      "facility",
+      "faculty",
+      "factor",
+      "factual",
+      "effect",
+      "affect",
+      "defect",
+      "deficient",
+      "efficient",
+      "proficient",
+      "sufficient",
+      "fiction",
+      "figure",
+      "profit",
+      "benefit",
+      "qualify",
+      "satisfy",
+      "affair"
+    ]
+  },
+  {
+    "id": 166,
+    "source_day": 23,
+    "page_start": 170,
+    "page_end": 171,
+    "root": "fals",
+    "source_roots": [
+      "fals"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 170,
+    "root_y": 417.1,
+    "root_x": 76.3,
+    "start_y": 417.1,
+    "words": [
+      "false",
+      "fail",
+      "fault"
+    ]
+  },
+  {
+    "id": 167,
+    "source_day": 23,
+    "page_start": 171,
+    "page_end": 172,
+    "root": "fare",
+    "source_roots": [
+      "fare"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 171,
+    "root_y": 526.2,
+    "root_x": 104.8,
+    "start_y": 526.2,
+    "words": [
+      "fare",
+      "farewell",
+      "welfare"
+    ]
+  },
+  {
+    "id": 168,
+    "source_day": 24,
+    "page_start": 173,
+    "page_end": 173,
+    "root": "fend",
+    "source_roots": [
+      "fend"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 173,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "defend",
+      "offend"
+    ]
+  },
+  {
+    "id": 169,
+    "source_day": 24,
+    "page_start": 174,
+    "page_end": 175,
+    "root": "fer",
+    "source_roots": [
+      "fer"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 174,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "prefer",
+      "refer",
+      "confer",
+      "infer",
+      "indifferent",
+      "fertile"
+    ]
+  },
+  {
+    "id": 170,
+    "source_day": 24,
+    "page_start": 175,
+    "page_end": 176,
+    "root": "fid",
+    "source_roots": [
+      "fid"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 175,
+    "root_y": 345.4,
+    "root_x": 104.8,
+    "start_y": 345.4,
+    "words": [
+      "confident",
+      "faith",
+      "defy"
+    ]
+  },
+  {
+    "id": 171,
+    "source_day": 24,
+    "page_start": 176,
+    "page_end": 177,
+    "root": "fin",
+    "source_roots": [
+      "fin"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 176,
+    "root_y": 152.1,
+    "root_x": 76.3,
+    "start_y": 152.1,
+    "words": [
+      "final",
+      "finance",
+      "confine",
+      "refine",
+      "define",
+      "infinite"
+    ]
+  },
+  {
+    "id": 172,
+    "source_day": 24,
+    "page_start": 177,
+    "page_end": 177,
+    "root": "flect",
+    "source_roots": [
+      "flect"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 177,
+    "root_y": 317.7,
+    "root_x": 104.8,
+    "start_y": 317.7,
+    "words": [
+      "reflect",
+      "flexible"
+    ]
+  },
+  {
+    "id": 173,
+    "source_day": 24,
+    "page_start": 178,
+    "page_end": 178,
+    "root": "flict",
+    "source_roots": [
+      "flict"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 178,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "conflict",
+      "inflict"
+    ]
+  },
+  {
+    "id": 174,
+    "source_day": 25,
+    "page_start": 179,
+    "page_end": 179,
+    "root": "flo",
+    "source_roots": [
+      "flo"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 179,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "float",
+      "flood",
+      "flow",
+      "flee"
+    ]
+  },
+  {
+    "id": 175,
+    "source_day": 25,
+    "page_start": 180,
+    "page_end": 181,
+    "root": "flu",
+    "source_roots": [
+      "flu"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 180,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "fluid",
+      "fluent",
+      "influence",
+      "influenza"
+    ]
+  },
+  {
+    "id": 176,
+    "source_day": 25,
+    "page_start": 181,
+    "page_end": 182,
+    "root": "form",
+    "source_roots": [
+      "form"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 181,
+    "root_y": 167.0,
+    "root_x": 104.8,
+    "start_y": 167.0,
+    "words": [
+      "form",
+      "inform",
+      "reform",
+      "formula"
+    ]
+  },
+  {
+    "id": 177,
+    "source_day": 25,
+    "page_start": 182,
+    "page_end": 183,
+    "root": "fort",
+    "source_roots": [
+      "fort"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 182,
+    "root_y": 246.8,
+    "root_x": 76.3,
+    "start_y": 246.8,
+    "words": [
+      "fort",
+      "effort",
+      "comfort",
+      "force",
+      "reinforce"
+    ]
+  },
+  {
+    "id": 178,
+    "source_day": 25,
+    "page_start": 183,
+    "page_end": 183,
+    "root": "frag",
+    "source_roots": [
+      "frag"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 183,
+    "root_y": 329.5,
+    "root_x": 104.8,
+    "start_y": 329.5,
+    "words": [
+      "fragment",
+      "fragile",
+      "fraction"
+    ]
+  },
+  {
+    "id": 179,
+    "source_day": 25,
+    "page_start": 184,
+    "page_end": 184,
+    "root": "fund",
+    "source_roots": [
+      "fund"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 184,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "fund",
+      "fundamental",
+      "profound",
+      "found"
+    ]
+  },
+  {
+    "id": 180,
+    "source_day": 26,
+    "page_start": 186,
+    "page_end": 186,
+    "root": "fus",
+    "source_roots": [
+      "fus"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 186,
+    "root_y": 109.6,
+    "root_x": 76.3,
+    "start_y": 109.6,
+    "words": [
+      "confuse",
+      "refuse",
+      "refund"
+    ]
+  },
+  {
+    "id": 181,
+    "source_day": 26,
+    "page_start": 187,
+    "page_end": 187,
+    "root": "gard",
+    "source_roots": [
+      "gard"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 187,
+    "root_y": 48.7,
+    "root_x": 104.8,
+    "start_y": 48.7,
+    "words": [
+      "regard",
+      "garment",
+      "guard",
+      "guarantee"
+    ]
+  },
+  {
+    "id": 182,
+    "source_day": 26,
+    "page_start": 188,
+    "page_end": 190,
+    "root": "gener",
+    "source_roots": [
+      "gener"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 188,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "generate",
+      "generous",
+      "general",
+      "gender",
+      "gene",
+      "genetic",
+      "genius",
+      "gentle",
+      "genuine",
+      "ingenious",
+      "pregnant"
+    ]
+  },
+  {
+    "id": 183,
+    "source_day": 26,
+    "page_start": 191,
+    "page_end": 191,
+    "root": "gest",
+    "source_roots": [
+      "gest"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 191,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "gesture",
+      "digest",
+      "register"
+    ]
+  },
+  {
+    "id": 184,
+    "source_day": 26,
+    "page_start": 191,
+    "page_end": 192,
+    "root": "gra",
+    "source_roots": [
+      "gra"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 191,
+    "root_y": 488.5,
+    "root_x": 104.8,
+    "start_y": 488.5,
+    "words": [
+      "grab",
+      "grasp",
+      "grip"
+    ]
+  },
+  {
+    "id": 185,
+    "source_day": 27,
+    "page_start": 193,
+    "page_end": 194,
+    "root": "grad",
+    "source_roots": [
+      "grad"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 193,
+    "root_y": 110.0,
+    "root_x": 104.8,
+    "start_y": 110.0,
+    "words": [
+      "gradual",
+      "graduate",
+      "aggressive",
+      "congress",
+      "degree",
+      "ingredient"
+    ]
+  },
+  {
+    "id": 186,
+    "source_day": 27,
+    "page_start": 194,
+    "page_end": 194,
+    "root": "graph",
+    "source_roots": [
+      "graph"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 194,
+    "root_y": 400.4,
+    "root_x": 76.3,
+    "start_y": 400.4,
+    "words": [
+      "graphic",
+      "photograph"
+    ]
+  },
+  {
+    "id": 187,
+    "source_day": 27,
+    "page_start": 195,
+    "page_end": 196,
+    "root": "grat",
+    "source_roots": [
+      "grat"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 195,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "congratulate",
+      "gratitude",
+      "agree",
+      "grace"
+    ]
+  },
+  {
+    "id": 188,
+    "source_day": 27,
+    "page_start": 196,
+    "page_end": 196,
+    "root": "grav",
+    "source_roots": [
+      "grav"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 196,
+    "root_y": 197.7,
+    "root_x": 76.3,
+    "start_y": 197.7,
+    "words": [
+      "grave",
+      "grief"
+    ]
+  },
+  {
+    "id": 189,
+    "source_day": 27,
+    "page_start": 196,
+    "page_end": 198,
+    "root": "hab",
+    "source_roots": [
+      "hab"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 196,
+    "root_y": 494.0,
+    "root_x": 76.3,
+    "start_y": 494.0,
+    "words": [
+      "habit",
+      "inhabit",
+      "habitat",
+      "exhibit",
+      "prohibit",
+      "able",
+      "behave"
+    ]
+  },
+  {
+    "id": 190,
+    "source_day": 27,
+    "page_start": 198,
+    "page_end": 199,
+    "root": "hered",
+    "source_roots": [
+      "hered"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 198,
+    "root_y": 342.8,
+    "root_x": 76.3,
+    "start_y": 342.8,
+    "words": [
+      "heredity",
+      "heritage",
+      "inherit",
+      "heir"
+    ]
+  },
+  {
+    "id": 191,
+    "source_day": 28,
+    "page_start": 200,
+    "page_end": 200,
+    "root": "host",
+    "source_roots": [
+      "host"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 200,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "host",
+      "hostile",
+      "hospitality"
+    ]
+  },
+  {
+    "id": 192,
+    "source_day": 28,
+    "page_start": 200,
+    "page_end": 201,
+    "root": "hum",
+    "source_roots": [
+      "hum"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 200,
+    "root_y": 529.3,
+    "root_x": 76.3,
+    "start_y": 529.3,
+    "words": [
+      "humanity",
+      "humble",
+      "humility",
+      "humiliate"
+    ]
+  },
+  {
+    "id": 193,
+    "source_day": 28,
+    "page_start": 201,
+    "page_end": 201,
+    "root": "insul",
+    "source_roots": [
+      "insul"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 201,
+    "root_y": 363.3,
+    "root_x": 104.8,
+    "start_y": 363.3,
+    "words": [
+      "isolate"
+    ]
+  },
+  {
+    "id": 194,
+    "source_day": 28,
+    "page_start": 202,
+    "page_end": 203,
+    "root": "it",
+    "source_roots": [
+      "it"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 202,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "exit",
+      "initial",
+      "initiate",
+      "transit",
+      "perish",
+      "issue"
+    ]
+  },
+  {
+    "id": 195,
+    "source_day": 28,
+    "page_start": 203,
+    "page_end": 205,
+    "root": "ject",
+    "source_roots": [
+      "ject"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 203,
+    "root_y": 219.1,
+    "root_x": 104.8,
+    "start_y": 219.1,
+    "words": [
+      "inject",
+      "object",
+      "subject",
+      "project",
+      "reject"
+    ]
+  },
+  {
+    "id": 196,
+    "source_day": 28,
+    "page_start": 205,
+    "page_end": 206,
+    "root": "jus",
+    "source_roots": [
+      "jus"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 205,
+    "root_y": 160.5,
+    "root_x": 104.8,
+    "start_y": 160.5,
+    "words": [
+      "just",
+      "justify",
+      "judge",
+      "prejudice",
+      "injure"
+    ]
+  },
+  {
+    "id": 197,
+    "source_day": 29,
+    "page_start": 207,
+    "page_end": 207,
+    "root": "labor",
+    "source_roots": [
+      "labor"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 207,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "labor",
+      "laboratory",
+      "elaborate",
+      "collaborate"
+    ]
+  },
+  {
+    "id": 198,
+    "source_day": 29,
+    "page_start": 208,
+    "page_end": 208,
+    "root": "lack",
+    "source_roots": [
+      "lack"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 208,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "lack",
+      "leak"
+    ]
+  },
+  {
+    "id": 199,
+    "source_day": 29,
+    "page_start": 208,
+    "page_end": 209,
+    "root": "lat",
+    "source_roots": [
+      "lat"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 208,
+    "root_y": 374.6,
+    "root_x": 76.3,
+    "start_y": 374.6,
+    "words": [
+      "relate",
+      "legislate"
+    ]
+  },
+  {
+    "id": 200,
+    "source_day": 29,
+    "page_start": 209,
+    "page_end": 210,
+    "root": "laxly",
+    "source_roots": [
+      "laxly"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 209,
+    "root_y": 142.8,
+    "root_x": 104.8,
+    "start_y": 142.8,
+    "words": [
+      "relax",
+      "analysis",
+      "paralysis",
+      "release",
+      "delay",
+      "relay"
+    ]
+  },
+  {
+    "id": 201,
+    "source_day": 29,
+    "page_start": 210,
+    "page_end": 211,
+    "root": "lect",
+    "source_roots": [
+      "lect"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 210,
+    "root_y": 278.9,
+    "root_x": 76.3,
+    "start_y": 278.9,
+    "words": [
+      "collect",
+      "recollect",
+      "elect",
+      "neglect",
+      "intellect",
+      "elegant"
+    ]
+  },
+  {
+    "id": 202,
+    "source_day": 29,
+    "page_start": 211,
+    "page_end": 212,
+    "root": "lect",
+    "source_roots": [
+      "lect"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 211,
+    "root_y": 471.7,
+    "root_x": 104.8,
+    "start_y": 471.7,
+    "words": [
+      "lecture",
+      "legend"
+    ]
+  },
+  {
+    "id": 203,
+    "source_day": 30,
+    "page_start": 213,
+    "page_end": 214,
+    "root": "leg",
+    "source_roots": [
+      "leg"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 213,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "legal",
+      "privilege",
+      "delegate",
+      "legacy",
+      "colleague",
+      "loyal"
+    ]
+  },
+  {
+    "id": 204,
+    "source_day": 30,
+    "page_start": 214,
+    "page_end": 214,
+    "root": "lev",
+    "source_roots": [
+      "lev"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 214,
+    "root_y": 277.0,
+    "root_x": 76.3,
+    "start_y": 277.0,
+    "words": [
+      "elevate",
+      "relevant",
+      "relieve"
+    ]
+  },
+  {
+    "id": 205,
+    "source_day": 30,
+    "page_start": 215,
+    "page_end": 215,
+    "root": "liber",
+    "source_roots": [
+      "liber"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 215,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "liberal",
+      "liberate",
+      "deliver"
+    ]
+  },
+  {
+    "id": 206,
+    "source_day": 30,
+    "page_start": 216,
+    "page_end": 217,
+    "root": "lig",
+    "source_roots": [
+      "lig"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 216,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "oblige",
+      "religion",
+      "ally",
+      "rally",
+      "rely",
+      "liable"
+    ]
+  },
+  {
+    "id": 207,
+    "source_day": 30,
+    "page_start": 217,
+    "page_end": 218,
+    "root": "limin",
+    "source_roots": [
+      "limin"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 217,
+    "root_y": 494.7,
+    "root_x": 104.8,
+    "start_y": 494.7,
+    "words": [
+      "eliminate",
+      "preliminary",
+      "limit"
+    ]
+  },
+  {
+    "id": 208,
+    "source_day": 31,
+    "page_start": 220,
+    "page_end": 220,
+    "root": "liter",
+    "source_roots": [
+      "liter"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 220,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "literal",
+      "literate",
+      "literature"
+    ]
+  },
+  {
+    "id": 209,
+    "source_day": 31,
+    "page_start": 220,
+    "page_end": 221,
+    "root": "loc",
+    "source_roots": [
+      "loc"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 220,
+    "root_y": 520.8,
+    "root_x": 76.3,
+    "start_y": 520.8,
+    "words": [
+      "local",
+      "locate",
+      "allocate"
+    ]
+  },
+  {
+    "id": 210,
+    "source_day": 31,
+    "page_start": 221,
+    "page_end": 222,
+    "root": "log",
+    "source_roots": [
+      "log"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 221,
+    "root_y": 284.1,
+    "root_x": 104.8,
+    "start_y": 284.1,
+    "words": [
+      "logic",
+      "apology",
+      "prologue",
+      "ecology",
+      "psychology"
+    ]
+  },
+  {
+    "id": 211,
+    "source_day": 31,
+    "page_start": 222,
+    "page_end": 223,
+    "root": "long",
+    "source_roots": [
+      "long"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 222,
+    "root_y": 429.9,
+    "root_x": 76.3,
+    "start_y": 429.9,
+    "words": [
+      "long",
+      "belong",
+      "prolong",
+      "length",
+      "linger"
+    ]
+  },
+  {
+    "id": 212,
+    "source_day": 31,
+    "page_start": 224,
+    "page_end": 224,
+    "root": "lus",
+    "source_roots": [
+      "lus"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 224,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "illusion",
+      "delusion"
+    ]
+  },
+  {
+    "id": 213,
+    "source_day": 32,
+    "page_start": 225,
+    "page_end": 226,
+    "root": "magni",
+    "source_roots": [
+      "magni"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 225,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "magnitude",
+      "magnify",
+      "master",
+      "masterpiece",
+      "major",
+      "mayor",
+      "majestic",
+      "maximum"
+    ]
+  },
+  {
+    "id": 214,
+    "source_day": 32,
+    "page_start": 227,
+    "page_end": 228,
+    "root": "mand",
+    "source_roots": [
+      "mand"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 227,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "demand",
+      "command",
+      "mandate",
+      "recommend"
+    ]
+  },
+  {
+    "id": 215,
+    "source_day": 32,
+    "page_start": 228,
+    "page_end": 229,
+    "root": "manu",
+    "source_roots": [
+      "manu"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 228,
+    "root_y": 326.7,
+    "root_x": 76.3,
+    "start_y": 326.7,
+    "words": [
+      "manual",
+      "manuscript",
+      "maintain",
+      "manipulate",
+      "manage"
+    ]
+  },
+  {
+    "id": 216,
+    "source_day": 32,
+    "page_start": 229,
+    "page_end": 230,
+    "root": "mechan",
+    "source_roots": [
+      "mechan"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 229,
+    "root_y": 532.5,
+    "root_x": 104.8,
+    "start_y": 532.5,
+    "words": [
+      "mechanism",
+      "mechanic",
+      "machinery"
+    ]
+  },
+  {
+    "id": 217,
+    "source_day": 33,
+    "page_start": 231,
+    "page_end": 232,
+    "root": "medi",
+    "source_roots": [
+      "medi"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 231,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "medium",
+      "medieval",
+      "mediate",
+      "immediate",
+      "intermediate",
+      "mean",
+      "meanwhile"
+    ]
+  },
+  {
+    "id": 218,
+    "source_day": 33,
+    "page_start": 233,
+    "page_end": 233,
+    "root": "memor",
+    "source_roots": [
+      "memor"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 233,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "memory",
+      "remember"
+    ]
+  },
+  {
+    "id": 219,
+    "source_day": 33,
+    "page_start": 234,
+    "page_end": 235,
+    "root": "ment",
+    "source_roots": [
+      "ment"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 234,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "mental",
+      "mention",
+      "remind",
+      "comment",
+      "monument",
+      "monitor",
+      "summon"
+    ]
+  },
+  {
+    "id": 220,
+    "source_day": 33,
+    "page_start": 235,
+    "page_end": 236,
+    "root": "merc",
+    "source_roots": [
+      "merc"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 235,
+    "root_y": 310.1,
+    "root_x": 104.8,
+    "start_y": 310.1,
+    "words": [
+      "commerce",
+      "merchant",
+      "mercy"
+    ]
+  },
+  {
+    "id": 221,
+    "source_day": 33,
+    "page_start": 236,
+    "page_end": 236,
+    "root": "merge",
+    "source_roots": [
+      "merge"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 236,
+    "root_y": 176.0,
+    "root_x": 76.3,
+    "start_y": 176.0,
+    "words": [
+      "merge",
+      "emerge",
+      "submerge"
+    ]
+  },
+  {
+    "id": 222,
+    "source_day": 34,
+    "page_start": 237,
+    "page_end": 237,
+    "root": "meter",
+    "source_roots": [
+      "meter"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 237,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "measure",
+      "dimension",
+      "immense"
+    ]
+  },
+  {
+    "id": 223,
+    "source_day": 34,
+    "page_start": 238,
+    "page_end": 238,
+    "root": "migr",
+    "source_roots": [
+      "migr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 238,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "migrate",
+      "immigrate",
+      "emigrate"
+    ]
+  },
+  {
+    "id": 224,
+    "source_day": 34,
+    "page_start": 238,
+    "page_end": 240,
+    "root": "min",
+    "source_roots": [
+      "min"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 238,
+    "root_y": 412.3,
+    "root_x": 76.3,
+    "start_y": 412.3,
+    "words": [
+      "minor",
+      "minister",
+      "administer",
+      "diminish",
+      "eminent",
+      "imminent",
+      "prominent",
+      "minimum"
+    ]
+  },
+  {
+    "id": 225,
+    "source_day": 34,
+    "page_start": 240,
+    "page_end": 240,
+    "root": "mir",
+    "source_roots": [
+      "mir"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 240,
+    "root_y": 155.7,
+    "root_x": 76.3,
+    "start_y": 155.7,
+    "words": [
+      "miracle",
+      "admire",
+      "marvelous"
+    ]
+  },
+  {
+    "id": 226,
+    "source_day": 35,
+    "page_start": 241,
+    "page_end": 243,
+    "root": "mit",
+    "source_roots": [
+      "mit"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 241,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "admit",
+      "commit",
+      "committee",
+      "emit",
+      "omit",
+      "permit",
+      "submit",
+      "transmit",
+      "mission",
+      "commission",
+      "mess"
+    ]
+  },
+  {
+    "id": 227,
+    "source_day": 35,
+    "page_start": 243,
+    "page_end": 245,
+    "root": "mod",
+    "source_roots": [
+      "mod"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 243,
+    "root_y": 482.4,
+    "root_x": 104.8,
+    "start_y": 482.4,
+    "words": [
+      "moderate",
+      "modernize",
+      "modest",
+      "modify",
+      "accommodate",
+      "commodity",
+      "mold"
+    ]
+  },
+  {
+    "id": 228,
+    "source_day": 35,
+    "page_start": 245,
+    "page_end": 245,
+    "root": "mort",
+    "source_roots": [
+      "mort"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 245,
+    "root_y": 154.0,
+    "root_x": 104.8,
+    "start_y": 154.0,
+    "words": [
+      "mortal",
+      "mortgage",
+      "murder"
+    ]
+  },
+  {
+    "id": 229,
+    "source_day": 36,
+    "page_start": 247,
+    "page_end": 248,
+    "root": "mov",
+    "source_roots": [
+      "mov"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 247,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "move",
+      "motive",
+      "motion",
+      "emotion",
+      "promote",
+      "remote",
+      "moment"
+    ]
+  },
+  {
+    "id": 230,
+    "source_day": 36,
+    "page_start": 248,
+    "page_end": 249,
+    "root": "mun",
+    "source_roots": [
+      "mun"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 248,
+    "root_y": 559.3,
+    "root_x": 76.3,
+    "start_y": 559.3,
+    "words": [
+      "community",
+      "communicate",
+      "common"
+    ]
+  },
+  {
+    "id": 231,
+    "source_day": 36,
+    "page_start": 249,
+    "page_end": 249,
+    "root": "mut",
+    "source_roots": [
+      "mut"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 249,
+    "root_y": 341.9,
+    "root_x": 104.8,
+    "start_y": 341.9,
+    "words": [
+      "mutual",
+      "commute"
+    ]
+  },
+  {
+    "id": 232,
+    "source_day": 36,
+    "page_start": 250,
+    "page_end": 250,
+    "root": "nat",
+    "source_roots": [
+      "nat"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 250,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "native",
+      "nation",
+      "nature",
+      "innate"
+    ]
+  },
+  {
+    "id": 233,
+    "source_day": 36,
+    "page_start": 250,
+    "page_end": 251,
+    "root": "neg",
+    "source_roots": [
+      "neg"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 250,
+    "root_y": 571.9,
+    "root_x": 76.3,
+    "start_y": 571.9,
+    "words": [
+      "negative",
+      "deny",
+      "neutral"
+    ]
+  },
+  {
+    "id": 234,
+    "source_day": 36,
+    "page_start": 251,
+    "page_end": 251,
+    "root": "norm",
+    "source_roots": [
+      "norm"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 251,
+    "root_y": 265.6,
+    "root_x": 104.8,
+    "start_y": 265.6,
+    "words": [
+      "norm",
+      "enormous"
+    ]
+  },
+  {
+    "id": 235,
+    "source_day": 37,
+    "page_start": 252,
+    "page_end": 253,
+    "root": "not",
+    "source_roots": [
+      "not"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 252,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "notable",
+      "notice",
+      "notify",
+      "notion"
+    ]
+  },
+  {
+    "id": 236,
+    "source_day": 37,
+    "page_start": 253,
+    "page_end": 253,
+    "root": "nounce",
+    "source_roots": [
+      "nounce"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 253,
+    "root_y": 260.2,
+    "root_x": 104.8,
+    "start_y": 260.2,
+    "words": [
+      "announce",
+      "pronounce"
+    ]
+  },
+  {
+    "id": 237,
+    "source_day": 37,
+    "page_start": 253,
+    "page_end": 254,
+    "root": "nov",
+    "source_roots": [
+      "nov"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 253,
+    "root_y": 547.5,
+    "root_x": 104.8,
+    "start_y": 547.5,
+    "words": [
+      "novel",
+      "innovate",
+      "renew"
+    ]
+  },
+  {
+    "id": 238,
+    "source_day": 37,
+    "page_start": 254,
+    "page_end": 254,
+    "root": "numer",
+    "source_roots": [
+      "numer"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 254,
+    "root_y": 268.9,
+    "root_x": 76.3,
+    "start_y": 268.9,
+    "words": [
+      "numeral",
+      "numerous",
+      "innumerable"
+    ]
+  },
+  {
+    "id": 239,
+    "source_day": 37,
+    "page_start": 255,
+    "page_end": 256,
+    "root": "nutri",
+    "source_roots": [
+      "nutri"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 255,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "nutrition",
+      "nourish",
+      "nurse",
+      "nurture"
+    ]
+  },
+  {
+    "id": 240,
+    "source_day": 37,
+    "page_start": 256,
+    "page_end": 256,
+    "root": "od",
+    "source_roots": [
+      "od"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 256,
+    "root_y": 141.3,
+    "root_x": 76.3,
+    "start_y": 141.3,
+    "words": [
+      "melody",
+      "tragedy"
+    ]
+  },
+  {
+    "id": 241,
+    "source_day": 37,
+    "page_start": 256,
+    "page_end": 256,
+    "root": "oper",
+    "source_roots": [
+      "oper"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 256,
+    "root_y": 416.2,
+    "root_x": 76.3,
+    "start_y": 416.2,
+    "words": [
+      "operate",
+      "cooperate"
+    ]
+  },
+  {
+    "id": 242,
+    "source_day": 37,
+    "page_start": 257,
+    "page_end": 257,
+    "root": "opt",
+    "source_roots": [
+      "opt"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 257,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "option",
+      "adopt",
+      "opinion"
+    ]
+  },
+  {
+    "id": 243,
+    "source_day": 38,
+    "page_start": 258,
+    "page_end": 258,
+    "root": "ordin",
+    "source_roots": [
+      "ordin"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 258,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "ordinary",
+      "subordinate",
+      "coordinate"
+    ]
+  },
+  {
+    "id": 244,
+    "source_day": 38,
+    "page_start": 259,
+    "page_end": 259,
+    "root": "ori",
+    "source_roots": [
+      "ori"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 259,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "origin",
+      "orient"
+    ]
+  },
+  {
+    "id": 245,
+    "source_day": 38,
+    "page_start": 259,
+    "page_end": 260,
+    "root": "par",
+    "source_roots": [
+      "par"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 259,
+    "root_y": 408.5,
+    "root_x": 104.8,
+    "start_y": 408.5,
+    "words": [
+      "prepare",
+      "apparatus",
+      "repair",
+      "emperor",
+      "imperial"
+    ]
+  },
+  {
+    "id": 246,
+    "source_day": 38,
+    "page_start": 260,
+    "page_end": 261,
+    "root": "par",
+    "source_roots": [
+      "par"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 260,
+    "root_y": 449.3,
+    "root_x": 76.3,
+    "start_y": 449.3,
+    "words": [
+      "transparent",
+      "apparent",
+      "appear"
+    ]
+  },
+  {
+    "id": 247,
+    "source_day": 38,
+    "page_start": 262,
+    "page_end": 262,
+    "root": "par",
+    "source_roots": [
+      "par"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 262,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "compare",
+      "peer"
+    ]
+  },
+  {
+    "id": 248,
+    "source_day": 38,
+    "page_start": 262,
+    "page_end": 263,
+    "root": "part",
+    "source_roots": [
+      "part"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 262,
+    "root_y": 430.3,
+    "root_x": 76.3,
+    "start_y": 430.3,
+    "words": [
+      "partial",
+      "particle",
+      "particular",
+      "apart",
+      "portion",
+      "proportion"
+    ]
+  },
+  {
+    "id": 249,
+    "source_day": 39,
+    "page_start": 264,
+    "page_end": 265,
+    "root": "pass",
+    "source_roots": [
+      "pass"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 264,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "passage",
+      "passenger",
+      "passerby",
+      "pastime",
+      "surpass",
+      "pace"
+    ]
+  },
+  {
+    "id": 250,
+    "source_day": 39,
+    "page_start": 265,
+    "page_end": 266,
+    "root": "path",
+    "source_roots": [
+      "path"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 265,
+    "root_y": 139.0,
+    "root_x": 104.8,
+    "start_y": 139.0,
+    "words": [
+      "pathetic",
+      "antipathy",
+      "empathy",
+      "sympathy",
+      "patient",
+      "passion",
+      "compassion"
+    ]
+  },
+  {
+    "id": 251,
+    "source_day": 39,
+    "page_start": 266,
+    "page_end": 267,
+    "root": "patr",
+    "source_roots": [
+      "patr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 266,
+    "root_y": 422.5,
+    "root_x": 76.3,
+    "start_y": 422.5,
+    "words": [
+      "patriot",
+      "patron",
+      "pattern"
+    ]
+  },
+  {
+    "id": 252,
+    "source_day": 39,
+    "page_start": 267,
+    "page_end": 267,
+    "root": "ped",
+    "source_roots": [
+      "ped"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 267,
+    "root_y": 150.1,
+    "root_x": 104.8,
+    "start_y": 150.1,
+    "words": [
+      "pedestrian",
+      "expedition"
+    ]
+  },
+  {
+    "id": 253,
+    "source_day": 39,
+    "page_start": 267,
+    "page_end": 268,
+    "root": "pel",
+    "source_roots": [
+      "pel"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 267,
+    "root_y": 415.2,
+    "root_x": 104.8,
+    "start_y": 415.2,
+    "words": [
+      "compel",
+      "expel",
+      "appeal",
+      "polish",
+      "impulse"
+    ]
+  },
+  {
+    "id": 254,
+    "source_day": 39,
+    "page_start": 269,
+    "page_end": 269,
+    "root": "pen",
+    "source_roots": [
+      "pen"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 269,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "penalty",
+      "punish"
+    ]
+  },
+  {
+    "id": 255,
+    "source_day": 40,
+    "page_start": 270,
+    "page_end": 271,
+    "root": "pend",
+    "source_roots": [
+      "pend"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 270,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "depend",
+      "suspend",
+      "expend",
+      "compensate",
+      "pension",
+      "ponder"
+    ]
+  },
+  {
+    "id": 256,
+    "source_day": 40,
+    "page_start": 271,
+    "page_end": 272,
+    "root": "per",
+    "source_roots": [
+      "per"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 271,
+    "root_y": 398.9,
+    "root_x": 104.8,
+    "start_y": 398.9,
+    "words": [
+      "experience",
+      "experiment",
+      "expert",
+      "peril"
+    ]
+  },
+  {
+    "id": 257,
+    "source_day": 40,
+    "page_start": 272,
+    "page_end": 273,
+    "root": "pet",
+    "source_roots": [
+      "pet"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 272,
+    "root_y": 276.1,
+    "root_x": 76.3,
+    "start_y": 276.1,
+    "words": [
+      "compete",
+      "competence",
+      "petition",
+      "appetite",
+      "repeat"
+    ]
+  },
+  {
+    "id": 258,
+    "source_day": 40,
+    "page_start": 273,
+    "page_end": 274,
+    "root": "phan",
+    "source_roots": [
+      "phan"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 273,
+    "root_y": 432.2,
+    "root_x": 104.8,
+    "start_y": 432.2,
+    "words": [
+      "emphasize",
+      "phase",
+      "phenomenon",
+      "fancy"
+    ]
+  },
+  {
+    "id": 259,
+    "source_day": 41,
+    "page_start": 276,
+    "page_end": 276,
+    "root": "plaud",
+    "source_roots": [
+      "plaud"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 276,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "applaud",
+      "explode"
+    ]
+  },
+  {
+    "id": 260,
+    "source_day": 41,
+    "page_start": 276,
+    "page_end": 278,
+    "root": "ple",
+    "source_roots": [
+      "ple"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 276,
+    "root_y": 416.1,
+    "root_x": 76.3,
+    "start_y": 416.1,
+    "words": [
+      "complete",
+      "complement",
+      "implement",
+      "compliment",
+      "accomplish",
+      "supply",
+      "plenty"
+    ]
+  },
+  {
+    "id": 261,
+    "source_day": 41,
+    "page_start": 278,
+    "page_end": 278,
+    "root": "pleas",
+    "source_roots": [
+      "pleas"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 278,
+    "root_y": 272.4,
+    "root_x": 76.3,
+    "start_y": 272.4,
+    "words": [
+      "please",
+      "plead"
+    ]
+  },
+  {
+    "id": 262,
+    "source_day": 41,
+    "page_start": 279,
+    "page_end": 280,
+    "root": "plic",
+    "source_roots": [
+      "plic"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 279,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "complicate",
+      "simplicity",
+      "complex",
+      "perplex",
+      "imply",
+      "apply",
+      "diplomatic",
+      "employ",
+      "exploit"
+    ]
+  },
+  {
+    "id": 263,
+    "source_day": 41,
+    "page_start": 281,
+    "page_end": 281,
+    "root": "plor",
+    "source_roots": [
+      "plor"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 281,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "explore"
+    ]
+  },
+  {
+    "id": 264,
+    "source_day": 42,
+    "page_start": 282,
+    "page_end": 282,
+    "root": "polit",
+    "source_roots": [
+      "polit"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 282,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "political",
+      "policy",
+      "metropolis"
+    ]
+  },
+  {
+    "id": 265,
+    "source_day": 42,
+    "page_start": 283,
+    "page_end": 283,
+    "root": "popul",
+    "source_roots": [
+      "popul"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 283,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "popular",
+      "populate",
+      "public",
+      "publish",
+      "republic"
+    ]
+  },
+  {
+    "id": 266,
+    "source_day": 42,
+    "page_start": 284,
+    "page_end": 284,
+    "root": "port",
+    "source_roots": [
+      "port"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 284,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "export",
+      "import",
+      "transport",
+      "portable",
+      "opportunity"
+    ]
+  },
+  {
+    "id": 267,
+    "source_day": 42,
+    "page_start": 285,
+    "page_end": 287,
+    "root": "pos",
+    "source_roots": [
+      "pos"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 285,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "pose",
+      "position",
+      "positive",
+      "post",
+      "deposit",
+      "impose",
+      "purpose",
+      "oppose",
+      "suppose",
+      "component",
+      "opponent",
+      "compound"
+    ]
+  },
+  {
+    "id": 268,
+    "source_day": 43,
+    "page_start": 288,
+    "page_end": 289,
+    "root": "poss",
+    "source_roots": [
+      "poss"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 288,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "possible",
+      "possess",
+      "potential"
+    ]
+  },
+  {
+    "id": 269,
+    "source_day": 43,
+    "page_start": 289,
+    "page_end": 289,
+    "root": "preci",
+    "source_roots": [
+      "preci"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 289,
+    "root_y": 152.0,
+    "root_x": 104.8,
+    "start_y": 152.0,
+    "words": [
+      "precious",
+      "appreciate",
+      "praise",
+      "priceless"
+    ]
+  },
+  {
+    "id": 270,
+    "source_day": 43,
+    "page_start": 290,
+    "page_end": 291,
+    "root": "prehend",
+    "source_roots": [
+      "prehend"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 290,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "comprehend",
+      "prison",
+      "imprison",
+      "enterprise",
+      "surprise",
+      "prey"
+    ]
+  },
+  {
+    "id": 271,
+    "source_day": 43,
+    "page_start": 291,
+    "page_end": 292,
+    "root": "press",
+    "source_roots": [
+      "press"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 291,
+    "root_y": 161.1,
+    "root_x": 104.8,
+    "start_y": 161.1,
+    "words": [
+      "pressure",
+      "express",
+      "impress",
+      "oppress"
+    ]
+  },
+  {
+    "id": 272,
+    "source_day": 43,
+    "page_start": 292,
+    "page_end": 293,
+    "root": "prim",
+    "source_roots": [
+      "prim"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 292,
+    "root_y": 237.5,
+    "root_x": 76.3,
+    "start_y": 237.5,
+    "words": [
+      "prime",
+      "primary",
+      "primitive",
+      "principal",
+      "principle",
+      "prior"
+    ]
+  },
+  {
+    "id": 273,
+    "source_day": 44,
+    "page_start": 294,
+    "page_end": 294,
+    "root": "priv",
+    "source_roots": [
+      "priv"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 294,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "private",
+      "deprive"
+    ]
+  },
+  {
+    "id": 274,
+    "source_day": 44,
+    "page_start": 295,
+    "page_end": 295,
+    "root": "prob",
+    "source_roots": [
+      "prob"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 295,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "probable",
+      "probe",
+      "prove",
+      "approve"
+    ]
+  },
+  {
+    "id": 275,
+    "source_day": 44,
+    "page_start": 296,
+    "page_end": 296,
+    "root": "proper",
+    "source_roots": [
+      "proper"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 296,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "proper",
+      "property",
+      "appropriate"
+    ]
+  },
+  {
+    "id": 276,
+    "source_day": 44,
+    "page_start": 296,
+    "page_end": 297,
+    "root": "punct",
+    "source_roots": [
+      "punct"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 296,
+    "root_y": 462.7,
+    "root_x": 76.3,
+    "start_y": 462.7,
+    "words": [
+      "punctual",
+      "punctuate",
+      "disappoint"
+    ]
+  },
+  {
+    "id": 277,
+    "source_day": 44,
+    "page_start": 297,
+    "page_end": 297,
+    "root": "put",
+    "source_roots": [
+      "put"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 297,
+    "root_y": 171.2,
+    "root_x": 104.8,
+    "start_y": 171.2,
+    "words": [
+      "dispute",
+      "reputation"
+    ]
+  },
+  {
+    "id": 278,
+    "source_day": 44,
+    "page_start": 298,
+    "page_end": 299,
+    "root": "quir",
+    "source_roots": [
+      "quir"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 298,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "acquire",
+      "require",
+      "inquire",
+      "conquer",
+      "request",
+      "exquisite"
+    ]
+  },
+  {
+    "id": 279,
+    "source_day": 45,
+    "page_start": 300,
+    "page_end": 300,
+    "root": "rang",
+    "source_roots": [
+      "rang"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 300,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "range",
+      "arrange",
+      "rank"
+    ]
+  },
+  {
+    "id": 280,
+    "source_day": 45,
+    "page_start": 300,
+    "page_end": 301,
+    "root": "rat",
+    "source_roots": [
+      "rat"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 300,
+    "root_y": 501.5,
+    "root_x": 76.3,
+    "start_y": 501.5,
+    "words": [
+      "rate",
+      "ratio",
+      "rational",
+      "reason"
+    ]
+  },
+  {
+    "id": 281,
+    "source_day": 45,
+    "page_start": 301,
+    "page_end": 303,
+    "root": "rect",
+    "source_roots": [
+      "rect"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 301,
+    "root_y": 461.4,
+    "root_x": 104.8,
+    "start_y": 461.4,
+    "words": [
+      "correct",
+      "direct",
+      "erect",
+      "region",
+      "regular",
+      "regulate",
+      "rule",
+      "reign",
+      "royal"
+    ]
+  },
+  {
+    "id": 282,
+    "source_day": 45,
+    "page_start": 304,
+    "page_end": 304,
+    "root": "rot",
+    "source_roots": [
+      "rot"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 304,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "rotate",
+      "control",
+      "enroll"
+    ]
+  },
+  {
+    "id": 283,
+    "source_day": 45,
+    "page_start": 305,
+    "page_end": 306,
+    "root": "rupt",
+    "source_roots": [
+      "rupt"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 305,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "bankrupt",
+      "corrupt",
+      "disrupt",
+      "erupt",
+      "interrupt",
+      "route",
+      "routine"
+    ]
+  },
+  {
+    "id": 284,
+    "source_day": 46,
+    "page_start": 308,
+    "page_end": 308,
+    "root": "sacr",
+    "source_roots": [
+      "sacr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 308,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "sacred",
+      "sacrifice",
+      "saint"
+    ]
+  },
+  {
+    "id": 285,
+    "source_day": 46,
+    "page_start": 308,
+    "page_end": 309,
+    "root": "scend",
+    "source_roots": [
+      "scend"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 308,
+    "root_y": 452.8,
+    "root_x": 76.3,
+    "start_y": 452.8,
+    "words": [
+      "descend",
+      "scale",
+      "escalate"
+    ]
+  },
+  {
+    "id": 286,
+    "source_day": 46,
+    "page_start": 309,
+    "page_end": 310,
+    "root": "sci",
+    "source_roots": [
+      "sci"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 309,
+    "root_y": 308.8,
+    "root_x": 104.8,
+    "start_y": 308.8,
+    "words": [
+      "conscious",
+      "subconscious",
+      "conscience"
+    ]
+  },
+  {
+    "id": 287,
+    "source_day": 46,
+    "page_start": 310,
+    "page_end": 310,
+    "root": "scrib",
+    "source_roots": [
+      "scrib"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 310,
+    "root_y": 163.2,
+    "root_x": 76.3,
+    "start_y": 163.2,
+    "words": [
+      "describe",
+      "prescribe",
+      "subscribe"
+    ]
+  },
+  {
+    "id": 288,
+    "source_day": 46,
+    "page_start": 310,
+    "page_end": 311,
+    "root": "sect",
+    "source_roots": [
+      "sect"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 310,
+    "root_y": 562.9,
+    "root_x": 76.3,
+    "start_y": 562.9,
+    "words": [
+      "section",
+      "sector",
+      "segment"
+    ]
+  },
+  {
+    "id": 289,
+    "source_day": 46,
+    "page_start": 311,
+    "page_end": 313,
+    "root": "sens",
+    "source_roots": [
+      "sens"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 311,
+    "root_y": 294.0,
+    "root_x": 104.8,
+    "start_y": 294.0,
+    "words": [
+      "sense",
+      "sensation",
+      "nonsense",
+      "sentiment",
+      "consent",
+      "resent",
+      "scent"
+    ]
+  },
+  {
+    "id": 290,
+    "source_day": 47,
+    "page_start": 314,
+    "page_end": 315,
+    "root": "sequ",
+    "source_roots": [
+      "sequ"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 314,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "sequence",
+      "consequence",
+      "subsequent",
+      "pursue",
+      "suit",
+      "execute"
+    ]
+  },
+  {
+    "id": 291,
+    "source_day": 47,
+    "page_start": 315,
+    "page_end": 316,
+    "root": "sert",
+    "source_roots": [
+      "sert"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 315,
+    "root_y": 449.4,
+    "root_x": 104.8,
+    "start_y": 449.4,
+    "words": [
+      "desert",
+      "insert",
+      "exert",
+      "series"
+    ]
+  },
+  {
+    "id": 292,
+    "source_day": 47,
+    "page_start": 316,
+    "page_end": 317,
+    "root": "serv",
+    "source_roots": [
+      "serv"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 316,
+    "root_y": 416.1,
+    "root_x": 76.3,
+    "start_y": 416.1,
+    "words": [
+      "conserve",
+      "deserve",
+      "preserve",
+      "reserve",
+      "observe"
+    ]
+  },
+  {
+    "id": 293,
+    "source_day": 47,
+    "page_start": 318,
+    "page_end": 319,
+    "root": "sid",
+    "source_roots": [
+      "sid"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 318,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "reside",
+      "president",
+      "session",
+      "assess",
+      "obsess",
+      "settle"
+    ]
+  },
+  {
+    "id": 294,
+    "source_day": 48,
+    "page_start": 320,
+    "page_end": 321,
+    "root": "sign",
+    "source_roots": [
+      "sign"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 320,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "sign",
+      "significant",
+      "assign",
+      "design",
+      "designate",
+      "resign",
+      "signal",
+      "seal"
+    ]
+  },
+  {
+    "id": 295,
+    "source_day": 48,
+    "page_start": 321,
+    "page_end": 322,
+    "root": "simil",
+    "source_roots": [
+      "simil"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 321,
+    "root_y": 517.3,
+    "root_x": 104.8,
+    "start_y": 517.3,
+    "words": [
+      "similar",
+      "resemble",
+      "assemble",
+      "seemingly",
+      "simulation",
+      "simultaneously"
+    ]
+  },
+  {
+    "id": 296,
+    "source_day": 48,
+    "page_start": 323,
+    "page_end": 323,
+    "root": "soci",
+    "source_roots": [
+      "soci"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 323,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "social",
+      "associate"
+    ]
+  },
+  {
+    "id": 297,
+    "source_day": 48,
+    "page_start": 323,
+    "page_end": 324,
+    "root": "sol",
+    "source_roots": [
+      "sol"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 323,
+    "root_y": 413.7,
+    "root_x": 104.8,
+    "start_y": 413.7,
+    "words": [
+      "sole",
+      "solitary",
+      "solitude"
+    ]
+  },
+  {
+    "id": 298,
+    "source_day": 48,
+    "page_start": 324,
+    "page_end": 324,
+    "root": "solv",
+    "source_roots": [
+      "solv"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 324,
+    "root_y": 139.1,
+    "root_x": 76.3,
+    "start_y": 139.1,
+    "words": [
+      "solve",
+      "resolve",
+      "dissolve"
+    ]
+  },
+  {
+    "id": 299,
+    "source_day": 49,
+    "page_start": 325,
+    "page_end": 325,
+    "root": "soph",
+    "source_roots": [
+      "soph"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 325,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "philosophy",
+      "sophisticated",
+      "sophomore"
+    ]
+  },
+  {
+    "id": 300,
+    "source_day": 49,
+    "page_start": 325,
+    "page_end": 328,
+    "root": "spect",
+    "source_roots": [
+      "spect"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 325,
+    "root_y": 531.0,
+    "root_x": 104.8,
+    "start_y": 531.0,
+    "words": [
+      "spectacle",
+      "aspect",
+      "expect",
+      "inspect",
+      "respect",
+      "prospect",
+      "suspect",
+      "species",
+      "specific",
+      "special",
+      "despite"
+    ]
+  },
+  {
+    "id": 301,
+    "source_day": 49,
+    "page_start": 328,
+    "page_end": 329,
+    "root": "sper",
+    "source_roots": [
+      "sper"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 328,
+    "root_y": 460.5,
+    "root_x": 76.3,
+    "start_y": 460.5,
+    "words": [
+      "prosper",
+      "despair"
+    ]
+  },
+  {
+    "id": 302,
+    "source_day": 49,
+    "page_start": 329,
+    "page_end": 329,
+    "root": "spher",
+    "source_roots": [
+      "spher"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 329,
+    "root_y": 185.9,
+    "root_x": 104.8,
+    "start_y": 185.9,
+    "words": [
+      "sphere",
+      "atmosphere",
+      "hemisphere"
+    ]
+  },
+  {
+    "id": 303,
+    "source_day": 50,
+    "page_start": 330,
+    "page_end": 330,
+    "root": "spir",
+    "source_roots": [
+      "spir"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 330,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "spirit",
+      "aspire",
+      "inspire",
+      "expire"
+    ]
+  },
+  {
+    "id": 304,
+    "source_day": 50,
+    "page_start": 331,
+    "page_end": 331,
+    "root": "spond",
+    "source_roots": [
+      "spond"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 331,
+    "root_y": 146.6,
+    "root_x": 104.8,
+    "start_y": 146.6,
+    "words": [
+      "respond",
+      "responsible",
+      "sponsor"
+    ]
+  },
+  {
+    "id": 305,
+    "source_day": 50,
+    "page_start": 332,
+    "page_end": 335,
+    "root": "sta",
+    "source_roots": [
+      "sta"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 332,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "stand",
+      "standard",
+      "state",
+      "statistics",
+      "statue",
+      "status",
+      "stable",
+      "establish",
+      "constant",
+      "estate",
+      "instance",
+      "instant",
+      "obstacle",
+      "substance"
+    ]
+  },
+  {
+    "id": 306,
+    "source_day": 51,
+    "page_start": 337,
+    "page_end": 340,
+    "root": "sta",
+    "source_roots": [
+      "sta"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 337,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "assist",
+      "consist",
+      "exist",
+      "insist",
+      "resist",
+      "restore",
+      "arrest",
+      "cost",
+      "steady",
+      "system",
+      "constitute",
+      "institute",
+      "substitute",
+      "destination",
+      "superstition"
+    ]
+  },
+  {
+    "id": 307,
+    "source_day": 51,
+    "page_start": 341,
+    "page_end": 342,
+    "root": "sting",
+    "source_roots": [
+      "sting"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 341,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "distinguish",
+      "extinguish",
+      "extinct",
+      "distinct",
+      "instinct",
+      "stimulate"
+    ]
+  },
+  {
+    "id": 308,
+    "source_day": 52,
+    "page_start": 343,
+    "page_end": 344,
+    "root": "strict",
+    "source_roots": [
+      "strict"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 343,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "strict",
+      "restrict",
+      "district",
+      "strain",
+      "restrain",
+      "strait",
+      "distress",
+      "stress",
+      "prestige"
+    ]
+  },
+  {
+    "id": 309,
+    "source_day": 52,
+    "page_start": 345,
+    "page_end": 346,
+    "root": "struct",
+    "source_roots": [
+      "struct"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 345,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "structure",
+      "construct",
+      "instruct",
+      "instrument",
+      "industry",
+      "destroy"
+    ]
+  },
+  {
+    "id": 310,
+    "source_day": 52,
+    "page_start": 346,
+    "page_end": 347,
+    "root": "sult",
+    "source_roots": [
+      "sult"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 346,
+    "root_y": 537.0,
+    "root_x": 76.3,
+    "start_y": 537.0,
+    "words": [
+      "insult",
+      "result"
+    ]
+  },
+  {
+    "id": 311,
+    "source_day": 52,
+    "page_start": 347,
+    "page_end": 348,
+    "root": "sum",
+    "source_roots": [
+      "sum"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 347,
+    "root_y": 171.6,
+    "root_x": 104.8,
+    "start_y": 171.6,
+    "words": [
+      "assume",
+      "consume",
+      "presume",
+      "resume"
+    ]
+  },
+  {
+    "id": 312,
+    "source_day": 53,
+    "page_start": 349,
+    "page_end": 349,
+    "root": "sure",
+    "source_roots": [
+      "sure"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 349,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "assure",
+      "reassure",
+      "insure"
+    ]
+  },
+  {
+    "id": 313,
+    "source_day": 53,
+    "page_start": 349,
+    "page_end": 350,
+    "root": "surg",
+    "source_roots": [
+      "surg"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 349,
+    "root_y": 459.7,
+    "root_x": 104.8,
+    "start_y": 459.7,
+    "words": [
+      "surge",
+      "source",
+      "resource"
+    ]
+  },
+  {
+    "id": 314,
+    "source_day": 53,
+    "page_start": 350,
+    "page_end": 350,
+    "root": "tach",
+    "source_roots": [
+      "tach"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 350,
+    "root_y": 152.0,
+    "root_x": 76.3,
+    "start_y": 152.0,
+    "words": [
+      "attach",
+      "attack",
+      "stake"
+    ]
+  },
+  {
+    "id": 315,
+    "source_day": 53,
+    "page_start": 351,
+    "page_end": 351,
+    "root": "tact",
+    "source_roots": [
+      "tact"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 351,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "intact",
+      "contact",
+      "integrate",
+      "attain",
+      "entire"
+    ]
+  },
+  {
+    "id": 316,
+    "source_day": 53,
+    "page_start": 352,
+    "page_end": 352,
+    "root": "tail",
+    "source_roots": [
+      "tail"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 352,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "tailor",
+      "retail",
+      "detail"
+    ]
+  },
+  {
+    "id": 317,
+    "source_day": 53,
+    "page_start": 352,
+    "page_end": 354,
+    "root": "tain",
+    "source_roots": [
+      "tain"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 352,
+    "root_y": 428.6,
+    "root_x": 76.3,
+    "start_y": 428.6,
+    "words": [
+      "contain",
+      "entertain",
+      "obtain",
+      "retain",
+      "sustain",
+      "content",
+      "continent",
+      "continue"
+    ]
+  },
+  {
+    "id": 318,
+    "source_day": 54,
+    "page_start": 355,
+    "page_end": 355,
+    "root": "techn",
+    "source_roots": [
+      "techn"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 355,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "technique",
+      "technology"
+    ]
+  },
+  {
+    "id": 319,
+    "source_day": 54,
+    "page_start": 355,
+    "page_end": 356,
+    "root": "temper",
+    "source_roots": [
+      "temper"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 355,
+    "root_y": 466.3,
+    "root_x": 104.8,
+    "start_y": 466.3,
+    "words": [
+      "temperate",
+      "temperature",
+      "temper",
+      "temperament"
+    ]
+  },
+  {
+    "id": 320,
+    "source_day": 54,
+    "page_start": 357,
+    "page_end": 357,
+    "root": "tempor",
+    "source_roots": [
+      "tempor"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 357,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "temporary",
+      "contemporary"
+    ]
+  },
+  {
+    "id": 321,
+    "source_day": 54,
+    "page_start": 357,
+    "page_end": 357,
+    "root": "tempt",
+    "source_roots": [
+      "tempt"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 357,
+    "root_y": 362.5,
+    "root_x": 104.8,
+    "start_y": 362.5,
+    "words": [
+      "tempt",
+      "attempt"
+    ]
+  },
+  {
+    "id": 322,
+    "source_day": 54,
+    "page_start": 358,
+    "page_end": 359,
+    "root": "tend",
+    "source_roots": [
+      "tend"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 358,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "attend",
+      "pretend",
+      "extend",
+      "intend",
+      "tend",
+      "tender",
+      "tense",
+      "intense"
+    ]
+  },
+  {
+    "id": 323,
+    "source_day": 54,
+    "page_start": 360,
+    "page_end": 360,
+    "root": "termin",
+    "source_roots": [
+      "termin"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 360,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "terminal",
+      "terminate",
+      "determine",
+      "term"
+    ]
+  },
+  {
+    "id": 324,
+    "source_day": 55,
+    "page_start": 361,
+    "page_end": 362,
+    "root": "terr",
+    "source_roots": [
+      "terr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 361,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "terrible",
+      "terror",
+      "terrify"
+    ]
+  },
+  {
+    "id": 325,
+    "source_day": 55,
+    "page_start": 362,
+    "page_end": 362,
+    "root": "terr",
+    "source_roots": [
+      "terr"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 362,
+    "root_y": 155.7,
+    "root_x": 76.3,
+    "start_y": 155.7,
+    "words": [
+      "terrestrial",
+      "territory"
+    ]
+  },
+  {
+    "id": 326,
+    "source_day": 55,
+    "page_start": 362,
+    "page_end": 363,
+    "root": "test",
+    "source_roots": [
+      "test"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 362,
+    "root_y": 435.0,
+    "root_x": 76.3,
+    "start_y": 435.0,
+    "words": [
+      "testify",
+      "contest",
+      "protest"
+    ]
+  },
+  {
+    "id": 327,
+    "source_day": 55,
+    "page_start": 363,
+    "page_end": 363,
+    "root": "text",
+    "source_roots": [
+      "text"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 363,
+    "root_y": 157.3,
+    "root_x": 104.8,
+    "start_y": 157.3,
+    "words": [
+      "text",
+      "context",
+      "textile",
+      "texture"
+    ]
+  },
+  {
+    "id": 328,
+    "source_day": 55,
+    "page_start": 364,
+    "page_end": 364,
+    "root": "theo",
+    "source_roots": [
+      "theo"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 364,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "theology",
+      "enthusiasm"
+    ]
+  },
+  {
+    "id": 329,
+    "source_day": 55,
+    "page_start": 364,
+    "page_end": 364,
+    "root": "thesis",
+    "source_roots": [
+      "thesis"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 364,
+    "root_y": 321.2,
+    "root_x": 76.3,
+    "start_y": 321.2,
+    "words": [
+      "thesis",
+      "hypothesis",
+      "theme"
+    ]
+  },
+  {
+    "id": 330,
+    "source_day": 55,
+    "page_start": 365,
+    "page_end": 365,
+    "root": "ton",
+    "source_roots": [
+      "ton"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 365,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "tone",
+      "intonation",
+      "monotonous",
+      "tune"
+    ]
+  },
+  {
+    "id": 331,
+    "source_day": 55,
+    "page_start": 365,
+    "page_end": 366,
+    "root": "tort",
+    "source_roots": [
+      "tort"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 365,
+    "root_y": 562.8,
+    "root_x": 104.8,
+    "start_y": 562.8,
+    "words": [
+      "torture",
+      "distort",
+      "torment"
+    ]
+  },
+  {
+    "id": 332,
+    "source_day": 56,
+    "page_start": 368,
+    "page_end": 370,
+    "root": "tract",
+    "source_roots": [
+      "tract"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 368,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "abstract",
+      "attract",
+      "contract",
+      "distract",
+      "extract",
+      "treat",
+      "treaty",
+      "retreat",
+      "trace",
+      "track",
+      "trail",
+      "trait",
+      "portray"
+    ]
+  },
+  {
+    "id": 333,
+    "source_day": 56,
+    "page_start": 371,
+    "page_end": 371,
+    "root": "trad",
+    "source_roots": [
+      "trad"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 371,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "tradition",
+      "betray"
+    ]
+  },
+  {
+    "id": 334,
+    "source_day": 56,
+    "page_start": 371,
+    "page_end": 371,
+    "root": "trem",
+    "source_roots": [
+      "trem"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 371,
+    "root_y": 332.2,
+    "root_x": 104.8,
+    "start_y": 332.2,
+    "words": [
+      "tremble",
+      "tremendous"
+    ]
+  },
+  {
+    "id": 335,
+    "source_day": 56,
+    "page_start": 372,
+    "page_end": 372,
+    "root": "tribut",
+    "source_roots": [
+      "tribut"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 372,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "attribute",
+      "contribute",
+      "distribute"
+    ]
+  },
+  {
+    "id": 336,
+    "source_day": 56,
+    "page_start": 373,
+    "page_end": 373,
+    "root": "tru",
+    "source_roots": [
+      "tru"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 373,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "trust",
+      "entrust",
+      "truthful"
+    ]
+  },
+  {
+    "id": 337,
+    "source_day": 57,
+    "page_start": 374,
+    "page_end": 374,
+    "root": "trud",
+    "source_roots": [
+      "trud"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 374,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "intrude",
+      "thrust",
+      "threat"
+    ]
+  },
+  {
+    "id": 338,
+    "source_day": 57,
+    "page_start": 374,
+    "page_end": 375,
+    "root": "turb",
+    "source_roots": [
+      "turb"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 374,
+    "root_y": 502.6,
+    "root_x": 76.3,
+    "start_y": 502.6,
+    "words": [
+      "disturb",
+      "trouble"
+    ]
+  },
+  {
+    "id": 339,
+    "source_day": 57,
+    "page_start": 375,
+    "page_end": 375,
+    "root": "und",
+    "source_roots": [
+      "und"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 375,
+    "root_y": 185.0,
+    "root_x": 104.8,
+    "start_y": 185.0,
+    "words": [
+      "abundant",
+      "surround"
+    ]
+  },
+  {
+    "id": 340,
+    "source_day": 57,
+    "page_start": 376,
+    "page_end": 376,
+    "root": "urb",
+    "source_roots": [
+      "urb"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 376,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "urban",
+      "suburb"
+    ]
+  },
+  {
+    "id": 341,
+    "source_day": 57,
+    "page_start": 376,
+    "page_end": 377,
+    "root": "us",
+    "source_roots": [
+      "us"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 376,
+    "root_y": 301.1,
+    "root_x": 76.3,
+    "start_y": 301.1,
+    "words": [
+      "use",
+      "abuse",
+      "utensil",
+      "utilize"
+    ]
+  },
+  {
+    "id": 342,
+    "source_day": 57,
+    "page_start": 377,
+    "page_end": 377,
+    "root": "vad",
+    "source_roots": [
+      "vad"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 377,
+    "root_y": 246.0,
+    "root_x": 104.8,
+    "start_y": 246.0,
+    "words": [
+      "invade",
+      "evade"
+    ]
+  },
+  {
+    "id": 343,
+    "source_day": 57,
+    "page_start": 378,
+    "page_end": 378,
+    "root": "vag",
+    "source_roots": [
+      "vag"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 378,
+    "root_y": 52.3,
+    "root_x": 76.3,
+    "start_y": 52.3,
+    "words": [
+      "vague",
+      "extravagant"
+    ]
+  },
+  {
+    "id": 344,
+    "source_day": 57,
+    "page_start": 378,
+    "page_end": 379,
+    "root": "val",
+    "source_roots": [
+      "val"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 378,
+    "root_y": 334.2,
+    "root_x": 76.3,
+    "start_y": 334.2,
+    "words": [
+      "value",
+      "evaluate",
+      "valid",
+      "available",
+      "prevail"
+    ]
+  },
+  {
+    "id": 345,
+    "source_day": 57,
+    "page_start": 379,
+    "page_end": 380,
+    "root": "van",
+    "source_roots": [
+      "van"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 379,
+    "root_y": 397.5,
+    "root_x": 104.8,
+    "start_y": 397.5,
+    "words": [
+      "vanish",
+      "vain",
+      "avoid",
+      "vacant",
+      "vacuum"
+    ]
+  },
+  {
+    "id": 346,
+    "source_day": 58,
+    "page_start": 381,
+    "page_end": 382,
+    "root": "var",
+    "source_roots": [
+      "var"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 381,
+    "root_y": 110.0,
+    "root_x": 104.8,
+    "start_y": 110.0,
+    "words": [
+      "various",
+      "variable",
+      "variation"
+    ]
+  },
+  {
+    "id": 347,
+    "source_day": 58,
+    "page_start": 382,
+    "page_end": 382,
+    "root": "venge",
+    "source_roots": [
+      "venge"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 382,
+    "root_y": 163.2,
+    "root_x": 76.3,
+    "start_y": 163.2,
+    "words": [
+      "avenge",
+      "revenge"
+    ]
+  },
+  {
+    "id": 348,
+    "source_day": 58,
+    "page_start": 383,
+    "page_end": 385,
+    "root": "vent",
+    "source_roots": [
+      "vent"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 383,
+    "root_y": 52.3,
+    "root_x": 104.8,
+    "start_y": 52.3,
+    "words": [
+      "adventure",
+      "venture",
+      "convention",
+      "event",
+      "invent",
+      "prevent",
+      "avenue",
+      "convenient",
+      "intervene",
+      "souvenir"
+    ]
+  },
+  {
+    "id": 349,
+    "source_day": 58,
+    "page_start": 385,
+    "page_end": 387,
+    "root": "vert",
+    "source_roots": [
+      "vert"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 385,
+    "root_y": 279.8,
+    "root_x": 104.8,
+    "start_y": 279.8,
+    "words": [
+      "advertise",
+      "convert",
+      "vertical",
+      "converse",
+      "diverse",
+      "reverse",
+      "verse",
+      "version",
+      "divorce"
+    ]
+  },
+  {
+    "id": 350,
+    "source_day": 59,
+    "page_start": 388,
+    "page_end": 388,
+    "root": "via",
+    "source_roots": [
+      "via"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 388,
+    "root_y": 106.1,
+    "root_x": 76.3,
+    "start_y": 106.1,
+    "words": [
+      "via",
+      "obvious",
+      "previous",
+      "convey",
+      "voyage"
+    ]
+  },
+  {
+    "id": 351,
+    "source_day": 59,
+    "page_start": 389,
+    "page_end": 390,
+    "root": "vict",
+    "source_roots": [
+      "vict"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 389,
+    "root_y": 365.9,
+    "root_x": 104.8,
+    "start_y": 365.9,
+    "words": [
+      "victory",
+      "convict",
+      "convince"
+    ]
+  },
+  {
+    "id": 352,
+    "source_day": 59,
+    "page_start": 390,
+    "page_end": 391,
+    "root": "vid",
+    "source_roots": [
+      "vid"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 390,
+    "root_y": 322.4,
+    "root_x": 76.3,
+    "start_y": 322.4,
+    "words": [
+      "divide",
+      "individual",
+      "devise",
+      "widow"
+    ]
+  },
+  {
+    "id": 353,
+    "source_day": 59,
+    "page_start": 391,
+    "page_end": 391,
+    "root": "vig",
+    "source_roots": [
+      "vig"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 391,
+    "root_y": 280.8,
+    "root_x": 104.8,
+    "start_y": 280.8,
+    "words": [
+      "vigor"
+    ]
+  },
+  {
+    "id": 354,
+    "source_day": 59,
+    "page_start": 391,
+    "page_end": 394,
+    "root": "vis",
+    "source_roots": [
+      "vis"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 391,
+    "root_y": 424.7,
+    "root_x": 104.8,
+    "start_y": 424.7,
+    "words": [
+      "vision",
+      "revise",
+      "supervise",
+      "evidence",
+      "provide",
+      "view",
+      "interview",
+      "review",
+      "envy",
+      "survey"
+    ]
+  },
+  {
+    "id": 355,
+    "source_day": 60,
+    "page_start": 395,
+    "page_end": 395,
+    "root": "viv",
+    "source_roots": [
+      "viv"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 395,
+    "root_y": 106.5,
+    "root_x": 104.8,
+    "start_y": 106.5,
+    "words": [
+      "survive",
+      "vivid",
+      "vital"
+    ]
+  },
+  {
+    "id": 356,
+    "source_day": 60,
+    "page_start": 395,
+    "page_end": 397,
+    "root": "voc",
+    "source_roots": [
+      "voc"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 395,
+    "root_y": 511.0,
+    "root_x": 104.8,
+    "start_y": 511.0,
+    "words": [
+      "vocal",
+      "vocabulary",
+      "vocation",
+      "advocate",
+      "evoke",
+      "provoke"
+    ]
+  },
+  {
+    "id": 357,
+    "source_day": 60,
+    "page_start": 397,
+    "page_end": 397,
+    "root": "vol",
+    "source_roots": [
+      "vol"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 397,
+    "root_y": 278.0,
+    "root_x": 104.8,
+    "start_y": 278.0,
+    "words": [
+      "voluntary"
+    ]
+  },
+  {
+    "id": 358,
+    "source_day": 60,
+    "page_start": 397,
+    "page_end": 398,
+    "root": "volv",
+    "source_roots": [
+      "volv"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 397,
+    "root_y": 496.5,
+    "root_x": 104.8,
+    "start_y": 496.5,
+    "words": [
+      "evolve",
+      "revolve",
+      "involve",
+      "volume"
+    ]
+  },
+  {
+    "id": 359,
+    "source_day": 60,
+    "page_start": 398,
+    "page_end": 399,
+    "root": "vot",
+    "source_roots": [
+      "vot"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 398,
+    "root_y": 486.0,
+    "root_x": 76.3,
+    "start_y": 486.0,
+    "words": [
+      "vote",
+      "devote"
+    ]
+  },
+  {
+    "id": 360,
+    "source_day": 60,
+    "page_start": 399,
+    "page_end": 400,
+    "root": "ward",
+    "source_roots": [
+      "ward"
+    ],
+    "type": "prefix_or_root",
+    "root_page": 399,
+    "root_y": 218.7,
+    "root_x": 104.8,
+    "start_y": 218.7,
+    "words": [
+      "award",
+      "reward",
+      "aware",
+      "warn"
+    ]
+  }
+]

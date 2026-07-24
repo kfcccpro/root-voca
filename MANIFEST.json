@@ -1,0 +1,28 @@
+{
+  "project": "VOCA ROOT 18DAY FINAL",
+  "version": "2026.07.24",
+  "state_schema": 3,
+  "data_version": "voca18-final-360x1410-20260724",
+  "default_report_email": "sk01197375068@gmail.com",
+  "merge_status": "standalone",
+  "metrics": {
+    "root_units": 360,
+    "headwords": 1410,
+    "days": 18,
+    "blocks": 72,
+    "root_meanings": 360,
+    "word_meanings": 1410,
+    "examples": 1410,
+    "formulas": 1305,
+    "etymology_steps": 1070
+  },
+  "core_sha256": {
+    "webapp/index.html": "b5a94d3900bfd83851d42d50c6d6ad99b333022ed39028af1fb0e08ddbd0e218",
+    "webapp/app.js": "fe83a1b4adc1c5df0b0d63093d32c2639b87c50d65af78c0322d0def1dac84c5",
+    "webapp/styles.css": "bb7dc10334f48b8df099f5c9bce000d54d1231f5b542c5eb7537aea665f0afce",
+    "data/root_units.json": "5593a88650b840c7b6c2223174e71853bc0cc62b53b0bd30bb81c6ec14dad8a9",
+    "data/learning_units.json": "19d0828ae8ae0ff0b100bd388638de458062bbdfbea75035eb91fc221f7ebfaf",
+    "data/voca18_schedule.json": "ac026a2c31fde0a6fc901f87664f36f0d88f1c93d4481b9d446496b0a6c0ba27",
+    "netlify/functions/send-day-report.mjs": "141d774b73029a2c69edde0fc47c69790438b89f7f5a97aa105d4a4fcb905f98"
+  }
+}

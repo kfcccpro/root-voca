@@ -1,0 +1,6 @@
+VOCA ROOT 18DAY FINAL
+Version: 2026.07.24
+State schema: 3
+Data version: voca18-final-360x1410-20260724
+Default report email: sk01197375068@gmail.com
+Merge status: standalone, not merged with another app

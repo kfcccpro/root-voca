@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#315fb5">
+  <title>VOCA ROOT 18DAY</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">영어 어원 집중 학습</p>
+        <h1 id="todayTitle">DAY 01</h1>
+      </div>
+      <button id="adminToggle" class="icon-button" type="button" aria-label="관리자 화면 열기">관리자</button>
+    </header>
+
+    <section id="learnerHome" class="screen">
+      <section class="hero-card">
+        <div>
+          <span class="status-chip">오늘 학습</span>
+          <h2 id="goalTime">19:30 - 20:30</h2>
+          <p id="goalAmount">ROOT 16개 · 단어 93개</p>
+        </div>
+        <button id="startButton" class="primary large" type="button">학습 시작</button>
+      </section>
+
+      <section class="ring-grid" aria-label="오늘의 진행 상황">
+        <article class="ring-card">
+          <div id="timeRing" class="ring" style="--p:0">
+            <strong id="timeRemain">59분</strong>
+            <span>남은 시간</span>
+          </div>
+        </article>
+        <article class="ring-card">
+          <div id="amountRing" class="ring" style="--p:0">
+            <strong id="amountRemain">93개</strong>
+            <span>남은 단어</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="blocks-section">
+        <div class="section-head">
+          <h2>집중블록</h2>
+          <span id="blockStatus">0 / 4 완료</span>
+        </div>
+        <div id="blockList" class="block-list"></div>
+      </section>
+
+      <section id="resumeNotice" class="notice hidden" aria-live="polite"></section>
+    </section>
+
+    <section id="sessionScreen" class="screen hidden" aria-live="polite">
+      <div class="session-head">
+        <button id="exitSession" class="ghost" type="button">나가기</button>
+        <div class="session-progress-wrap">
+          <div class="session-labels"><span id="sessionBlockLabel">BLOCK 1</span><span id="sessionProgressText">0 / 0</span></div>
+          <div class="progress-track"><div id="sessionProgressBar" class="progress-bar"></div></div>
+        </div>
+      </div>
+
+      <section id="learningCard" class="learning-card">
+        <div id="stageBadge" class="stage-badge">ROOT 이해</div>
+        <div id="learningContent"></div>
+        <div id="answerArea" class="answer-area"></div>
+        <div id="feedback" class="feedback hidden" role="status"></div>
+      </section>
+    </section>
+
+    <section id="completionScreen" class="screen hidden">
+      <section class="completion-card">
+        <span class="completion-mark">✓</span>
+        <p class="eyebrow">오늘 학습 완료</p>
+        <h2 id="completionTitle">DAY 01 완료</h2>
+        <div id="completionMetrics" class="metric-grid"></div>
+        <p id="mailStatus" class="mail-status"></p>
+        <button id="completionConfirm" class="primary large" type="button">확인</button>
+      </section>
+    </section>
+
+    <section id="adminView" class="screen hidden">
+      <section class="admin-card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">관리자 전용</p>
+            <h2>학습 운영 설정</h2>
+          </div>
+          <button id="closeAdmin" class="ghost" type="button">닫기</button>
+        </div>
+
+        <div class="admin-grid">
+          <label>현재 학습 DAY
+            <select id="daySelect"></select>
+          </label>
+          <label>집중블록 기준
+            <select id="blockMinutes">
+              <option value="12">약 12분</option>
+              <option value="15" selected>약 15분</option>
+              <option value="18">약 18분</option>
+            </select>
+          </label>
+          <label>시작시간
+            <span class="time-input-wrap"><input id="startTime" type="time" value="19:30"></span>
+          </label>
+          <label>종료시간
+            <span class="time-input-wrap"><input id="endTime" type="time" value="20:30"></span>
+          </label>
+          <label class="full">보고서 이메일
+            <input id="reportEmail" type="email" value="sk01197375068@gmail.com" autocomplete="email">
+          </label>
+        </div>
+
+        <label class="check-row"><input id="autoMail" type="checkbox" checked> DAY 완료 시 보고서 자동 발송</label>
+        <label class="check-row"><input id="shortenMastered" type="checkbox" checked> 숙달 항목 반복 단계 자동 단축</label>
+
+        <div class="button-row">
+          <button id="saveAdmin" class="primary" type="button">설정 저장</button>
+          <button id="retryMail" class="ghost" type="button">메일 재시도</button>
+          <button id="exportProgress" class="ghost" type="button">진도 백업</button>
+          <button id="importProgress" class="ghost" type="button">진도 복원</button>
+          <input id="importProgressFile" class="hidden" type="file" accept="application/json,.json">
+          <button id="forceComplete" class="danger" type="button">현재 DAY 강제 완료</button>
+        </div>
+
+        <section class="admin-summary">
+          <h3>18DAY 진행 현황</h3>
+          <div id="adminProgressList" class="admin-progress-list"></div>
+        </section>
+        <p class="note">현재 버전은 단일 기기 localStorage에 기록합니다. 관리자 화면의 진도 백업·복원으로 기록을 별도 보관할 수 있습니다. 다기기 실시간 동기화는 통합 단계에서 DB 연결이 필요합니다.</p>
+      </section>
+    </section>
+  </main>
+
+  <template id="optionTemplate">
+    <button class="option-button" type="button"></button>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

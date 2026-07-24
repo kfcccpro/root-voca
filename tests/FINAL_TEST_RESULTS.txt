@@ -1,0 +1,59 @@
+=== PACKAGE VALIDATION ===
+VALIDATION_OK
+{
+  "root_units": 360,
+  "headwords": 1410,
+  "source_days": 60,
+  "new_days": 18,
+  "blocks": 72,
+  "root_meaning_coverage": 360,
+  "meaning_coverage": 1410,
+  "example_coverage": 1410,
+  "formula_coverage": 1305,
+  "etymology_step_coverage": 1070,
+  "duplicate_source_entries": [
+    "active",
+    "civilize",
+    "justify",
+    "literal",
+    "literate",
+    "social"
+  ],
+  "default_report_email": "sk01197375068@gmail.com",
+  "state_schema": 3
+}
+
+=== PROGRESS LOGIC ===
+PROGRESS_LOGIC_OK
+{
+  "default_day": 1,
+  "default_email": "sk01197375068@gmail.com",
+  "partial_progress_restored": true,
+  "corrupt_state_sanitized": true,
+  "duplicate_typing_blocked": true,
+  "incomplete_day_blocked": true,
+  "completed_day_queued_mail": true,
+  "forced_accuracy": null,
+  "final_course_locked": true
+}
+
+=== MAIL FUNCTION ===
+MAIL_FUNCTION_OK
+{
+  "destination": "sk01197375068@gmail.com",
+  "forced_accuracy_label": "미측정",
+  "idempotency_key": "report-final-18",
+  "html_escaping": true
+}
+
+=== JS SYNTAX ===
+JS_SYNTAX_OK
+
+=== STATIC SERVER ===
+index.html HTTP 200 5912 bytes
+app.js HTTP 200 36559 bytes
+styles.css HTTP 200 9164 bytes
+data/root_units.json HTTP 200 127058 bytes
+data/learning_units.json HTTP 200 1374023 bytes
+data/voca18_schedule.json HTTP 200 24203 bytes
+STATIC_SERVER_OK
