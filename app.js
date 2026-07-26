@@ -1438,14 +1438,14 @@ function renderMiniSetReward() {
 
 function renderWordQuestion(unit, word) {
   const mastered = mastery(word.id).score >= 3 && runtime.state.settings.shortenMastered;
-  $('stageBadge').textContent = mastered ? '보기 먼저 · 빠른 확인' : '보기 먼저 뜻 추론';
+  $('stageBadge').textContent = mastered ? '보기 먼저 · 빠른 확인' : '4지선다 먼저 풀기';
   $('learningContent').innerHTML = `
     <div class="word-panel question-first-panel">
       <h2 class="word-title">${escapeHtml(word.word)}</h2>
       <span class="word-source">${escapeHtml(word.importance || '')} 원문 p.${word.source_page}</span>
       <div class="question-first-tip">
-        <strong>먼저 객관식 보기만 보고 뜻을 맞혀 보세요.</strong>
-        <span>모르겠다면 아래 <b>나타내기 학습</b>을 눌러 어원 구성과 흐름을 크고 강하게 확인할 수 있습니다.</span>
+        <strong>먼저 4지선다 보기를 보고 정답을 선택하세요.</strong>
+        <span>정답이면 바로 다음으로 넘어가고, <b>오답이면 자동으로 어원 + 단어 구조 해설</b>이 나타납니다.</span>
       </div>
       <div id="revealCanvas" class="reveal-canvas hidden" aria-live="polite"></div>
     </div>
@@ -1473,26 +1473,17 @@ function renderOptions(unit, word) {
     button.innerHTML = `<span class="option-index">${index + 1}</span><span class="option-text">${escapeHtml(text)}</span>`;
     button.dataset.optionIndex = String(index + 1);
     button.dataset.optionValue = text;
-    button.addEventListener('click', () => answerChoice(word, text === correct, button, correct));
+    button.addEventListener('click', () => answerChoice(word, text === correct, button, correct, unit));
     grid.appendChild(button);
   });
-  const revealRow = document.createElement('div');
-  revealRow.className = 'option-tools';
-  const revealButton = document.createElement('button');
-  revealButton.type = 'button';
-  revealButton.className = 'ghost reveal-trigger';
-  revealButton.textContent = '모르겠다면 나타내기 학습';
-  revealButton.addEventListener('click', () => showRevealLearning(unit, word, revealButton));
   const tip = document.createElement('p');
   tip.className = 'question-first-help';
-  tip.innerHTML = '보기만으로 알면 바로 정답을 선택하세요. <strong>모를 때만</strong> 나타내기 학습을 진행하면 됩니다.';
-  revealRow.appendChild(revealButton);
+  tip.innerHTML = '아는 단어는 보기만 보고 바로 맞히고, <strong>틀린 단어만</strong> 해설을 보며 각인합니다.';
   const help = document.createElement('p');
   help.className = 'option-help';
   help.innerHTML = '키보드 <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span> 또는 마우스/터치로 바로 선택할 수 있습니다.';
   $('answerArea').innerHTML = '';
   $('answerArea').appendChild(grid);
-  $('answerArea').appendChild(revealRow);
   $('answerArea').appendChild(tip);
   $('answerArea').appendChild(help);
   runtime.questionStartedAt = performance.now();
@@ -1509,7 +1500,7 @@ function renderOptions(unit, word) {
   document.addEventListener('keydown', runtime.optionKeyHandler);
 }
 
-function answerChoice(word, correct, selectedButton, correctText) {
+function answerChoice(word, correct, selectedButton, correctText, unit = null) {
   const { ds } = currentSessionContext();
   if (ds.answers[word.id]) return;
   const responseMs = Math.max(0, performance.now() - Number(runtime.questionStartedAt || performance.now()));
@@ -1566,22 +1557,33 @@ function answerChoice(word, correct, selectedButton, correctText) {
   ds.reviewResolved = false;
   ds.phase = 'review';
 
-  showFeedback('error', '오늘 오답으로 저장했습니다. 지금 철자로 한 번 각인하고 내일 다시 확인합니다.');
+  showFeedback('error', '오늘 오답으로 저장했습니다. 아래에서 어원 + 단어 구조 해설을 확인한 뒤 철자로 각인합니다.');
   const compare = document.createElement('div');
   compare.className = 'wrong-compare-card';
   compare.innerHTML = `
     <span class="wrong-compare-label">방금 틀린 항목 · 누적 ${history.totalWrong}회</span>
     <div><small>내 선택</small><strong>${escapeHtml(selectedText)}</strong></div>
     <div><small>실제 정답</small><strong>${escapeHtml(correctText)}</strong></div>
-    <p>두 답의 의미를 구분한 뒤 영어 철자를 직접 회상합니다.</p>
+    <p>정답을 틀렸으므로 지금 바로 어원 + 단어 구조 해설을 보여줍니다.</p>
   `;
   $('answerArea').appendChild(compare);
+  const revealHost = $('revealCanvas');
+  if (revealHost && unit) {
+    revealHost.classList.remove('hidden');
+    revealHost.innerHTML = `
+      <div class="wrong-reveal-intro">오답 해설 · 어원 + 단어 구조</div>
+      ${buildRevealMarkup(unit, word)}
+    `;
+    clearRevealTimers();
+    runtime.revealTimers.push(setTimeout(() => revealHost.querySelector('[data-reveal="1"]')?.classList.add('show'), 30));
+    runtime.revealTimers.push(setTimeout(() => revealHost.querySelector('[data-reveal="2"]')?.classList.add('show'), 260));
+  }
   const row = document.createElement('div');
   row.className = 'continue-row';
   const next = document.createElement('button');
   next.type = 'button';
   next.className = 'primary';
-  next.textContent = '철자로 바로 각인';
+  next.textContent = '해설 확인 후 철자로 각인';
   next.addEventListener('click', () => {
     persist('d0_to_spelling');
     renderSessionStep();
