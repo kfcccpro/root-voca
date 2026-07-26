@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#315fb5">
-  <title>18day_root</title>
+  <title>18day_root V7</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -42,12 +42,22 @@
         </article>
       </section>
 
-      <section class="blocks-section">
+      <section class="continuous-day-section" aria-label="오늘의 연속 학습 흐름">
         <div class="section-head">
-          <h2>집중블록</h2>
-          <span id="blockStatus">0 / 4 완료</span>
+          <div>
+            <p class="eyebrow">한 번만 시작</p>
+            <h2>DAY 전체 연속 학습</h2>
+          </div>
+          <span id="blockStatus">0 / 4 구간 완료</span>
         </div>
-        <div id="blockList" class="block-list"></div>
+        <div class="continuous-day-card">
+          <div class="continuous-play" aria-hidden="true">▶</div>
+          <div>
+            <strong>시작 후 마지막 관리자 보고까지 자동으로 이어집니다.</strong>
+            <p>어원 확인 → 뜻 선택 → 오답 철자 회상 → 다음 구간 자동 진행</p>
+          </div>
+        </div>
+        <div id="blockList" class="segment-track" aria-label="오늘의 네 학습 구간"></div>
       </section>
 
       <section id="resumeNotice" class="notice hidden" aria-live="polite"></section>
@@ -55,9 +65,9 @@
 
     <section id="sessionScreen" class="screen hidden" aria-live="polite">
       <div class="session-head">
-        <button id="exitSession" class="ghost" type="button">나가기</button>
+        <button id="exitSession" class="ghost" type="button">일시정지</button>
         <div class="session-progress-wrap">
-          <div class="session-labels"><span id="sessionBlockLabel">BLOCK 1</span><span id="sessionProgressText">0 / 0</span></div>
+          <div class="session-labels"><span id="sessionBlockLabel">DAY 01 연속 학습</span><span id="sessionProgressText">0 / 0</span></div>
           <div class="progress-track"><div id="sessionProgressBar" class="progress-bar"></div></div>
         </div>
       </div>
@@ -122,6 +132,7 @@
           <button id="retryMail" class="ghost" type="button">메일 재시도</button>
           <button id="exportProgress" class="ghost" type="button">진도 백업</button>
           <button id="importProgress" class="ghost" type="button">진도 복원</button>
+          <button id="selfCheck" class="ghost" type="button">기능 자가점검</button>
           <input id="importProgressFile" class="hidden" type="file" accept="application/json,.json">
           <button id="forceComplete" class="danger" type="button">현재 DAY 강제 완료</button>
         </div>
@@ -129,9 +140,11 @@
         <section class="admin-summary">
           <h3 id="adminCourseTitle">18DAY 진행 현황</h3>
           <div id="spellingBacklogSummary" class="admin-backlog" aria-live="polite"></div>
+          <div id="reviewSystemSummary" class="admin-system-grid" aria-live="polite"></div>
+          <div id="storageSystemSummary" class="admin-storage-status" aria-live="polite"></div>
           <div id="adminProgressList" class="admin-progress-list"></div>
         </section>
-        <p class="note">현재 버전은 단일 기기 localStorage에 기록합니다. 관리자 화면의 진도 백업·복원으로 기록을 별도 보관할 수 있습니다. 다기기 실시간 동기화는 통합 단계에서 DB 연결이 필요합니다.</p>
+        <p class="note">현재 V7은 답변 직후 주 저장본과 이전 revision 안전백업을 함께 보존합니다. eventId·방향별 숙달·D+1·D+3·D+6 일정은 적용되어 있으며, 실제 다기기 실시간 동기화는 다음 DB 연결 단계에서 활성화합니다.</p>
       </section>
     </section>
   </main>

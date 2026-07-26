@@ -256,3 +256,77 @@ body.modal-open{overflow:hidden}
   .mail-gate-metrics{gap:7px}
   .mail-gate-metric{padding:11px 7px}
 }
+
+
+/* V6: one-entry continuous DAY flow */
+.continuous-day-section{margin-top:22px}
+.continuous-day-section .section-head{align-items:flex-end}
+.continuous-day-section .section-head h2{margin:2px 0 0;font-size:clamp(24px,4vw,32px)}
+.continuous-day-card{display:flex;align-items:center;gap:16px;margin-top:12px;padding:20px;border:2px solid var(--accent);border-radius:20px;background:linear-gradient(180deg,#fff,#f4f7ff)}
+.continuous-day-card strong{display:block;font-size:clamp(18px,3vw,24px);line-height:1.35;color:var(--ink-strong)}
+.continuous-day-card p{margin:7px 0 0;color:var(--muted);font-weight:700;line-height:1.55}
+.continuous-play{display:grid;place-items:center;flex:0 0 58px;width:58px;height:58px;border-radius:50%;background:var(--accent);color:#fff;font-size:24px;padding-left:4px}
+.segment-track{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.segment-step{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:9px;row-gap:2px;min-height:72px;padding:12px 13px;border:1px solid var(--border);border-radius:16px;background:#f8fafc}
+.segment-step:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:50%;z-index:2;transform:translate(50%,-50%);display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--bg);color:var(--muted);font-weight:900}
+.segment-number{grid-row:1/3;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#e6ebf3;color:#58657a;font-weight:900}
+.segment-label{font-weight:850}
+.segment-step small{color:var(--muted);font-weight:700}
+.segment-step.active{border-color:var(--accent);background:var(--accent-soft)}
+.segment-step.active .segment-number{background:var(--accent);color:#fff}
+.segment-step.done{border-color:#a9dac3;background:var(--success-soft)}
+.segment-step.done .segment-number{background:var(--success);color:#fff}
+.segment-step.upcoming{opacity:.72}
+.continuous-reward{max-width:720px;margin:0 auto}
+.auto-next-notice{display:grid;gap:5px;margin:24px auto 14px;padding:16px;border-radius:16px;background:var(--accent-soft);color:var(--accent-strong)}
+.auto-next-notice strong{font-size:clamp(18px,3vw,24px)}
+.auto-next-notice span{font-size:14px;font-weight:700}
+.auto-next-bar{height:10px;margin:0 auto;overflow:hidden;border-radius:999px;background:#e3e8f0}
+.auto-next-bar span{display:block;width:100%;height:100%;border-radius:inherit;background:var(--accent);transform-origin:left;animation:autoNextFill 1.4s linear forwards}
+@keyframes autoNextFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.auto-next-skip{display:block;margin:14px auto 0;min-width:min(100%,300px)}
+@media(max-width:760px){
+  .continuous-day-card{align-items:flex-start;padding:17px}
+  .segment-track{grid-template-columns:1fr 1fr}
+  .segment-step:nth-child(2)::after{display:none}
+}
+@media(max-width:480px){
+  .continuous-day-card{display:block}
+  .continuous-play{width:48px;height:48px;margin-bottom:12px}
+  .segment-track{grid-template-columns:1fr}
+  .segment-step::after{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){.auto-next-bar span{animation:none}}
+
+/* V7 integrated learning system */
+.wrong-compare-card{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;padding:16px;border:2px solid #e5b2b8;border-radius:18px;background:#fff8f8}
+.wrong-compare-card .wrong-compare-label{grid-column:1/-1;display:inline-flex;justify-self:center;padding:7px 12px;border-radius:999px;background:var(--danger-soft);color:var(--danger);font-size:13px;font-weight:900}
+.wrong-compare-card>div{padding:13px;border:1px solid var(--border);border-radius:14px;background:#fff}
+.wrong-compare-card small{display:block;margin-bottom:5px;color:var(--muted);font-size:12px;font-weight:800}
+.wrong-compare-card strong{display:block;font-size:clamp(18px,3.5vw,24px);line-height:1.35}
+.wrong-compare-card p{grid-column:1/-1;margin:0;color:var(--muted);font-size:14px;font-weight:750;text-align:center}
+.spaced-review-panel{display:grid;gap:13px;padding:30px 0 18px;text-align:center}
+.review-stage-badge{display:inline-flex;justify-self:center;padding:8px 13px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);font-size:14px;font-weight:900}
+.review-guidance{margin:0;color:var(--muted);font-size:16px;font-weight:750}
+.spaced-typing .review-stage-badge{margin:0 auto 8px}
+.mini-reward-panel{max-width:680px;margin:0 auto;padding:42px 0;text-align:center}
+.mini-reward-mark{display:grid;place-items:center;width:72px;height:72px;margin:0 auto 16px;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);font-size:36px;font-weight:950}
+.mini-reward-panel h2{margin:0 0 8px;font-size:clamp(28px,5vw,40px)}
+.mini-reward-panel p{margin:0 0 14px;color:var(--muted);font-size:17px;font-weight:750}
+.mini-reward-panel>strong{display:block;margin-bottom:18px;color:var(--accent-strong);font-size:18px}
+.admin-system-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.admin-system-metric{padding:14px;border:1px solid var(--border);border-radius:15px;background:#fbfcff;text-align:center}
+.admin-system-metric span{display:block;color:var(--muted);font-size:12px;font-weight:800}
+.admin-system-metric strong{display:block;margin-top:5px;color:var(--ink-strong);font-size:24px}
+.admin-storage-status{display:flex;justify-content:space-between;gap:14px;align-items:center;margin:12px 0 16px;padding:14px 16px;border:1px solid #b8c9ec;border-radius:15px;background:#f3f6ff}
+.admin-storage-status strong{color:var(--accent-strong)}
+.admin-storage-status span{color:var(--muted);font-size:13px;text-align:right;word-break:break-all}
+.mail-gate-metrics{grid-template-columns:repeat(3,1fr)}
+@media(max-width:620px){
+  .wrong-compare-card{grid-template-columns:1fr}
+  .wrong-compare-card .wrong-compare-label,.wrong-compare-card p{grid-column:auto}
+  .admin-system-grid{grid-template-columns:1fr 1fr}
+  .admin-storage-status{align-items:flex-start;flex-direction:column}
+  .admin-storage-status span{text-align:left}
+  .mail-gate-metrics{grid-template-columns:1fr 1fr}
+}

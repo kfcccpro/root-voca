@@ -49,12 +49,17 @@ export default async (request) => {
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">정답률</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(accuracyLabel)}</td></tr>
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">오답</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.wrong)}개</td></tr>
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">철자 회상</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.typed)}회</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">철자 반복 대기</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.pending_spelling || 0)}개</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">오늘 기억 확인</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.review_attempted || 0)}회 · 정답 ${escapeHtml(summary.review_correct || 0)} · 오답 ${escapeHtml(summary.review_wrong || 0)}</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">D+1 예약</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.d1_due || 0)}개</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">D+3 강화</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.d3_due || 0)}개</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">D+6 확인</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.d6_due || 0)}개</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">집중 케어</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.focus_care || 0)}개</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">영구 오답노트</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.permanent_wrong_count || 0)}개</td></tr>
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">기존 DAY 범위</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.source_day_range)}</td></tr>
         </tbody>
       </table>
       ${wrongHtml}
-      <p style="font-size:12px;color:#667287">보고서 ID: ${escapeHtml(report.reportId || '')}</p>
+      <p style="font-size:12px;color:#667287">보고서 ID: ${escapeHtml(report.reportId || '')}<br>스키마 ${escapeHtml(report.schemaVersion || '')} · revision ${escapeHtml(report.revision || '')} · 이벤트 ${escapeHtml(summary.event_count || 0)}건</p>
     </div>`;
 
   const response = await fetch('https://api.resend.com/emails', {
