@@ -1,26 +1,21 @@
-18DAY_ROOT V7.5 SIMPLE HOME TEST RESULTS
-=======================================
+root_18day V7.6 FINAL TEST RESULTS
 
-JS_SYNTAX_OK
-MAIL_FUNCTION_SYNTAX_OK
-STATIC_SERVER_INDEX_200
-STATIC_SERVER_APP_JS_200
-STATIC_SERVER_DATA_200
-DATA_18_DAYS_OK
-DATA_360_ROOTS_OK
-DATA_1410_WORDS_OK
-SIMPLE_HOME_SINGLE_FOCUS_CARD_OK
-HOME_RING_CHARTS_REMOVED
-HOME_CONTINUOUS_DETAIL_SECTION_REMOVED
-HOME_PRIMARY_ACTION_SINGLE_BUTTON_OK
-HOME_COMPACT_TWO_STATS_OK
-HOME_COMPACT_FOUR_SEGMENTS_OK
-HOME_SHORT_STATUS_COPY_OK
-QUESTION_CORRECT_FAST_PATH_OK
-WRONG_EXPLANATION_SINGLE_SCREEN_OK
-BLOCK_REVIEW_MAX_4_OK
-MANDATORY_MAIL_GATE_LOGIC_OK
-MANDATORY_MAIL_GATE_CANNOT_CLOSE_OK
+PASS - JavaScript syntax
+PASS - Netlify mail function syntax
+PASS - 18 DAY schedule
+PASS - 360 ROOT units
+PASS - 1,410 words
+PASS - simple choice-first loop
+PASS - correct answer fast transition
+PASS - wrong answer ROOT+WORD explanation
+PASS - no immediate spelling after regular wrong
+PASS - block review max 4 / single attempt
+PASS - D+1 / conditional D+3 / D+6 logic retained
+PASS - mandatory completion mail gate retained
+PASS - display title root_18day
+PASS - single-action minimal home
+PASS - question instruction copy removed
+PASS - dark gradient design tokens applied
+PASS - HTTP index response 200
 
-Automated logic test: PASS
-Browser rendering note: Chromium screenshot rendering did not terminate reliably in this container. Validation used JavaScript syntax checks, VM-based logic tests, data integrity checks, HTML structure checks, and static HTTP response checks.
+Browser screenshot rendering was not completed because headless Chromium did not exit normally in this container. Static UI checks, VM logic tests, syntax checks, and HTTP checks passed.

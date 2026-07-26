@@ -60,10 +60,14 @@ test('block_review_prioritized', 'blockReviewPriority(__selected[0])>=blockRevie
 test('question_correct_fast', '!advanceWord.toString().includes("shouldShowMiniReward")');
 test('root_click_removed', '!renderRoot.toString().includes("createElement") && renderRoot.toString().includes("root_auto_skip")');
 test('wrong_explanation_state', 'answerChoice.toString().includes("wrongExplanation") && !answerChoice.toString().includes("ds.phase = \'review\'")');
-test('wrong_no_immediate_typing', '!renderWrongExplanation.toString().includes("spellingInput") && renderWrongExplanation.toString().includes("확인하고 다음 단어")');
+test('wrong_no_immediate_typing', '!renderWrongExplanation.toString().includes("spellingInput") && renderWrongExplanation.toString().includes("NEXT")');
 test('block_review_single_attempt', 'checkSpelling.toString().includes("ds.typingAttempts = 1") && !checkSpelling.toString().includes("한 번 더 입력")');
 test('spaced_choice_no_typing_transition', '!answerSpacedChoice.toString().includes("spacedReviewMode = \'typing\'")');
 test('spaced_typing_single_attempt', 'checkSpacedTyping.toString().includes("ds.spacedTypingAttempts = 1") && !checkSpacedTyping.toString().includes("spacedTypingAttempts >= 2")');
+
+test('display_name_root_18day', "APP_NAME==='root_18day'");
+test('question_has_no_instruction_copy', '!renderWordQuestion.toString().includes("먼저 4지선다") && !renderOptions.toString().includes("키보드")');
+test('wrong_explanation_compact', '!renderWrongExplanation.toString().includes("해설을 한 번 확인")');
 test('mandatory_mail_gate_logic', 'isMailGateRequired.toString().includes("completedBlocks.length >= 4") && closeMailGate.toString().includes("reinforceMailGate")');
 const failed = Object.entries(results).filter(([k,v])=>!k.endsWith('_error') && v!==true);
 console.log(JSON.stringify({ pass: failed.length===0, results, failed: failed.map(([k])=>k) }, null, 2));

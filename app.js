@@ -11,7 +11,7 @@ const SCHEMA_VERSION = 7;
 const DATA_VERSION = '18day-root-integrated-360x1410-20260726-v7';
 const MINI_SET_SIZE = 6;
 const PRE_REVIEW_LIMIT = 8;
-const APP_NAME = '18day_root';
+const APP_NAME = 'root_18day';
 
 const runtime = {
   schedule: null,
@@ -753,80 +753,53 @@ function renderHome() {
   }
   const completedBlocks = ds.completedBlocks.length;
   const completedWords = totalCompletedWords(dayNo);
-  const totalWords = d.words;
   const dueReviews = selectDueReviews(Number(runtime.state.settings.preReviewLimit || PRE_REVIEW_LIMIT));
   const courseStudyCompleted = dayNo === totalDays() && Boolean(ds.completedAt);
   const postCourseDue = courseStudyCompleted && dueReviews.length > 0;
   const courseCompleted = courseStudyCompleted && !postCourseDue;
-  const targetMinutes = Math.max(d.estimated_minutes, runtime.state.settings.blockMinutes * 4);
-  const elapsedMin = elapsedSeconds(dayNo) / 60;
-  const timePercent = clamp((elapsedMin / targetMinutes) * 100, 0, 100);
-  const amountPercent = clamp((completedWords / totalWords) * 100, 0, 100);
-
-  $('todayTitle').textContent = `DAY ${pad(dayNo)}`;
-  const courseText = `${APP_NAME} · ${totalDays()}DAY 영어 어원 집중 학습`;
-  const eyebrow = $('courseEyebrow'); if (eyebrow) eyebrow.textContent = courseText;
-  const statusChip = $('statusChip'); if (statusChip) statusChip.textContent = dueReviews.length ? `오늘 복습 ${dueReviews.length}개 포함` : '오늘 학습 준비됨';
-  const adminCourseTitle = $('adminCourseTitle'); if (adminCourseTitle) adminCourseTitle.textContent = `${totalDays()}DAY 진행 현황`;
-  $('goalTime').textContent = `${runtime.state.settings.start} - ${runtime.state.settings.end}`;
-  $('goalAmount').textContent = `ROOT ${d.roots}개 · 단어 ${d.words}개`;
-  $('timeRemain').textContent = `${Math.max(0, Math.ceil(targetMinutes - elapsedMin))}분`;
-  $('amountRemain').textContent = `${Math.max(0, totalWords - completedWords)}개`;
-  setRing($('timeRing'), timePercent);
-  setRing($('amountRing'), amountPercent);
-  $('blockStatus').textContent = `${completedBlocks} / 4 완료`;
   const hasProgress = ds.completedBlocks.length > 0 || Object.keys(ds.answers || {}).length > 0 || ds.unitIndex > 0 || ds.wordIndex > 0;
   const awaitingMail = ds.completedBlocks.length >= 4 && !ds.completedAt;
-  $('startButton').textContent = postCourseDue
-    ? `기억 확인 시작 · ${dueReviews.length}개`
-    : courseCompleted
-      ? `${totalDays()}DAY 완료`
-      : (awaitingMail ? '관리자 완료 보고 보내기' : (hasProgress ? '이어서 학습' : '오늘 학습 시작'));
+
+  $('todayTitle').textContent = `DAY ${pad(dayNo)}`;
+  const homeDay = $('homeDayNumber'); if (homeDay) homeDay.textContent = pad(dayNo);
+  const eyebrow = $('courseEyebrow'); if (eyebrow) eyebrow.textContent = APP_NAME;
+  const statusChip = $('statusChip');
+  if (statusChip) statusChip.textContent = postCourseDue ? `REVIEW ${dueReviews.length}` : courseCompleted ? 'COMPLETE' : hasProgress ? 'IN PROGRESS' : 'READY';
+  const adminCourseTitle = $('adminCourseTitle'); if (adminCourseTitle) adminCourseTitle.textContent = `${totalDays()}DAY`;
+  $('goalAmount').textContent = `ROOT ${d.roots} · ${d.words} WORDS`;
+  $('blockStatus').textContent = `${completedBlocks} / 4`;
+  $('startButton').textContent = postCourseDue ? 'REVIEW' : courseCompleted ? 'COMPLETE' : awaitingMail ? 'SEND REPORT' : hasProgress ? 'CONTINUE' : 'START';
   $('startButton').disabled = courseCompleted;
 
   $('blockList').innerHTML = '';
-  d.blocks.forEach((b, index) => {
+  d.blocks.forEach((_b, index) => {
     const done = ds.completedBlocks.includes(index);
     const active = !done && index === completedBlocks;
     const segment = document.createElement('div');
     segment.className = `segment-step ${done ? 'done' : active ? 'active' : 'upcoming'}`;
-    segment.setAttribute('aria-label', `${index + 1}구간 ${done ? '완료' : active ? '진행 예정' : '대기'}`);
-    segment.innerHTML = `
-      <span class="segment-number">${done ? '✓' : index + 1}</span>
-      <span class="segment-label">${index + 1}구간</span>
-      <small>단어 ${b.words}</small>
-    `;
+    segment.setAttribute('aria-label', `${index + 1}구간 ${done ? '완료' : active ? '진행' : '대기'}`);
+    segment.innerHTML = `<span class="segment-number">${done ? '✓' : index + 1}</span>`;
     $('blockList').appendChild(segment);
   });
 
+  const notice = $('resumeNotice');
+  notice.classList.remove('pending-mail-notice');
   if (postCourseDue) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `과정 후 기억 확인 ${dueReviews.length}개가 있습니다.`;
+    notice.classList.remove('hidden'); notice.textContent = `REVIEW ${dueReviews.length}`;
   } else if (courseCompleted) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `전체 ${totalDays()}DAY 학습을 완료했습니다.`;
+    notice.classList.remove('hidden'); notice.textContent = '18DAY COMPLETE';
   } else if (runtime.state.migrationNotice) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = runtime.state.migrationNotice;
+    notice.classList.remove('hidden'); notice.textContent = 'DATA UPDATED';
     runtime.state.migrationNotice = '';
     persist();
-  } else if (ds.completedBlocks.length >= 4 && !ds.completedAt) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').classList.add('pending-mail-notice');
-    $('resumeNotice').textContent = '관리자 완료 보고를 보내야 오늘 학습이 끝납니다.';
+  } else if (awaitingMail) {
+    notice.classList.remove('hidden'); notice.classList.add('pending-mail-notice'); notice.textContent = 'REPORT REQUIRED';
   } else if ((ds.firstStartedAt || hasProgress) && !ds.completedAt) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').classList.remove('pending-mail-notice');
-    $('resumeNotice').textContent = `오늘 학습 ${ds.block + 1}/4 진행 중입니다. 저장된 위치에서 이어집니다.`;
+    notice.classList.remove('hidden'); notice.textContent = `BLOCK ${Math.min(4, ds.block + 1)} / 4`;
   } else if (dueReviews.length) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `복습 ${dueReviews.length}개부터 자동으로 시작합니다.`;
-  } else if (activeReviewEntries().length) {
-    $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = '오답은 예정된 날짜에 자동으로 다시 나옵니다.';
+    notice.classList.remove('hidden'); notice.textContent = `REVIEW ${dueReviews.length}`;
   } else {
-    $('resumeNotice').classList.remove('pending-mail-notice');
-    $('resumeNotice').classList.add('hidden');
+    notice.classList.add('hidden');
   }
 }
 
@@ -1159,7 +1132,6 @@ function renderSpacedReview() {
     <div class="spaced-review-panel">
       <div class="review-stage-badge">${escapeHtml(stageLabel(entry.stage))}</div>
       <h2 class="word-title">${escapeHtml(word.word)}</h2>
-      <p class="review-guidance">뜻을 빠르게 판단하세요. 불안정한 단어만 D+3 강화로 이어집니다.</p>
     </div>
   `;
   const { correct, options } = meaningOptionsForWord(word);
@@ -1234,7 +1206,6 @@ function answerSpacedChoice(word, entry, selectedText, correctText, selectedButt
     <span class="wrong-compare-label">${escapeHtml(stageLabel(entry.stage))} 오답 · 누적 ${history.totalWrong}회</span>
     <div><small>내 선택</small><strong>${escapeHtml(selectedText)}</strong></div>
     <div><small>실제 정답</small><strong>${escapeHtml(correctText)}</strong></div>
-    <p>정답을 확인했습니다. 다음 복습일에 다시 확인합니다.</p>
   `;
   $('answerArea').appendChild(compare);
   const row = document.createElement('div');
@@ -1242,11 +1213,11 @@ function answerSpacedChoice(word, entry, selectedText, correctText, selectedButt
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'primary';
-  button.textContent = '확인하고 다음';
+  button.textContent = 'NEXT';
   button.addEventListener('click', advanceSpacedReview);
   row.appendChild(button);
   $('answerArea').appendChild(row);
-  showFeedback('error', '오답노트에 저장했습니다.');
+  showFeedback('error', 'WRONG');
   persist('spaced_choice_wrong_simple');
 }
 
@@ -1257,7 +1228,6 @@ function renderSpacedTyping(word, entry) {
     <div class="typing-wrap spaced-typing simple-spaced-typing">
       <div class="review-stage-badge">${escapeHtml(stageLabel(entry.stage))}</div>
       <p class="typing-prompt">${escapeHtml(quizMeaning(word))}</p>
-      <p class="typing-memory-note">영어 철자를 한 번만 입력하세요. 결과 확인 후 자동으로 다음으로 진행합니다.</p>
       <input id="spacedInput" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="복습 영어 철자 입력">
       <div class="typing-actions single-action">
         <button id="checkSpaced" class="primary" type="button">확인</button>
@@ -1318,7 +1288,7 @@ function finishSpacedTyping(word, entry, correct, usedShowAnswer = false, respon
   }
   recordReviewResult(word.id, entry.stage, usedShowAnswer ? 'show_answer' : 'wrong', 'recall', responseMs, { usedShowAnswer });
   routeReviewFailure(word.id, entry, usedShowAnswer ? 'SHOW_ANSWER' : 'SPELLING_WRONG');
-  showFeedback('error', `정답: ${word.word} · 다음 복습일에 다시 확인합니다.`);
+  showFeedback('error', `ANSWER: ${word.word}`);
   persist('spaced_typing_wrong_simple');
   runtime.revealTimers.push(setTimeout(advanceSpacedReview, 1100));
 }
@@ -1359,13 +1329,12 @@ function buildRevealMarkup(unit, word) {
   return `
     <div class="reveal-stack reveal-study-stack">
       <div class="reveal-step focus strong-formula" data-reveal="1">
-        <span class="reveal-label">어원 구성</span>
+        <span class="reveal-label">ROOT + WORD</span>
         <span class="reveal-body formula-body">${highlightFormula(formula)}</span>
       </div>
       <div class="reveal-step strong-flow" data-reveal="2">
-        <span class="reveal-label">어원 흐름 추론</span>
+        <span class="reveal-label">FLOW</span>
         <div class="flow-steps">${flowHtml}</div>
-        <div class="inference-hint">최종 뜻은 끝까지 숨깁니다. 마지막 의미는 <strong>??</strong> 상태로 두고, 보기에서 정답을 추론해 보세요.</div>
       </div>
     </div>
   `;
@@ -1419,9 +1388,7 @@ function renderMiniSetReward() {
   $('learningContent').innerHTML = `
     <div class="mini-reward-panel">
       <div class="mini-reward-mark">✓</div>
-      <h2>${MINI_SET_SIZE}개 학습 완료</h2>
-      <p>DAY 전체 ${completed}개 완료 · ${remaining}개 남음</p>
-      <strong>흐름을 끊지 않고 다음 ${MINI_SET_SIZE}개로 이어갑니다.</strong>
+      <h2>${completed} / ${currentDayDef(dayNo).words}</h2>
       <div class="auto-next-bar" aria-hidden="true"><span></span></div>
     </div>
   `;
@@ -1437,16 +1404,10 @@ function renderMiniSetReward() {
 
 
 function renderWordQuestion(unit, word) {
-  const mastered = mastery(word.id).score >= 3 && runtime.state.settings.shortenMastered;
-  $('stageBadge').textContent = mastered ? '보기 먼저 · 빠른 확인' : '4지선다 먼저 풀기';
+  $('stageBadge').textContent = 'TEST';
   $('learningContent').innerHTML = `
     <div class="word-panel question-first-panel">
       <h2 class="word-title">${escapeHtml(word.word)}</h2>
-      <span class="word-source">${escapeHtml(word.importance || '')} 원문 p.${word.source_page}</span>
-      <div class="question-first-tip">
-        <strong>먼저 4지선다 보기를 보고 정답을 선택하세요.</strong>
-        <span>정답이면 바로 다음으로 넘어가고, <b>오답이면 자동으로 어원 + 단어 구조 해설</b>이 나타납니다.</span>
-      </div>
       <div id="revealCanvas" class="reveal-canvas hidden" aria-live="polite"></div>
     </div>
   `;
@@ -1476,16 +1437,8 @@ function renderOptions(unit, word) {
     button.addEventListener('click', () => answerChoice(word, text === correct, button, correct, unit));
     grid.appendChild(button);
   });
-  const tip = document.createElement('p');
-  tip.className = 'question-first-help';
-  tip.innerHTML = '아는 단어는 보기만 보고 바로 맞히고, <strong>틀린 단어만</strong> 해설을 보며 각인합니다.';
-  const help = document.createElement('p');
-  help.className = 'option-help';
-  help.innerHTML = '키보드 <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span> 또는 마우스/터치로 바로 선택할 수 있습니다.';
   $('answerArea').innerHTML = '';
   $('answerArea').appendChild(grid);
-  $('answerArea').appendChild(tip);
-  $('answerArea').appendChild(help);
   runtime.questionStartedAt = performance.now();
 
   runtime.optionKeyHandler = (event) => {
@@ -1526,7 +1479,7 @@ function answerChoice(word, correct, selectedButton, correctText, unit = null) {
     m.correct += 1;
     m.score = clamp(m.score + 1, 0, 5);
     selectedButton.classList.add('correct');
-    showFeedback('success', '정답입니다. 다음 단어로 이동합니다.');
+    showFeedback('success', 'CORRECT');
     persist('regular_correct');
     runtime.revealTimers.push(setTimeout(advanceWord, 430));
     return;
@@ -1572,16 +1525,15 @@ function renderWrongExplanation(unit, word) {
     renderSessionStep();
     return;
   }
-  $('stageBadge').textContent = '오답 해설';
+  $('stageBadge').textContent = 'WRONG';
   $('learningContent').innerHTML = `
     <div class="word-panel wrong-explanation-panel">
       <h2 class="word-title">${escapeHtml(activeWord.word)}</h2>
       <div class="wrong-compare-card compact">
-        <span class="wrong-compare-label">오늘 오답 · 누적 ${Number(pending.totalWrong || wrongEntry(activeWord.id).totalWrong || 1)}회</span>
-        <div><small>내 선택</small><strong>${escapeHtml(pending.selectedAnswer || '기록 없음')}</strong></div>
-        <div><small>실제 정답</small><strong>${escapeHtml(pending.correctAnswer || quizMeaning(activeWord))}</strong></div>
+        <span class="wrong-compare-label">WRONG · ${Number(pending.totalWrong || wrongEntry(activeWord.id).totalWrong || 1)}</span>
+        <div><small>SELECTED</small><strong>${escapeHtml(pending.selectedAnswer || '-')}</strong></div>
+        <div><small>ANSWER</small><strong>${escapeHtml(pending.correctAnswer || quizMeaning(activeWord))}</strong></div>
       </div>
-      <div class="wrong-reveal-intro">어원 + 단어 구조</div>
       ${buildRevealMarkup(unit, activeWord)}
     </div>
   `;
@@ -1589,7 +1541,7 @@ function renderWrongExplanation(unit, word) {
   const next = document.createElement('button');
   next.type = 'button';
   next.className = 'primary large simple-next-button';
-  next.textContent = '확인하고 다음 단어';
+  next.textContent = 'NEXT';
   next.addEventListener('click', () => {
     ds.pendingWrong = null;
     ds.phase = 'word';
@@ -1597,7 +1549,7 @@ function renderWrongExplanation(unit, word) {
     advanceWord();
   });
   $('answerArea').appendChild(next);
-  showFeedback('error', '오답은 저장했습니다. 해설을 한 번 확인한 뒤 다음 단어로 진행합니다.');
+  showFeedback('error', 'WRONG');
   runtime.revealTimers.push(setTimeout(() => document.querySelector('[data-reveal="1"]')?.classList.add('show'), 30));
   runtime.revealTimers.push(setTimeout(() => document.querySelector('[data-reveal="2"]')?.classList.add('show'), 220));
 }
@@ -1673,16 +1625,14 @@ function renderTypingReview() {
     renderSessionStep();
     return;
   }
-  $('stageBadge').textContent = `구간 핵심 오답 ${currentIdx} / ${totalQueue}`;
+  $('stageBadge').textContent = `REVIEW ${currentIdx}/${totalQueue}`;
   $('learningContent').innerHTML = `
     <div class="typing-wrap simple-block-review">
-      <div class="error-origin-badge today">이번 구간에서 꼭 기억할 단어</div>
       <p class="typing-progress">${currentIdx} / ${totalQueue}</p>
       <p class="typing-prompt">${escapeHtml(quizMeaning(word))}</p>
-      <p class="typing-memory-note">영어 철자를 한 번만 입력합니다. 틀려도 정답을 확인하고 바로 다음으로 진행합니다.</p>
       <input id="spellingInput" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="영어 철자 입력">
       <div class="typing-actions single-action">
-        <button id="checkSpelling" class="primary" type="button">확인</button>
+        <button id="checkSpelling" class="primary" type="button">OK</button>
       </div>
     </div>
   `;
@@ -1725,7 +1675,7 @@ function checkSpelling(word, value) {
     m.score = clamp(m.score + 1, 0, 5);
     resolveSpellingPending(word.id);
     recordReviewResult(word.id, 'BLOCK_REVIEW', 'correct', 'recall', responseMs);
-    showFeedback('success', '정답입니다. 다음 핵심 단어로 이동합니다.');
+    showFeedback('success', 'CORRECT');
     persist('block_review_correct');
     runtime.revealTimers.push(setTimeout(nextReviewWord, 500));
     return;
@@ -1739,7 +1689,7 @@ function checkSpelling(word, value) {
     stage: 'BLOCK_REVIEW',
   });
   spellingEntry(word.id).pending = Math.max(1, Number(spellingEntry(word.id).pending || 0));
-  showFeedback('error', `정답은 ${word.word}입니다. 한 번 확인하고 다음으로 이동합니다.`);
+  showFeedback('error', `ANSWER: ${word.word}`);
   persist('block_review_wrong');
   runtime.revealTimers.push(setTimeout(nextReviewWord, 1100));
 }
@@ -1839,16 +1789,12 @@ function renderBlockReward() {
   const ds = dayState(runtime.state.currentDay);
   const completed = ds.completedBlocks.length;
   const finalSegment = completed >= 4;
-  $('stageBadge').textContent = finalSegment ? 'DAY 학습 내용 완료' : '연속 학습 중';
+  $('stageBadge').textContent = finalSegment ? 'COMPLETE' : 'NEXT';
   $('learningContent').innerHTML = `
     <div class="block-reward continuous-reward">
       <div class="reward-mark">✓</div>
-      <h2>${finalSegment ? '오늘의 4개 학습구간 완료' : `학습구간 ${completed} 완료`}</h2>
-      <p>정답 ${ds.stats.correct}개 · 오답 ${ds.stats.wrong}개 · 철자 회상 ${ds.stats.typed}회</p>
-      <div class="auto-next-notice">
-        <strong>${finalSegment ? '관리자 완료 보고 화면으로 자동 이동합니다.' : `다음 ${completed + 1}구간을 자동으로 이어갑니다.`}</strong>
-        <span>별도로 홈으로 나가거나 다시 들어올 필요가 없습니다.</span>
-      </div>
+      <h2>${finalSegment ? 'COMPLETE' : `${completed} / 4`}</h2>
+
       <div class="auto-next-bar" aria-hidden="true"><span></span></div>
     </div>
   `;
@@ -1856,7 +1802,7 @@ function renderBlockReward() {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'ghost auto-next-skip';
-  button.textContent = finalSegment ? '관리자 보고 바로 열기' : '다음 구간 바로 계속';
+  button.textContent = finalSegment ? 'REPORT' : 'NEXT';
   button.addEventListener('click', continueContinuousDay);
   $('answerArea').appendChild(button);
   runtime.flowTimer = setTimeout(continueContinuousDay, 1400);
@@ -1880,7 +1826,7 @@ function reinforceMailGate() {
   const status = $('mailGateStatus');
   if (status && isMailGateRequired()) {
     status.className = 'mail-gate-status mandatory';
-    status.textContent = '필수 단계입니다. 관리자 메일 전송이 성공해야만 DAY가 완료됩니다.';
+    status.textContent = 'REPORT REQUIRED';
   }
   send?.focus();
 }
@@ -1906,21 +1852,21 @@ function openMailGate(dayNo = runtime.state.currentDay) {
   $('mailGateEmail').textContent = runtime.state.settings.email || '관리자 이메일 미설정';
   $('mailGateMetrics').innerHTML = [
     ['ROOT', `${summary.roots}개`],
-    ['신규 단어', `${summary.words}개`],
-    ['오늘 오답', `${summary.wrong}개`],
-    ['D+1 예약', `${summary.d1_due}개`],
-    ['D+3 강화', `${summary.d3_due}개`],
-    ['D+6 확인', `${summary.d6_due}개`],
+    ['WORDS', `${summary.words}`],
+    ['WRONG', `${summary.wrong}`],
+    ['D+1', `${summary.d1_due}`],
+    ['D+3', `${summary.d3_due}`],
+    ['D+6', `${summary.d6_due}`],
   ].map(([label, value]) => `<div class="mail-gate-metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
   const status = $('mailGateStatus');
   status.className = 'mail-gate-status';
   status.textContent = ds.mailGateStatus === 'error'
-    ? (ds.mailGateError || '메일 전송에 실패했습니다. 다시 시도하세요.')
-    : '필수 단계입니다. 메일 전송 성공 전에는 DAY 완료, 홈 이동, 다음 DAY 진행이 모두 차단됩니다.';
+    ? (ds.mailGateError || 'SEND FAILED')
+    : 'REPORT REQUIRED';
   if (ds.mailGateStatus === 'error') status.classList.add('error');
   const send = $('sendCompletionMail');
   send.disabled = false;
-  send.textContent = '필수: 관리자에게 완료 보고 메일 보내기';
+  send.textContent = 'SEND REPORT';
   $('mailGateModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
   requestAnimationFrame(() => send.focus());
@@ -1961,7 +1907,7 @@ async function sendCompletionReport() {
   if (!runtime.state.settings.email) {
     const status = $('mailGateStatus');
     status.className = 'mail-gate-status error';
-    status.textContent = '관리자 이메일이 설정되지 않았습니다. 관리자 화면에서 이메일을 입력하세요.';
+    status.textContent = 'EMAIL REQUIRED';
     return;
   }
   const report = prepareCompletion(dayNo);
@@ -1972,17 +1918,17 @@ async function sendCompletionReport() {
   const send = $('sendCompletionMail');
   const status = $('mailGateStatus');
   send.disabled = true;
-  send.textContent = '완료 보고 전송 중…';
+  send.textContent = 'SENDING...';
   status.className = 'mail-gate-status sending';
-  status.textContent = '관리자 메일 전송 결과를 확인하고 있습니다.';
+  status.textContent = 'SENDING';
   const result = await queueOrSendReport(report);
   if (result.ok) {
     ds.mailGateStatus = 'sent';
     ds.mailGateError = '';
     finalizeDayRecord(dayNo, false);
     status.className = 'mail-gate-status success';
-    status.textContent = '전송 성공 · DAY 학습이 최종 완료되었습니다.';
-    send.textContent = '전송 성공 ✓';
+    status.textContent = 'SENT';
+    send.textContent = 'SENT ✓';
     persist();
     setTimeout(() => {
       closeMailGate(true);
@@ -1994,7 +1940,7 @@ async function sendCompletionReport() {
   ds.mailGateError = `메일 전송 실패: ${result.error || '배포 환경과 메일 설정을 확인하세요.'}`;
   persist();
   send.disabled = false;
-  send.textContent = '다시 전송하기';
+  send.textContent = 'RETRY';
   status.className = 'mail-gate-status error';
   status.textContent = `${ds.mailGateError} DAY는 아직 미완료 상태입니다.`;
 }
@@ -2120,9 +2066,9 @@ function renderCompletion(dayNo) {
     <div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>
   `).join('');
   if (dayState(dayNo).forced) {
-    $('mailStatus').textContent = '관리자 강제 완료로 처리되었습니다. 완료 보고 메일은 별도로 전송을 시도합니다.';
+    $('mailStatus').textContent = 'FORCED';
   } else {
-    $('mailStatus').textContent = `완료 보고서를 ${runtime.state.settings.email}로 전송하여 DAY를 마무리했습니다.`;
+    $('mailStatus').textContent = 'REPORT SENT';
   }
   $('completionConfirm').textContent = dayNo < totalDays() ? `DAY ${pad(dayNo + 1)}로 이동` : '전체 과정 확인';
   $('completionConfirm').onclick = () => {
@@ -2217,7 +2163,7 @@ function exportProgress() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `18day_root_progress_${new Date().toISOString().slice(0, 10)}.json`;
+  link.download = `root_18day_progress_${new Date().toISOString().slice(0, 10)}.json`;
   document.body.appendChild(link);
   link.click();
   link.remove();
