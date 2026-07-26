@@ -39,7 +39,7 @@ export default async (request) => {
 
   const html = `
     <div style="font-family:Arial,'Noto Sans KR',sans-serif;color:#172235;line-height:1.6;max-width:680px;margin:auto">
-      <h2 style="margin-bottom:6px">VOCA ROOT DAY ${String(report.day).padStart(2, '0')} 완료</h2>
+      <h2 style="margin-bottom:6px">18day_root · DAY ${String(report.day).padStart(2, '0')} 완료</h2>
       <p style="color:#667287;margin-top:0">시작: ${escapeHtml(report.startedAt || '')}<br>완료: ${escapeHtml(report.completedAt || '')}${report.forced ? ' · 관리자 강제 완료' : ''}</p>
       <table style="width:100%;border-collapse:collapse;margin:20px 0">
         <tbody>
@@ -49,6 +49,7 @@ export default async (request) => {
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">정답률</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(accuracyLabel)}</td></tr>
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">오답</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.wrong)}개</td></tr>
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">철자 회상</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.typed)}회</td></tr>
+          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">철자 반복 대기</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.pending_spelling || 0)}개</td></tr>
           <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">기존 DAY 범위</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.source_day_range)}</td></tr>
         </tbody>
       </table>
@@ -66,7 +67,7 @@ export default async (request) => {
     body: JSON.stringify({
       from,
       to: [report.email],
-      subject: `VOCA ROOT DAY ${String(report.day).padStart(2, '0')} 완료`,
+      subject: `18day_root · DAY ${String(report.day).padStart(2, '0')} 완료`,
       html,
     }),
   });
