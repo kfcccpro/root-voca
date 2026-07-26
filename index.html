@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#315fb5">
-  <title>18day_root V7.3</title>
+  <title>18day_root V7.5</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,47 +17,40 @@
       <button id="adminToggle" class="icon-button" type="button" aria-label="관리자 화면 열기">관리자</button>
     </header>
 
-    <section id="learnerHome" class="screen">
-      <section class="hero-card">
-        <div>
-          <span id="statusChip" class="status-chip">총 18DAY · 오늘 학습</span>
-          <h2 id="goalTime">19:30 - 20:30</h2>
+    <section id="learnerHome" class="screen simple-home">
+      <section class="home-focus-card">
+        <div class="home-focus-top">
+          <span id="statusChip" class="status-chip">오늘 학습 준비됨</span>
+          <p class="home-time"><span>학습 시간</span><strong id="goalTime">19:30 - 20:30</strong></p>
+        </div>
+
+        <div class="home-primary-message">
+          <h2>오늘 학습을 시작하세요</h2>
           <p id="goalAmount">ROOT 16개 · 단어 93개</p>
         </div>
-        <button id="startButton" class="primary large" type="button">학습 시작</button>
-      </section>
 
-      <section class="ring-grid" aria-label="오늘의 진행 상황">
-        <article class="ring-card">
-          <div id="timeRing" class="ring" style="--p:0">
-            <strong id="timeRemain">59분</strong>
+        <div class="home-stat-row" aria-label="오늘의 남은 학습량">
+          <article id="timeRing" class="home-stat" style="--p:0">
             <span>남은 시간</span>
-          </div>
-        </article>
-        <article class="ring-card">
-          <div id="amountRing" class="ring" style="--p:0">
-            <strong id="amountRemain">93개</strong>
+            <strong id="timeRemain">59분</strong>
+          </article>
+          <article id="amountRing" class="home-stat" style="--p:0">
             <span>남은 단어</span>
-          </div>
-        </article>
-      </section>
+            <strong id="amountRemain">93개</strong>
+          </article>
+        </div>
 
-      <section class="continuous-day-section" aria-label="오늘의 연속 학습 흐름">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">한 번만 시작</p>
-            <h2>DAY 전체 연속 학습</h2>
+        <button id="startButton" class="primary home-start-button" type="button">오늘 학습 시작</button>
+
+        <div class="home-progress-compact">
+          <div class="home-progress-head">
+            <strong>오늘 진행</strong>
+            <span id="blockStatus">0 / 4 완료</span>
           </div>
-          <span id="blockStatus">0 / 4 구간 완료</span>
+          <div id="blockList" class="segment-track compact-segments" aria-label="오늘의 네 학습 구간"></div>
         </div>
-        <div class="continuous-day-card">
-          <div class="continuous-play" aria-hidden="true">▶</div>
-          <div>
-            <strong>시작 후 마지막 관리자 보고까지 자동으로 이어집니다.</strong>
-            <p>4지선다 → 오답 해설 → 구간 핵심 복습 → 다음 구간 자동 진행</p>
-          </div>
-        </div>
-        <div id="blockList" class="segment-track" aria-label="오늘의 네 학습 구간"></div>
+
+        <p class="home-flow-note">한 번 시작하면 4지선다부터 관리자 완료 보고까지 자동으로 이어집니다.</p>
       </section>
 
       <section id="resumeNotice" class="notice hidden" aria-live="polite"></section>

@@ -766,22 +766,22 @@ function renderHome() {
   $('todayTitle').textContent = `DAY ${pad(dayNo)}`;
   const courseText = `${APP_NAME} · ${totalDays()}DAY 영어 어원 집중 학습`;
   const eyebrow = $('courseEyebrow'); if (eyebrow) eyebrow.textContent = courseText;
-  const statusChip = $('statusChip'); if (statusChip) statusChip.textContent = `총 ${totalDays()}DAY · 오늘 학습`;
+  const statusChip = $('statusChip'); if (statusChip) statusChip.textContent = dueReviews.length ? `오늘 복습 ${dueReviews.length}개 포함` : '오늘 학습 준비됨';
   const adminCourseTitle = $('adminCourseTitle'); if (adminCourseTitle) adminCourseTitle.textContent = `${totalDays()}DAY 진행 현황`;
   $('goalTime').textContent = `${runtime.state.settings.start} - ${runtime.state.settings.end}`;
-  $('goalAmount').textContent = `ROOT ${d.roots}개 · 신규 ${d.words}개${dueReviews.length ? ` · 오늘 복습 ${dueReviews.length}개` : ''}`;
+  $('goalAmount').textContent = `ROOT ${d.roots}개 · 단어 ${d.words}개`;
   $('timeRemain').textContent = `${Math.max(0, Math.ceil(targetMinutes - elapsedMin))}분`;
   $('amountRemain').textContent = `${Math.max(0, totalWords - completedWords)}개`;
   setRing($('timeRing'), timePercent);
   setRing($('amountRing'), amountPercent);
-  $('blockStatus').textContent = `${completedBlocks} / 4 구간 완료`;
+  $('blockStatus').textContent = `${completedBlocks} / 4 완료`;
   const hasProgress = ds.completedBlocks.length > 0 || Object.keys(ds.answers || {}).length > 0 || ds.unitIndex > 0 || ds.wordIndex > 0;
   const awaitingMail = ds.completedBlocks.length >= 4 && !ds.completedAt;
   $('startButton').textContent = postCourseDue
-    ? `과정 후 기억 확인 ${dueReviews.length}개`
+    ? `기억 확인 시작 · ${dueReviews.length}개`
     : courseCompleted
-      ? `${totalDays()}DAY 과정 완료`
-      : (awaitingMail ? '관리자 보고 후 DAY 완료' : (hasProgress ? '저장된 위치에서 계속' : `DAY ${pad(dayNo)} 전체 학습 시작`));
+      ? `${totalDays()}DAY 완료`
+      : (awaitingMail ? '관리자 완료 보고 보내기' : (hasProgress ? '이어서 학습' : '오늘 학습 시작'));
   $('startButton').disabled = courseCompleted;
 
   $('blockList').innerHTML = '';
@@ -801,10 +801,10 @@ function renderHome() {
 
   if (postCourseDue) {
     $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `신규 학습은 완료되었습니다. 오늘은 과정 후 기억 확인 ${dueReviews.length}개만 진행합니다.`;
+    $('resumeNotice').textContent = `과정 후 기억 확인 ${dueReviews.length}개가 있습니다.`;
   } else if (courseCompleted) {
     $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `전체 ${totalDays()}DAY 신규 학습을 완료했습니다.`;
+    $('resumeNotice').textContent = `전체 ${totalDays()}DAY 학습을 완료했습니다.`;
   } else if (runtime.state.migrationNotice) {
     $('resumeNotice').classList.remove('hidden');
     $('resumeNotice').textContent = runtime.state.migrationNotice;
@@ -813,17 +813,17 @@ function renderHome() {
   } else if (ds.completedBlocks.length >= 4 && !ds.completedAt) {
     $('resumeNotice').classList.remove('hidden');
     $('resumeNotice').classList.add('pending-mail-notice');
-    $('resumeNotice').textContent = '학습 내용은 모두 끝났습니다. 관리자 완료 보고 메일을 보내야 DAY가 최종 완료됩니다.';
+    $('resumeNotice').textContent = '관리자 완료 보고를 보내야 오늘 학습이 끝납니다.';
   } else if ((ds.firstStartedAt || hasProgress) && !ds.completedAt) {
     $('resumeNotice').classList.remove('hidden');
     $('resumeNotice').classList.remove('pending-mail-notice');
-    $('resumeNotice').textContent = `오늘 학습 ${ds.block + 1}/4 구간 진행 중입니다. 한 번 들어가면 남은 구간이 자동으로 이어집니다.`;
+    $('resumeNotice').textContent = `오늘 학습 ${ds.block + 1}/4 진행 중입니다. 저장된 위치에서 이어집니다.`;
   } else if (dueReviews.length) {
     $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `오늘 기억 확인 ${dueReviews.length}개가 신규 학습 전에 자동으로 진행됩니다.`;
+    $('resumeNotice').textContent = `복습 ${dueReviews.length}개부터 자동으로 시작합니다.`;
   } else if (activeReviewEntries().length) {
     $('resumeNotice').classList.remove('hidden');
-    $('resumeNotice').textContent = `오답노트에 ${activeReviewEntries().length}개가 저장되어 있으며 예정일에 자동으로 다시 나옵니다.`;
+    $('resumeNotice').textContent = '오답은 예정된 날짜에 자동으로 다시 나옵니다.';
   } else {
     $('resumeNotice').classList.remove('pending-mail-notice');
     $('resumeNotice').classList.add('hidden');
