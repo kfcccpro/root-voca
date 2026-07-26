@@ -1,51 +1,28 @@
-18DAY_ROOT_V7_TEST_RESULTS
-==========================
-VALIDATION_OK
-BROWSER_V7_OK
+18DAY_ROOT V7.4 SIMPLE LOOP TEST RESULTS
+=======================================
+
 JS_SYNTAX_OK
-NETLIFY_FUNCTION_SYNTAX_OK
-STATIC_HTTP_OK
+MAIL_FUNCTION_SYNTAX_OK
+STATIC_SERVER_INDEX_200
+STATIC_SERVER_APP_JS_200
+STATIC_SERVER_DATA_200
+DATA_18_DAYS_OK
+DATA_360_ROOTS_OK
+DATA_1410_WORDS_OK
+QUESTION_CORRECT_FAST_PATH_OK
+ROOT_START_CLICK_REMOVED
+MINI_REWARD_TRIGGER_REMOVED
+WRONG_EXPLANATION_SINGLE_SCREEN_OK
+NO_IMMEDIATE_SPELLING_AFTER_REGULAR_WRONG
+WRONG_NEXT_BUTTON_SINGLE_ACTION_OK
+BLOCK_REVIEW_MAX_4_OK
+BLOCK_REVIEW_PRIORITY_OK
+BLOCK_REVIEW_SINGLE_ATTEMPT_OK
+D1_D3_CHOICE_NO_TYPING_TRANSITION_OK
+D6_FOCUS_TYPING_SINGLE_ATTEMPT_OK
+BLOCK_AUTO_CONTINUE_OK
+MANDATORY_MAIL_GATE_LOGIC_OK
+MANDATORY_MAIL_GATE_CANNOT_CLOSE_OK
 
-DATA
-- days: 18
-- roots: 360
-- headwords: 1410
-- internal segments: 72
-- mini set: 6
-
-RESPONSIVE
-- PC 1440x900: PASS
-- Tablet 820x1180: PASS
-- Mobile 390x844: PASS
-- Small mobile 320x720: PASS
-- Horizontal overflow: NONE
-
-LEARNING FLOW
-- Single entry continuous DAY: PASS
-- Numeric selection: PASS
-- Wrong answer comparison: PASS
-- Immediate D0 spelling: PASS
-- 6-item mini reward: PASS
-
-SPACED REVIEW
-- D+1 due review: PASS
-- D+1 fast correct -> D+6: PASS
-- D+1 wrong + recall -> D+3: PASS
-- D+6 correct -> STABLE: PASS
-- Post-course review after DAY18: PASS
-
-STATE
-- eventId logging: PASS
-- revision increment: PASS
-- permanent wrong history: PASS
-- directional mastery: PASS
-- local previous-revision backup: IMPLEMENTED
-
-MAIL GATE
-- Mail success -> DAY complete: MOCK PASS
-- Live Gmail delivery: REQUIRES NETLIFY ENVIRONMENT VARIABLES
-
-NOT YET CONNECTED
-- Cloud DB
-- Real multi-device merge
-- Cloud readback verification
+Automated logic test: PASS
+Browser rendering note: Chromium headless could not complete DOM dumping in this container, so the final validation used JavaScript syntax checks, a VM-based state/algorithm test, data integrity checks, and static HTTP response checks.

@@ -361,3 +361,48 @@ body.modal-open{overflow:hidden}
 
 /* V7.2 wrong-answer auto explanation */
 .wrong-reveal-intro{display:inline-flex;justify-content:center;align-items:center;margin:0 auto 12px;padding:9px 14px;border-radius:999px;background:#fff2d8;border:1px solid #f0c34d;color:#7a5300;font-size:14px;font-weight:900}
+
+/* V7.3 mandatory administrator mail gate */
+.mail-gate-overlay{z-index:9999;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:rgba(5,14,31,.92);backdrop-filter:blur(14px)}
+.mail-gate-card{width:min(940px,100%);max-height:calc(100dvh - 20px);padding:clamp(28px,5vw,58px);border:6px solid #315fb5;border-radius:34px;box-shadow:0 34px 120px rgba(0,0,0,.56)}
+.mail-gate-icon{width:112px;height:112px;margin-bottom:18px;font-size:58px;border:3px solid #9bb7ef}
+.mail-gate-kicker{display:inline-flex;justify-content:center;padding:9px 16px;border-radius:999px;background:#fff0d2;border:2px solid #f0bd43;color:#6f4b00;font-size:clamp(16px,2vw,20px)}
+.mail-gate-card h2{margin:16px 0 16px;font-size:clamp(38px,6vw,66px);line-height:1.08;letter-spacing:-2px}
+.mail-gate-copy{max-width:760px;font-size:clamp(19px,2.6vw,25px);font-weight:800;color:#3f4f6c}
+.mail-gate-metrics{margin:28px 0 18px;gap:12px}
+.mail-gate-metric{padding:18px 12px;border:2px solid #d9e4fb}
+.mail-gate-metric span{font-size:14px}
+.mail-gate-metric strong{font-size:clamp(25px,4vw,38px)}
+.mail-gate-recognition{padding:19px 20px;border:2px solid #edc55c;font-size:18px}
+.mail-gate-recognition span{font-size:16px;font-weight:800}
+.mail-gate-destination{font-size:18px;font-weight:800}
+.mail-gate-status{min-height:34px;margin:18px 0 10px;font-size:clamp(17px,2.5vw,22px);font-weight:950}
+.mail-gate-status.mandatory{color:#a24800}
+.mail-send-button{min-height:112px;border-radius:24px;padding:22px 24px;font-size:clamp(27px,4.5vw,42px);box-shadow:0 18px 36px rgba(49,95,181,.38)}
+.mail-send-button:focus-visible{outline:6px solid #f7c64f;outline-offset:5px}
+.mail-gate-lock-notice{margin-top:16px;padding:15px 18px;border:2px solid #df9ca4;border-radius:16px;background:#fff4f5;color:#8e2330;font-size:clamp(15px,2.2vw,19px);font-weight:900;line-height:1.5}
+.mail-gate-shake{animation:mailGateShake .38s ease both}
+@keyframes mailGateShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+@media(max-width:620px){
+  .mail-gate-overlay{padding:0}
+  .mail-gate-card{width:100%;max-height:100dvh;min-height:100dvh;border-width:0;border-radius:0;padding:24px 16px 30px}
+  .mail-gate-icon{width:82px;height:82px;font-size:42px}
+  .mail-gate-card h2{font-size:clamp(31px,9vw,44px)}
+  .mail-gate-copy{font-size:17px}
+  .mail-gate-metrics{grid-template-columns:1fr 1fr}
+  .mail-send-button{min-height:96px;font-size:clamp(24px,7vw,34px)}
+}
+
+/* V7.4 simplified learning loop */
+.wrong-explanation-panel{gap:14px}
+.wrong-compare-card.compact{max-width:820px;margin:0 auto;box-shadow:none}
+.wrong-explanation-panel .reveal-study-stack{max-width:820px;margin:0 auto}
+.simple-next-button{width:min(100%,820px);margin:0 auto;min-height:70px;font-size:clamp(20px,4vw,28px);font-weight:900}
+.simple-block-review{max-width:760px;margin:0 auto}
+.simple-block-review .typing-prompt{margin-top:14px}
+.typing-actions.single-action{display:block}
+.typing-actions.single-action button{width:100%;min-height:68px}
+@media(max-width:620px){
+  .wrong-compare-card.compact{grid-template-columns:1fr}
+  .simple-next-button{min-height:64px}
+}

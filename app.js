@@ -132,6 +132,7 @@ function dayState(dayNo) {
       reviewReturn: 'word',
       typingAttempts: 0,
       reviewResolved: false,
+      pendingWrong: null,
       spacedReviewQueue: [],
       spacedReviewIndex: 0,
       spacedReviewMode: 'choice',
@@ -183,6 +184,7 @@ function blankDayState() {
     reviewReturn: 'word',
     typingAttempts: 0,
     reviewResolved: false,
+    pendingWrong: null,
     spacedReviewQueue: [],
     spacedReviewIndex: 0,
     spacedReviewMode: 'choice',
@@ -213,7 +215,7 @@ function sanitizeDayState(raw = {}) {
   out.completedBlocks = [...new Set((Array.isArray(out.completedBlocks) ? out.completedBlocks : [])
     .map(Number).filter((n) => Number.isInteger(n) && n >= 0 && n < 4))].sort((a, b) => a - b);
   out.block = clamp(Number(out.block || 0), 0, 3);
-  out.phase = ['root', 'word', 'review', 'spacedReview', 'miniReward', 'blockReward'].includes(out.phase) ? out.phase : 'root';
+  out.phase = ['root', 'word', 'wrongExplanation', 'review', 'spacedReview', 'miniReward', 'blockReward'].includes(out.phase) ? out.phase : 'root';
   out.unitIndex = Math.max(0, Number(out.unitIndex || 0));
   out.wordIndex = Math.max(0, Number(out.wordIndex || 0));
   out.reviewQueue = Array.isArray(out.reviewQueue) ? [...new Set(out.reviewQueue.map(String))] : [];
@@ -221,6 +223,7 @@ function sanitizeDayState(raw = {}) {
   out.reviewReturn = ['word', 'block'].includes(out.reviewReturn) ? out.reviewReturn : 'word';
   out.typingAttempts = Math.max(0, Number(out.typingAttempts || 0));
   out.reviewResolved = Boolean(out.reviewResolved);
+  out.pendingWrong = out.pendingWrong && typeof out.pendingWrong === 'object' ? out.pendingWrong : null;
   out.spacedReviewQueue = Array.isArray(out.spacedReviewQueue) ? [...new Set(out.spacedReviewQueue.map(String))] : [];
   out.spacedReviewIndex = Math.max(0, Number(out.spacedReviewIndex || 0));
   out.spacedReviewMode = ['choice', 'typing'].includes(out.spacedReviewMode) ? out.spacedReviewMode : 'choice';
@@ -230,6 +233,11 @@ function sanitizeDayState(raw = {}) {
   out.preReviewDate = typeof out.preReviewDate === 'string' ? out.preReviewDate : null;
   out.miniRewardAt = Math.max(0, Number(out.miniRewardAt || 0));
   out.resumePhase = ['root', 'word'].includes(out.resumePhase) ? out.resumePhase : 'word';
+  if (out.phase === 'miniReward') out.phase = 'word';
+  if (out.phase === 'blockReward' && out.completedBlocks.length < 4) {
+    out.block = Math.min(3, out.completedBlocks.length);
+    out.phase = 'root';
+  }
   out.elapsedSeconds = Math.max(0, Number(out.elapsedSeconds || 0));
   out.postCourseSeconds = Math.max(0, Number(out.postCourseSeconds || 0));
   out.postCourseStartedAt = out.postCourseStartedAt || null;
@@ -739,6 +747,10 @@ function renderHome() {
   const dayNo = runtime.state.currentDay;
   const d = currentDayDef(dayNo);
   const ds = dayState(dayNo);
+  if (isMailGateRequired(dayNo)) {
+    requestAnimationFrame(() => openMailGate(dayNo));
+    return;
+  }
   const completedBlocks = ds.completedBlocks.length;
   const completedWords = totalCompletedWords(dayNo);
   const totalWords = d.words;
@@ -962,8 +974,7 @@ function updateSessionProgressHeader() {
     return;
   }
   const currentSegment = Math.min(4, Math.max(1, Number(ds.block || 0) + 1));
-  const miniPosition = answered === 0 ? 0 : ((answered - 1) % MINI_SET_SIZE) + 1;
-  $('sessionBlockLabel').textContent = `DAY ${pad(dayNo)} · ${currentSegment}/4구간 · 짧은 목표 ${miniPosition}/${MINI_SET_SIZE}`;
+  $('sessionBlockLabel').textContent = `DAY ${pad(dayNo)} · ${currentSegment}/4구간`;
   $('sessionProgressText').textContent = `${answered} / ${allWords.length}`;
   $('sessionProgressBar').style.width = `${allWords.length ? (answered / allWords.length) * 100 : 0}%`;
 }
@@ -988,6 +999,10 @@ function renderSessionStep() {
   }
   if (ds.phase === 'blockReward') {
     renderBlockReward();
+    return;
+  }
+  if (ds.phase === 'wrongExplanation') {
+    renderWrongExplanation(unit, word);
     return;
   }
   if (ds.phase === 'review') {
@@ -1179,31 +1194,47 @@ function answerSpacedChoice(word, entry, selectedText, correctText, selectedButt
   ds.stats.reviewAttempted += 1;
   const isCorrect = selectedText === correctText;
   updateDirectionMastery(word.id, 'recognition', isCorrect, responseMs);
-  logEvent('spaced_choice', { wordId: word.id, stage: entry.stage, direction: 'recognition', result: isCorrect ? 'correct' : 'wrong', selectedAnswer: selectedText, correctAnswer: correctText, responseTimeMs: Math.round(responseMs) });
+  logEvent('spaced_choice', {
+    wordId: word.id,
+    stage: entry.stage,
+    direction: 'recognition',
+    result: isCorrect ? 'correct' : 'wrong',
+    selectedAnswer: selectedText,
+    correctAnswer: correctText,
+    responseTimeMs: Math.round(responseMs),
+  });
   if (isCorrect) {
     ds.stats.reviewCorrect += 1;
     selectedButton.classList.add('correct');
     recordReviewResult(word.id, entry.stage, 'correct', 'recognition', responseMs);
     routeReviewSuccess(word.id, entry, responseMs, false);
-    showFeedback('success', entry.stage === 'D6_DUE' ? '기억 안정화 완료.' : '기억 확인 성공. 다음 일정으로 이동합니다.');
+    showFeedback('success', entry.stage === 'D6_DUE' ? '기억 안정화 완료.' : '기억 확인 성공.');
     persist('spaced_choice_correct');
-    runtime.revealTimers.push(setTimeout(advanceSpacedReview, 650));
+    runtime.revealTimers.push(setTimeout(advanceSpacedReview, 500));
     return;
   }
   ds.stats.reviewWrong += 1;
-  ds.spacedChoiceWrong = true;
   selectedButton.classList.add('wrong');
   document.querySelectorAll('.option-button').forEach((button) => {
     if (button.dataset.optionValue === correctText) button.classList.add('correct');
   });
-  const history = recordWrong(word, { type: 'MEANING', direction: 'recognition', selectedAnswer: selectedText, correctAnswer: correctText, responseMs, stage: entry.stage });
+  const history = recordWrong(word, {
+    type: 'MEANING',
+    direction: 'recognition',
+    selectedAnswer: selectedText,
+    correctAnswer: correctText,
+    responseMs,
+    stage: entry.stage,
+  });
+  recordReviewResult(word.id, entry.stage, 'wrong', 'recognition', responseMs);
+  routeReviewFailure(word.id, entry, 'REVIEW_CHOICE_WRONG');
   const compare = document.createElement('div');
   compare.className = 'wrong-compare-card';
   compare.innerHTML = `
     <span class="wrong-compare-label">${escapeHtml(stageLabel(entry.stage))} 오답 · 누적 ${history.totalWrong}회</span>
     <div><small>내 선택</small><strong>${escapeHtml(selectedText)}</strong></div>
     <div><small>실제 정답</small><strong>${escapeHtml(correctText)}</strong></div>
-    <p>두 답의 의미를 구분한 뒤 철자로 한 번 회상합니다.</p>
+    <p>정답을 확인했습니다. 다음 복습일에 다시 확인합니다.</p>
   `;
   $('answerArea').appendChild(compare);
   const row = document.createElement('div');
@@ -1211,31 +1242,25 @@ function answerSpacedChoice(word, entry, selectedText, correctText, selectedButt
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'primary';
-  button.textContent = '철자로 바로 확인';
-  button.addEventListener('click', () => {
-    ds.spacedReviewMode = 'typing';
-    ds.spacedTypingAttempts = 0;
-    persist('spaced_choice_to_typing');
-    renderSessionStep();
-  });
+  button.textContent = '확인하고 다음';
+  button.addEventListener('click', advanceSpacedReview);
   row.appendChild(button);
   $('answerArea').appendChild(row);
-  showFeedback('error', '오답노트 DB에 저장했습니다.');
-  persist('spaced_choice_wrong');
+  showFeedback('error', '오답노트에 저장했습니다.');
+  persist('spaced_choice_wrong_simple');
 }
 
 function renderSpacedTyping(word, entry) {
   const ds = dayState(runtime.state.currentDay);
   $('stageBadge').textContent = `${stageLabel(entry.stage)} ${ds.spacedReviewIndex + 1} / ${ds.spacedReviewQueue.length}`;
   $('learningContent').innerHTML = `
-    <div class="typing-wrap spaced-typing">
+    <div class="typing-wrap spaced-typing simple-spaced-typing">
       <div class="review-stage-badge">${escapeHtml(stageLabel(entry.stage))}</div>
       <p class="typing-prompt">${escapeHtml(quizMeaning(word))}</p>
-      <p class="typing-memory-note">영어 철자를 직접 회상하세요. 같은 자리에서는 최대 두 번만 시도합니다.</p>
+      <p class="typing-memory-note">영어 철자를 한 번만 입력하세요. 결과 확인 후 자동으로 다음으로 진행합니다.</p>
       <input id="spacedInput" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="복습 영어 철자 입력">
-      <div class="typing-actions">
-        <button id="checkSpaced" class="primary" type="button">정답 확인</button>
-        <button id="showSpaced" class="ghost" type="button">정답 보기</button>
+      <div class="typing-actions single-action">
+        <button id="checkSpaced" class="primary" type="button">확인</button>
       </div>
     </div>
   `;
@@ -1244,38 +1269,38 @@ function renderSpacedTyping(word, entry) {
   input.focus();
   runtime.questionStartedAt = performance.now();
   $('checkSpaced').addEventListener('click', () => checkSpacedTyping(word, entry, input.value));
-  $('showSpaced').addEventListener('click', () => {
-    ds.stats.reviewAttempted += 1;
-    ds.stats.reviewWrong += 1;
-    updateDirectionMastery(word.id, 'recall', false, null);
-    recordWrong(word, { type: 'HINT_DEPENDENT', direction: 'recall', selectedAnswer: null, correctAnswer: word.word, responseMs: null, stage: entry.stage });
-    logEvent('spaced_show_answer', { wordId: word.id, stage: entry.stage, direction: 'recall', result: 'show_answer' });
-    finishSpacedTyping(word, entry, false, true);
-  });
   input.addEventListener('keydown', (event) => { if (event.key === 'Enter') checkSpacedTyping(word, entry, input.value); });
 }
 
 function checkSpacedTyping(word, entry, value) {
   const ds = dayState(runtime.state.currentDay);
-  ds.spacedTypingAttempts += 1;
+  if (ds.spacedTypingAttempts > 0) return;
+  ds.spacedTypingAttempts = 1;
   ds.stats.reviewAttempted += 1;
   const responseMs = Math.max(0, performance.now() - Number(runtime.questionStartedAt || performance.now()));
   const correct = normalizeAnswer(value) === normalizeAnswer(word.word);
   updateDirectionMastery(word.id, 'recall', correct, responseMs);
-  logEvent('spaced_typing', { wordId: word.id, stage: entry.stage, direction: 'recall', result: correct ? 'correct' : 'wrong', responseTimeMs: Math.round(responseMs), attempt: ds.spacedTypingAttempts });
-  if (correct) {
-    ds.stats.reviewCorrect += 1;
-    finishSpacedTyping(word, entry, true, false, responseMs);
-    return;
-  }
-  ds.stats.reviewWrong += 1;
-  recordWrong(word, { type: 'SPELLING', direction: 'recall', selectedAnswer: value, correctAnswer: word.word, responseMs, stage: entry.stage });
-  if (ds.spacedTypingAttempts >= 2) finishSpacedTyping(word, entry, false, false, responseMs);
+  logEvent('spaced_typing', {
+    wordId: word.id,
+    stage: entry.stage,
+    direction: 'recall',
+    result: correct ? 'correct' : 'wrong',
+    responseTimeMs: Math.round(responseMs),
+    attempt: 1,
+  });
+  if (correct) ds.stats.reviewCorrect += 1;
   else {
-    showFeedback('error', '철자가 다릅니다. 한 번 더 입력하세요.');
-    $('spacedInput').select();
-    persist('spaced_typing_retry');
+    ds.stats.reviewWrong += 1;
+    recordWrong(word, {
+      type: 'SPELLING',
+      direction: 'recall',
+      selectedAnswer: value,
+      correctAnswer: word.word,
+      responseMs,
+      stage: entry.stage,
+    });
   }
+  finishSpacedTyping(word, entry, correct, false, responseMs);
 }
 
 function finishSpacedTyping(word, entry, correct, usedShowAnswer = false, responseMs = null) {
@@ -1283,51 +1308,26 @@ function finishSpacedTyping(word, entry, correct, usedShowAnswer = false, respon
   const input = $('spacedInput');
   if (input) input.disabled = true;
   if ($('checkSpaced')) $('checkSpaced').disabled = true;
-  if ($('showSpaced')) $('showSpaced').disabled = true;
   if (correct) {
-    recordReviewResult(word.id, entry.stage, 'correct', 'recall', responseMs, { choiceWrong: ds.spacedChoiceWrong });
-    routeReviewSuccess(word.id, entry, Number(responseMs || runtime.state.settings.slowResponseMs), ds.spacedChoiceWrong);
-    showFeedback('success', entry.stage === 'D6_DUE' ? '기억 안정화 완료.' : '철자 회상 성공. 다음 일정으로 이동합니다.');
-  } else {
-    recordReviewResult(word.id, entry.stage, usedShowAnswer ? 'show_answer' : 'wrong', 'recall', responseMs, { usedShowAnswer });
-    routeReviewFailure(word.id, entry, usedShowAnswer ? 'SHOW_ANSWER' : 'SPELLING_WRONG');
-    showFeedback('error', `정답: ${word.word} · 다음 복습일에 다시 확인합니다.`);
+    recordReviewResult(word.id, entry.stage, 'correct', 'recall', responseMs, { choiceWrong: false });
+    routeReviewSuccess(word.id, entry, Number(responseMs || runtime.state.settings.slowResponseMs), false);
+    showFeedback('success', entry.stage === 'D6_DUE' ? '기억 안정화 완료.' : '기억 확인 성공.');
+    persist('spaced_typing_correct_simple');
+    runtime.revealTimers.push(setTimeout(advanceSpacedReview, 500));
+    return;
   }
-  const row = document.createElement('div');
-  row.className = 'continue-row';
-  const next = document.createElement('button');
-  next.type = 'button';
-  next.className = 'primary';
-  next.textContent = '다음 기억 확인';
-  next.addEventListener('click', advanceSpacedReview);
-  row.appendChild(next);
-  $('answerArea').appendChild(row);
-  persist('spaced_typing_finish');
+  recordReviewResult(word.id, entry.stage, usedShowAnswer ? 'show_answer' : 'wrong', 'recall', responseMs, { usedShowAnswer });
+  routeReviewFailure(word.id, entry, usedShowAnswer ? 'SHOW_ANSWER' : 'SPELLING_WRONG');
+  showFeedback('error', `정답: ${word.word} · 다음 복습일에 다시 확인합니다.`);
+  persist('spaced_typing_wrong_simple');
+  runtime.revealTimers.push(setTimeout(advanceSpacedReview, 1100));
 }
 
-
-function renderRoot(unit) {
-  $('stageBadge').textContent = 'ROOT 이해';
-  const masteredCount = unit.words.filter((word) => mastery(word.id).score >= 3).length;
-  const shortened = runtime.state.settings.shortenMastered && masteredCount === unit.words.length && unit.words.length > 0;
-  $('learningContent').innerHTML = `
-    <div class="root-panel">
-      <div class="root-symbol">${escapeHtml(unit.root)}</div>
-      <div class="root-meaning">${escapeHtml(unit.root_meaning || '어원 의미 확인')}</div>
-      <div class="root-sub">${shortened ? '숙달 ROOT - 설명 단계를 단축합니다.' : `이 ROOT에서 ${unit.words.length}개 단어를 학습합니다.`}</div>
-    </div>
-  `;
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'primary large';
-  button.textContent = shortened ? '빠른 확인 시작' : '단어 학습 시작';
-  button.addEventListener('click', () => {
-    const ds = dayState(runtime.state.currentDay);
-    ds.phase = 'word';
-    persist();
-    renderSessionStep();
-  });
-  $('answerArea').appendChild(button);
+function renderRoot(_unit) {
+  const ds = dayState(runtime.state.currentDay);
+  ds.phase = 'word';
+  persist('root_auto_skip');
+  renderSessionStep();
 }
 
 function teaserFlow(word, unit) {
@@ -1549,48 +1549,57 @@ function answerChoice(word, correct, selectedButton, correctText, unit = null) {
     stage: 'D0',
   });
   scheduleInitialD1(word);
-  addSpellingPending(word.id, 1);
-  ds.reviewQueue = [String(word.id)];
-  ds.reviewIndex = 0;
-  ds.reviewReturn = 'word';
-  ds.typingAttempts = 0;
-  ds.reviewResolved = false;
-  ds.phase = 'review';
+  if (!ds.reviewQueue.includes(String(word.id))) ds.reviewQueue.push(String(word.id));
+  ds.pendingWrong = {
+    wordId: String(word.id),
+    selectedAnswer: selectedText,
+    correctAnswer: correctText,
+    totalWrong: history.totalWrong,
+  };
+  ds.phase = 'wrongExplanation';
+  persist('regular_wrong_explanation');
+  renderWrongExplanation(unit, word);
+}
 
-  showFeedback('error', '오늘 오답으로 저장했습니다. 아래에서 어원 + 단어 구조 해설을 확인한 뒤 철자로 각인합니다.');
-  const compare = document.createElement('div');
-  compare.className = 'wrong-compare-card';
-  compare.innerHTML = `
-    <span class="wrong-compare-label">방금 틀린 항목 · 누적 ${history.totalWrong}회</span>
-    <div><small>내 선택</small><strong>${escapeHtml(selectedText)}</strong></div>
-    <div><small>실제 정답</small><strong>${escapeHtml(correctText)}</strong></div>
-    <p>정답을 틀렸으므로 지금 바로 어원 + 단어 구조 해설을 보여줍니다.</p>
-  `;
-  $('answerArea').appendChild(compare);
-  const revealHost = $('revealCanvas');
-  if (revealHost && unit) {
-    revealHost.classList.remove('hidden');
-    revealHost.innerHTML = `
-      <div class="wrong-reveal-intro">오답 해설 · 어원 + 단어 구조</div>
-      ${buildRevealMarkup(unit, word)}
-    `;
-    clearRevealTimers();
-    runtime.revealTimers.push(setTimeout(() => revealHost.querySelector('[data-reveal="1"]')?.classList.add('show'), 30));
-    runtime.revealTimers.push(setTimeout(() => revealHost.querySelector('[data-reveal="2"]')?.classList.add('show'), 260));
+function renderWrongExplanation(unit, word) {
+  const ds = dayState(runtime.state.currentDay);
+  const pending = ds.pendingWrong || {};
+  const activeWord = word || findWordById(pending.wordId);
+  if (!activeWord || !unit) {
+    ds.pendingWrong = null;
+    ds.phase = 'word';
+    persist('wrong_explanation_recover');
+    renderSessionStep();
+    return;
   }
-  const row = document.createElement('div');
-  row.className = 'continue-row';
+  $('stageBadge').textContent = '오답 해설';
+  $('learningContent').innerHTML = `
+    <div class="word-panel wrong-explanation-panel">
+      <h2 class="word-title">${escapeHtml(activeWord.word)}</h2>
+      <div class="wrong-compare-card compact">
+        <span class="wrong-compare-label">오늘 오답 · 누적 ${Number(pending.totalWrong || wrongEntry(activeWord.id).totalWrong || 1)}회</span>
+        <div><small>내 선택</small><strong>${escapeHtml(pending.selectedAnswer || '기록 없음')}</strong></div>
+        <div><small>실제 정답</small><strong>${escapeHtml(pending.correctAnswer || quizMeaning(activeWord))}</strong></div>
+      </div>
+      <div class="wrong-reveal-intro">어원 + 단어 구조</div>
+      ${buildRevealMarkup(unit, activeWord)}
+    </div>
+  `;
+  $('answerArea').innerHTML = '';
   const next = document.createElement('button');
   next.type = 'button';
-  next.className = 'primary';
-  next.textContent = '해설 확인 후 철자로 각인';
+  next.className = 'primary large simple-next-button';
+  next.textContent = '확인하고 다음 단어';
   next.addEventListener('click', () => {
-    persist('d0_to_spelling');
-    renderSessionStep();
+    ds.pendingWrong = null;
+    ds.phase = 'word';
+    persist('wrong_explanation_complete');
+    advanceWord();
   });
-  row.appendChild(next);
-  $('answerArea').appendChild(row);
-  persist('regular_wrong');
+  $('answerArea').appendChild(next);
+  showFeedback('error', '오답은 저장했습니다. 해설을 한 번 확인한 뒤 다음 단어로 진행합니다.');
+  runtime.revealTimers.push(setTimeout(() => document.querySelector('[data-reveal="1"]')?.classList.add('show'), 30));
+  runtime.revealTimers.push(setTimeout(() => document.querySelector('[data-reveal="2"]')?.classList.add('show'), 220));
 }
 
 function showFeedback(type, text) {
@@ -1601,26 +1610,43 @@ function showFeedback(type, text) {
 function advanceWord() {
   const ds = dayState(runtime.state.currentDay);
   ds.wordIndex += 1;
-  if (shouldShowMiniReward(runtime.state.currentDay)) {
-    enterMiniReward('word');
-    renderSessionStep();
-    return;
-  }
   persist('advance_word');
   renderSessionStep();
 }
 
+function blockReviewPriority(wordId) {
+  const word = findWordById(wordId);
+  const history = wrongEntry(wordId);
+  const importance = (String(word?.importance || '').match(/★/g) || []).length;
+  const spellingRisk = Array.isArray(history.wrongTypes) && history.wrongTypes.includes('SPELLING') ? 5 : 0;
+  return Number(history.totalWrong || 0) * 10 + importance * 4 + spellingRisk;
+}
+
+function prepareBlockReviewQueue(ds) {
+  const selected = [...new Set((Array.isArray(ds.reviewQueue) ? ds.reviewQueue : []).map(String))]
+    .filter((wordId) => ds.answers[wordId] === 'wrong' && findWordById(wordId))
+    .sort((a, b) => blockReviewPriority(b) - blockReviewPriority(a))
+    .slice(0, 4);
+  ds.reviewQueue = selected;
+  ds.reviewIndex = 0;
+  ds.typingAttempts = 0;
+  ds.reviewResolved = false;
+  selected.forEach((wordId) => addSpellingPending(wordId, 1));
+  return selected;
+}
+
 function beginReviewOrCompleteBlock() {
   const ds = dayState(runtime.state.currentDay);
-  const unresolved = Array.isArray(ds.reviewQueue) && ds.reviewIndex < ds.reviewQueue.length;
-  if (unresolved) {
+  const selected = prepareBlockReviewQueue(ds);
+  if (selected.length) {
     ds.phase = 'review';
     ds.reviewReturn = 'block';
-  } else {
-    completeCurrentBlock();
+    logEvent('block_review_selected', { count: selected.length, wordIds: selected });
+    persist('block_review_start');
+    renderSessionStep();
+    return;
   }
-  persist('block_review_check');
-  renderSessionStep();
+  completeCurrentBlock();
 }
 
 function findWordById(wordId) {
@@ -1638,32 +1664,25 @@ function renderTypingReview() {
   const wordId = ds.reviewQueue[ds.reviewIndex];
   if (!wordId) {
     completeCurrentBlock();
-    persist();
-    renderSessionStep();
     return;
   }
   const word = findWordById(wordId);
   if (!word) {
     ds.reviewIndex += 1;
-    persist();
+    persist('block_review_skip_missing');
     renderSessionStep();
     return;
   }
-  const isTodayError = ds.answers[wordId] === 'wrong';
-  const originLabel = isTodayError ? '오늘 선택형 오답' : '누적 오답 반복';
-  const originClass = isTodayError ? 'today' : 'carry';
-  $('stageBadge').textContent = `오답 철자 각인 ${currentIdx} / ${totalQueue}`;
+  $('stageBadge').textContent = `구간 핵심 오답 ${currentIdx} / ${totalQueue}`;
   $('learningContent').innerHTML = `
-    <div class="typing-wrap">
-      <div class="error-origin-badge ${originClass}">${originLabel}</div>
-      <p class="typing-progress">오답 철자 각인 ${currentIdx} / ${totalQueue}</p>
+    <div class="typing-wrap simple-block-review">
+      <div class="error-origin-badge today">이번 구간에서 꼭 기억할 단어</div>
+      <p class="typing-progress">${currentIdx} / ${totalQueue}</p>
       <p class="typing-prompt">${escapeHtml(quizMeaning(word))}</p>
-      <p class="typing-memory-note">선택형에서 틀린 단어를 바로 철자로 회상합니다. 별도 메뉴로 이동하지 않습니다.</p>
-      <p class="word-source">영어 철자를 직접 입력하세요. 오답 항목만 반복 관리합니다.</p>
+      <p class="typing-memory-note">영어 철자를 한 번만 입력합니다. 틀려도 정답을 확인하고 바로 다음으로 진행합니다.</p>
       <input id="spellingInput" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="영어 철자 입력">
-      <div class="typing-actions">
-        <button id="checkSpelling" class="primary" type="button">정답 확인</button>
-        <button id="showSpelling" class="ghost" type="button">정답 보기</button>
+      <div class="typing-actions single-action">
+        <button id="checkSpelling" class="primary" type="button">확인</button>
       </div>
     </div>
   `;
@@ -1672,17 +1691,9 @@ function renderTypingReview() {
   input.focus();
   runtime.questionStartedAt = performance.now();
   $('checkSpelling').addEventListener('click', () => checkSpelling(word, input.value));
-  $('showSpelling').addEventListener('click', () => revealSpelling(word));
   input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') checkSpelling(word, input.value);
   });
-  if (ds.reviewResolved) {
-    input.disabled = true;
-    $('checkSpelling').disabled = true;
-    $('showSpelling').disabled = true;
-    showFeedback('success', '이미 확인한 철자 항목입니다. 다음으로 이동하세요.');
-    renderReviewContinue();
-  }
 }
 
 function normalizeAnswer(value) {
@@ -1692,42 +1703,45 @@ function normalizeAnswer(value) {
 function checkSpelling(word, value) {
   const ds = dayState(runtime.state.currentDay);
   if (ds.reviewResolved) return;
+  ds.reviewResolved = true;
   ds.stats.typed += 1;
-  ds.typingAttempts += 1;
+  ds.typingAttempts = 1;
   const responseMs = Math.max(0, performance.now() - Number(runtime.questionStartedAt || performance.now()));
-  const answer = normalizeAnswer(word.word);
-  const typed = normalizeAnswer(value);
-  const correct = typed === answer;
+  const correct = normalizeAnswer(value) === normalizeAnswer(word.word);
   updateDirectionMastery(word.id, 'recall', correct, responseMs);
-  logEvent('d0_spelling', { wordId: word.id, stage: 'D0', direction: 'recall', result: correct ? 'correct' : 'wrong', responseTimeMs: Math.round(responseMs), attempt: ds.typingAttempts });
+  logEvent('block_review_spelling', {
+    wordId: word.id,
+    stage: 'BLOCK_REVIEW',
+    direction: 'recall',
+    result: correct ? 'correct' : 'wrong',
+    responseTimeMs: Math.round(responseMs),
+  });
+  const input = $('spellingInput');
+  const button = $('checkSpelling');
+  if (input) input.disabled = true;
+  if (button) button.disabled = true;
   if (correct) {
     const m = mastery(word.id);
     m.score = clamp(m.score + 1, 0, 5);
     resolveSpellingPending(word.id);
-    recordReviewResult(word.id, 'D0', 'correct', 'recall', responseMs);
-    ds.reviewResolved = true;
-    $('spellingInput').disabled = true;
-    $('checkSpelling').disabled = true;
-    $('showSpelling').disabled = true;
-    showFeedback('success', '철자 회상 성공. 내일 D+1에서 다시 짧게 확인합니다.');
-    persist('d0_spelling_correct');
+    recordReviewResult(word.id, 'BLOCK_REVIEW', 'correct', 'recall', responseMs);
+    showFeedback('success', '정답입니다. 다음 핵심 단어로 이동합니다.');
+    persist('block_review_correct');
     runtime.revealTimers.push(setTimeout(nextReviewWord, 500));
     return;
   }
-  recordWrong(word, { type: 'SPELLING', direction: 'recall', selectedAnswer: value, correctAnswer: word.word, responseMs, stage: 'D0' });
-  if (ds.typingAttempts >= 2) {
-    ds.reviewResolved = true;
-    spellingEntry(word.id).pending = 0;
-    $('spellingInput').disabled = true;
-    $('checkSpelling').disabled = true;
-    $('showSpelling').disabled = true;
-    showFeedback('error', `정답은 ${word.word}입니다. 같은 자리에서 더 반복하지 않고 내일 다시 확인합니다.`);
-    renderReviewContinue();
-  } else {
-    showFeedback('error', '철자가 다릅니다. 한 번 더 입력하세요.');
-    $('spellingInput').select();
-  }
-  persist('d0_spelling_wrong');
+  recordWrong(word, {
+    type: 'SPELLING',
+    direction: 'recall',
+    selectedAnswer: value,
+    correctAnswer: word.word,
+    responseMs,
+    stage: 'BLOCK_REVIEW',
+  });
+  spellingEntry(word.id).pending = Math.max(1, Number(spellingEntry(word.id).pending || 0));
+  showFeedback('error', `정답은 ${word.word}입니다. 한 번 확인하고 다음으로 이동합니다.`);
+  persist('block_review_wrong');
+  runtime.revealTimers.push(setTimeout(nextReviewWord, 1100));
 }
 
 function revealSpelling(word) {
@@ -1765,7 +1779,7 @@ function nextReviewWord() {
   ds.typingAttempts = 0;
   ds.reviewResolved = false;
   if (ds.reviewIndex < ds.reviewQueue.length) {
-    persist('d0_review_next');
+    persist('block_review_next');
     renderSessionStep();
     return;
   }
@@ -1773,33 +1787,36 @@ function nextReviewWord() {
   ds.reviewQueue = [];
   ds.reviewIndex = 0;
   ds.reviewReturn = 'word';
-  if (returnTarget === 'block') {
-    completeCurrentBlock();
-    persist('d0_review_block_complete');
+  if (returnTarget === 'word') {
+    ds.phase = 'word';
+    ds.wordIndex += 1;
+    persist('legacy_immediate_review_return');
     renderSessionStep();
     return;
   }
-  ds.phase = 'word';
-  ds.wordIndex += 1;
-  if (shouldShowMiniReward(runtime.state.currentDay)) {
-    enterMiniReward('word');
-    renderSessionStep();
-    return;
-  }
-  persist('d0_review_return_word');
-  renderSessionStep();
+  completeCurrentBlock();
 }
 
 function completeCurrentBlock() {
   const ds = dayState(runtime.state.currentDay);
   if (!ds.completedBlocks.includes(ds.block)) ds.completedBlocks.push(ds.block);
-  ds.phase = 'blockReward';
   ds.unitIndex = 0;
   ds.wordIndex = 0;
   ds.reviewQueue = [];
   ds.reviewIndex = 0;
   ds.reviewResolved = false;
-  persist();
+  ds.pendingWrong = null;
+  const completed = ds.completedBlocks.length;
+  if (completed >= 4) {
+    ds.phase = 'blockReward';
+    persist('day_content_complete');
+    openMailGate(runtime.state.currentDay);
+    return;
+  }
+  ds.block = completed;
+  ds.phase = 'root';
+  persist('block_auto_continue');
+  renderSessionStep();
 }
 
 function continueContinuousDay() {
@@ -1845,6 +1862,29 @@ function renderBlockReward() {
   runtime.flowTimer = setTimeout(continueContinuousDay, 1400);
 }
 
+function isMailGateRequired(dayNo = runtime.state.currentDay) {
+  if (!runtime.state) return false;
+  const ds = dayState(dayNo);
+  return ds.completedBlocks.length >= 4 && !ds.completedAt;
+}
+
+function reinforceMailGate() {
+  const modal = $('mailGateModal');
+  const card = modal?.querySelector('.mail-gate-card');
+  const send = $('sendCompletionMail');
+  if (card) {
+    card.classList.remove('mail-gate-shake');
+    void card.offsetWidth;
+    card.classList.add('mail-gate-shake');
+  }
+  const status = $('mailGateStatus');
+  if (status && isMailGateRequired()) {
+    status.className = 'mail-gate-status mandatory';
+    status.textContent = '필수 단계입니다. 관리자 메일 전송이 성공해야만 DAY가 완료됩니다.';
+  }
+  send?.focus();
+}
+
 function prepareCompletion(dayNo) {
   const ds = dayState(dayNo);
   if (ds.completedBlocks.length < 4) throw new Error('오늘의 4개 학습구간을 모두 완료해야 관리자 보고를 보낼 수 있습니다.');
@@ -1876,19 +1916,24 @@ function openMailGate(dayNo = runtime.state.currentDay) {
   status.className = 'mail-gate-status';
   status.textContent = ds.mailGateStatus === 'error'
     ? (ds.mailGateError || '메일 전송에 실패했습니다. 다시 시도하세요.')
-    : '메일 전송 성공 전에는 DAY 완료로 기록되지 않습니다.';
+    : '필수 단계입니다. 메일 전송 성공 전에는 DAY 완료, 홈 이동, 다음 DAY 진행이 모두 차단됩니다.';
   if (ds.mailGateStatus === 'error') status.classList.add('error');
   const send = $('sendCompletionMail');
   send.disabled = false;
-  send.textContent = '관리자에게 완료 보고 보내기';
+  send.textContent = '필수: 관리자에게 완료 보고 메일 보내기';
   $('mailGateModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
   requestAnimationFrame(() => send.focus());
 }
 
-function closeMailGate() {
+function closeMailGate(force = false) {
+  if (!force && isMailGateRequired()) {
+    reinforceMailGate();
+    return false;
+  }
   $('mailGateModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
+  return true;
 }
 
 function finalizeDayRecord(dayNo, forced = false) {
@@ -1940,7 +1985,7 @@ async function sendCompletionReport() {
     send.textContent = '전송 성공 ✓';
     persist();
     setTimeout(() => {
-      closeMailGate();
+      closeMailGate(true);
       renderCompletion(dayNo);
     }, 650);
     return;
@@ -2088,6 +2133,11 @@ function renderCompletion(dayNo) {
 }
 
 function renderAdmin() {
+  if (isMailGateRequired()) {
+    openMailGate(runtime.state.currentDay);
+    reinforceMailGate();
+    return;
+  }
   pauseActiveTimer();
   stopSessionTimer();
   showScreen('adminView');
@@ -2231,7 +2281,34 @@ function escapeHtml(value) {
 function bindEvents() {
   $('startButton').addEventListener('click', startOrResumeSession);
   $('sendCompletionMail').addEventListener('click', sendCompletionReport);
-  $('mailGateBack').addEventListener('click', () => { closeMailGate(); renderHome(); });
+  $('mailGateModal').addEventListener('click', (event) => {
+    if (event.target === $('mailGateModal') && isMailGateRequired()) {
+      event.preventDefault();
+      reinforceMailGate();
+    }
+  });
+  document.addEventListener('keydown', (event) => {
+    const gateOpen = !$('mailGateModal').classList.contains('hidden') && isMailGateRequired();
+    if (!gateOpen) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+      reinforceMailGate();
+      return;
+    }
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const send = $('sendCompletionMail');
+      if (send && !send.disabled) send.focus();
+      else $('mailGateModal').querySelector('.mail-gate-card')?.focus();
+    }
+  }, true);
+  window.addEventListener('pageshow', () => {
+    if (isMailGateRequired()) openMailGate(runtime.state.currentDay);
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && isMailGateRequired()) openMailGate(runtime.state.currentDay);
+  });
   $('exitSession').addEventListener('click', () => { pauseActiveTimer(); renderHome(); });
   $('adminToggle').addEventListener('click', renderAdmin);
   $('closeAdmin').addEventListener('click', renderHome);
