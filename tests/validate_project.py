@@ -39,22 +39,26 @@ css = (ROOT / 'styles.css').read_text(encoding='utf-8')
 mail = (ROOT / 'netlify' / 'functions' / 'send-day-report.mjs').read_text(encoding='utf-8')
 
 required_js = [
-    "const APP_KEY = '18dayRootStateV5'",
+    "const APP_KEY = '18dayRootStateV7'",
     "const APP_NAME = '18day_root'",
     'function openMailGate',
     'async function sendCompletionReport',
     'function finalizeDayRecord',
     '메일 전송 성공 전에는 DAY 완료로 기록되지 않습니다',
     "report.requiresCompletion = true",
-    "오늘 오답으로 등록되었습니다",
-    "오늘 선택형 오답",
-    "누적 오답 반복",
+    'function logEvent',
+    'function scheduleInitialD1',
+    'function renderSpacedReview',
+    'function renderMiniSetReward',
+    'wrong-compare-card',
+    'D3_DUE',
+    'D6_DUE',
 ]
 for token in required_js:
     assert token in app_js, token
 
 required_html = [
-    '<title>18day_root</title>',
+    '<title>18day_root V7</title>',
     'id="mailGateModal"',
     '관리자에게 완료 보고 보내기',
 ]
@@ -64,6 +68,13 @@ for token in required_html:
 assert '.mail-gate-overlay' in css
 assert '.mail-send-button' in css
 assert '.error-origin-badge' in css
+assert '.continuous-day-card' in css
+assert '.wrong-compare-card' in css
+assert '.admin-system-grid' in css
+assert '.mini-reward-panel' in css
+assert '.segment-track' in css
+assert 'DAY 전체 연속 학습' in index
+assert 'id="blockList" class="segment-track"' in index
 assert '18day_root' in mail
 
 print('VALIDATION_OK')

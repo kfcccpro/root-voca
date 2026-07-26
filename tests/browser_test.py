@@ -25,7 +25,7 @@ APP_TEST = (APP[:start] + TEST_LOAD_DATA + APP[end:]).replace('localStorage', 'w
 
 BASE_STATE = {
     'schemaVersion': 5,
-    'dataVersion': '18day-root-360x1410-20260726-v5',
+    'dataVersion': '18day-root-single-entry-360x1410-20260726-v6',
     'currentDay': 1,
     'completedDays': [],
     'settings': {'start':'19:30','end':'20:30','email':'sk01197375068@gmail.com','autoMail':True,'shortenMastered':True,'blockMinutes':15},
@@ -62,6 +62,9 @@ async def base_checks(browser, name, viewport):
     page = await new_page(context, BASE_STATE)
     assert '18day_root' in await page.locator('#courseEyebrow').inner_text()
     assert '총 18DAY' in await page.locator('#statusChip').inner_text()
+    assert await page.locator('.segment-step').count() == 4
+    assert await page.locator('#blockList button').count() == 0
+    assert '전체 연속 학습' in await page.locator('.continuous-day-section').inner_text()
     dims = await page.evaluate('({sw:document.documentElement.scrollWidth,cw:document.documentElement.clientWidth})')
     assert dims['sw'] <= dims['cw'] + 1, dims
     await page.screenshot(path=str(OUT / f'{name}_home.png'), full_page=True)
@@ -109,6 +112,45 @@ async def interaction_checks(browser):
     await page.wait_for_timeout(1750)
     await page.keyboard.press('1')
     assert await page.locator('.option-button:disabled').count() == 4
+    await context.close()
+
+async def continuous_day_checks(browser):
+    # Completed segment automatically moves to the next segment without returning home.
+    state = json.loads(json.dumps(BASE_STATE))
+    state['days'] = {'1': {
+        'completedAt': None, 'completedBlocks':[0], 'block':0, 'phase':'blockReward', 'startedAt':'2026-07-26T00:00:00Z',
+        'firstStartedAt':'2026-07-26T00:00:00Z', 'elapsedSeconds':60, 'unitIndex':0, 'wordIndex':0,
+        'reviewQueue':[], 'reviewIndex':0, 'typingAttempts':0, 'reviewResolved':False,
+        'answers':{}, 'stats':{'attempted':0,'correct':0,'wrong':0,'typed':0}
+    }}
+    context = await browser.new_context(viewport={'width':1280,'height':900})
+    page = await new_page(context, state)
+    assert '저장된 위치에서 계속' in await page.locator('#startButton').inner_text()
+    await page.click('#startButton')
+    assert await page.locator('#sessionScreen:not(.hidden)').count() == 1
+    assert '다음 2구간을 자동으로' in await page.locator('.auto-next-notice').inner_text()
+    await page.wait_for_timeout(1650)
+    saved = await page.evaluate("JSON.parse(window.__TEST_STORAGE__.getItem('18dayRootStateV5'))")
+    assert saved['days']['1']['block'] == 1
+    assert saved['days']['1']['phase'] == 'root'
+    assert await page.locator('#sessionScreen:not(.hidden)').count() == 1
+    assert '2/4 구간' in await page.locator('#sessionBlockLabel').inner_text()
+    await context.close()
+
+    # The last segment opens the required mail gate automatically.
+    state = json.loads(json.dumps(BASE_STATE))
+    state['days'] = {'1': {
+        'completedAt': None, 'completedBlocks':[0,1,2,3], 'block':3, 'phase':'blockReward', 'startedAt':'2026-07-26T00:00:00Z',
+        'firstStartedAt':'2026-07-26T00:00:00Z', 'elapsedSeconds':600, 'unitIndex':0, 'wordIndex':0,
+        'reviewQueue':[], 'reviewIndex':0, 'typingAttempts':0, 'reviewResolved':False,
+        'answers':{}, 'stats':{'attempted':80,'correct':70,'wrong':10,'typed':5}
+    }}
+    context = await browser.new_context(viewport={'width':390,'height':844})
+    page = await new_page(context, state)
+    await page.click('#startButton')
+    await page.wait_for_timeout(1650)
+    assert await page.locator('#mailGateModal:not(.hidden)').count() == 1
+    assert '관리자에게 완료 보고' in await page.locator('#mailGateTitle').inner_text()
     await context.close()
 
 async def mail_gate_success(browser):
@@ -163,6 +205,7 @@ async def main():
         await base_checks(browser, 'mobile_390', {'width':390,'height':844})
         await base_checks(browser, 'mobile_320', {'width':320,'height':720})
         await interaction_checks(browser)
+        await continuous_day_checks(browser)
         await mail_gate_success(browser)
         await mail_gate_failure(browser)
         await browser.close()

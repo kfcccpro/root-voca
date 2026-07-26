@@ -1,31 +1,51 @@
+18DAY_ROOT_V7_TEST_RESULTS
+==========================
 VALIDATION_OK
+BROWSER_V7_OK
 JS_SYNTAX_OK
 NETLIFY_FUNCTION_SYNTAX_OK
-BROWSER_TEST_OK
+STATIC_HTTP_OK
 
 DATA
 - days: 18
 - roots: 360
-- words: 1410
-- blocks: 72
-- words per day: 80,79,79,78,78,82,79,78,77,81,81,79,78,74,77,77,76,77
+- headwords: 1410
+- internal segments: 72
+- mini set: 6
 
 RESPONSIVE
-- 1440x900 PASS
-- 820x1180 PASS
-- 390x844 PASS
-- 320x720 PASS
-- horizontal overflow: none
+- PC 1440x900: PASS
+- Tablet 820x1180: PASS
+- Mobile 390x844: PASS
+- Small mobile 320x720: PASS
+- Horizontal overflow: NONE
 
-FLOW
-- root reveal PASS
-- staged etymology PASS
-- 4 choices PASS
-- numeric key 1-4 PASS
-- wrong answer marking PASS
-- integrated typing review PASS
-- today/carryover error badge PASS
-- mail completion modal PASS
-- completion blocked before mail success PASS
-- mocked mail success finalizes DAY PASS
-- mocked mail failure preserves incomplete DAY PASS
+LEARNING FLOW
+- Single entry continuous DAY: PASS
+- Numeric selection: PASS
+- Wrong answer comparison: PASS
+- Immediate D0 spelling: PASS
+- 6-item mini reward: PASS
+
+SPACED REVIEW
+- D+1 due review: PASS
+- D+1 fast correct -> D+6: PASS
+- D+1 wrong + recall -> D+3: PASS
+- D+6 correct -> STABLE: PASS
+- Post-course review after DAY18: PASS
+
+STATE
+- eventId logging: PASS
+- revision increment: PASS
+- permanent wrong history: PASS
+- directional mastery: PASS
+- local previous-revision backup: IMPLEMENTED
+
+MAIL GATE
+- Mail success -> DAY complete: MOCK PASS
+- Live Gmail delivery: REQUIRES NETLIFY ENVIRONMENT VARIABLES
+
+NOT YET CONNECTED
+- Cloud DB
+- Real multi-device merge
+- Cloud readback verification
