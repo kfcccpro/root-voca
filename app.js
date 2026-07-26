@@ -677,9 +677,11 @@ function pendingSpellingIds() {
 
 function cleanMeaning(value) {
   if (!value) return '뜻 정보 확인 필요';
-  return value
+  return String(value)
     .replace(/^\[\]\s*/, '')
     .replace(/\s+[A-Za-z][A-Za-z,;/' -]*(?=\s|$)/g, ' ')
+    .replace(/^\s*\d+\s*/g, '')
+    .replace(/(^|\s)\d+(?=\s*[가-힣\[])/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -687,6 +689,29 @@ function cleanMeaning(value) {
 function quizMeaning(word) {
   const cleaned = word.quiz_meaning || cleanMeaning(word.meaning || word.meanings?.[0] || '');
   return cleaned || word.meaning || '뜻 정보 확인 필요';
+}
+
+function meaningFragments(word) {
+  const raw = [word.quiz_meaning, word.meaning, ...(Array.isArray(word.meanings) ? word.meanings : [])]
+    .filter(Boolean)
+    .map((item) => cleanMeaning(String(item)));
+  const parts = raw.flatMap((item) => [item, ...item.split(/[\/;,·]|\s{2,}/).map((part) => cleanMeaning(part))]);
+  return Array.from(new Set(parts
+    .map((item) => String(item || '').trim())
+    .filter((item) => item && item !== '뜻 정보 확인 필요' && item.length >= 2)))
+    .sort((a, b) => b.length - a.length);
+}
+
+function maskAnswerHints(text, word) {
+  let out = String(text || '').trim();
+  if (!out) return '??';
+  meaningFragments(word).forEach((fragment) => {
+    const escaped = fragment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out.replace(new RegExp(escaped, 'g'), '??');
+  });
+  out = out.replace(/\?\?\s*→\s*\?\?/g, '??');
+  out = out.replace(/\?{3,}/g, '??').replace(/\s+/g, ' ').trim();
+  return out || '??';
 }
 
 function totalCompletedWords(dayNo) {
@@ -1308,12 +1333,12 @@ function renderRoot(unit) {
 function teaserFlow(word, unit) {
   const rawSteps = Array.isArray(word.etymology_steps) ? word.etymology_steps.filter(Boolean) : [];
   let steps = rawSteps.length > 1 ? rawSteps.slice(0, -1) : rawSteps.slice();
-  const answerBits = [quizMeaning(word), ...(Array.isArray(word.meanings) ? word.meanings : [])].join(' ');
-  steps = steps.map((step) => String(step).replace(/^[→\s]+/, '').trim())
-    .filter((step) => step && !answerBits.includes(step));
+  steps = steps
+    .map((step) => maskAnswerHints(String(step).replace(/^[→\s]+/, '').trim(), word))
+    .filter((step) => step && step !== '??' ? true : rawSteps.length <= 1);
   if (!steps.length) {
     const clue = String(unit.root_meaning || '').trim();
-    return clue ? [clue] : ['어원 흐름을 떠올려 보세요'];
+    return clue ? [maskAnswerHints(clue, word)] : ['어원 흐름을 떠올려 보세요 → ??'];
   }
   return steps;
 }
@@ -1325,6 +1350,39 @@ function highlightFormula(formula) {
     chunkIndex += 1;
     return html;
   });
+}
+
+function buildRevealMarkup(unit, word) {
+  const formula = word.etymology_formula?.[0] || `${unit.root} → ${word.word}`;
+  const flow = teaserFlow(word, unit);
+  const flowHtml = flow.map((step, index) => `${index ? `<span class="flow-arrow" style="--i:${index}">→</span>` : ''}<span class="flow-piece" style="--i:${index}">${escapeHtml(step)}</span>`).join(' ');
+  return `
+    <div class="reveal-stack reveal-study-stack">
+      <div class="reveal-step focus strong-formula" data-reveal="1">
+        <span class="reveal-label">어원 구성</span>
+        <span class="reveal-body formula-body">${highlightFormula(formula)}</span>
+      </div>
+      <div class="reveal-step strong-flow" data-reveal="2">
+        <span class="reveal-label">어원 흐름 추론</span>
+        <div class="flow-steps">${flowHtml}</div>
+        <div class="inference-hint">최종 뜻은 끝까지 숨깁니다. 마지막 의미는 <strong>??</strong> 상태로 두고, 보기에서 정답을 추론해 보세요.</div>
+      </div>
+    </div>
+  `;
+}
+
+function showRevealLearning(unit, word, triggerButton = null) {
+  const host = $('revealCanvas');
+  if (!host) return;
+  clearRevealTimers();
+  host.classList.remove('hidden');
+  host.innerHTML = buildRevealMarkup(unit, word);
+  if (triggerButton) {
+    triggerButton.textContent = '나타내기 다시 보기';
+    triggerButton.classList.add('active');
+  }
+  runtime.revealTimers.push(setTimeout(() => host.querySelector('[data-reveal="1"]')?.classList.add('show'), 20));
+  runtime.revealTimers.push(setTimeout(() => host.querySelector('[data-reveal="2"]')?.classList.add('show'), 220));
 }
 
 function shouldShowMiniReward(dayNo) {
@@ -1380,34 +1438,19 @@ function renderMiniSetReward() {
 
 function renderWordQuestion(unit, word) {
   const mastered = mastery(word.id).score >= 3 && runtime.state.settings.shortenMastered;
-  $('stageBadge').textContent = mastered ? '숙달 빠른 확인' : '어원 연결';
-  const formula = word.etymology_formula?.[0] || `${unit.root} → ${word.word}`;
-  const flow = teaserFlow(word, unit);
-  const flowHtml = flow.map((step, index) => `${index ? `<span class="flow-arrow" style="--i:${index}">→</span>` : ''}<span class="flow-piece" style="--i:${index}">${escapeHtml(step)}</span>`).join(' ');
+  $('stageBadge').textContent = mastered ? '보기 먼저 · 빠른 확인' : '보기 먼저 뜻 추론';
   $('learningContent').innerHTML = `
-    <div class="word-panel">
+    <div class="word-panel question-first-panel">
       <h2 class="word-title">${escapeHtml(word.word)}</h2>
       <span class="word-source">${escapeHtml(word.importance || '')} 원문 p.${word.source_page}</span>
-      <div class="reveal-stack">
-        <div class="reveal-step focus" data-reveal="1">
-          <span class="reveal-label">구성</span>
-          <span class="reveal-body formula-body">${highlightFormula(formula)}</span>
-        </div>
-        <div class="reveal-step" data-reveal="2">
-          <span class="reveal-label">어원 흐름</span>
-          <div class="flow-steps">${flowHtml}</div>
-          <div class="inference-hint">마지막 정답 뜻은 아직 숨겨집니다. 위 흐름을 바탕으로 뜻을 추론해 보세요.</div>
-        </div>
+      <div class="question-first-tip">
+        <strong>먼저 객관식 보기만 보고 뜻을 맞혀 보세요.</strong>
+        <span>모르겠다면 아래 <b>나타내기 학습</b>을 눌러 어원 구성과 흐름을 크고 강하게 확인할 수 있습니다.</span>
       </div>
+      <div id="revealCanvas" class="reveal-canvas hidden" aria-live="polite"></div>
     </div>
   `;
-
-  const delay1 = mastered ? 0 : 180;
-  const delay2 = mastered ? 0 : 780;
-  const delayOptions = mastered ? 0 : 1500;
-  runtime.revealTimers.push(setTimeout(() => document.querySelector('[data-reveal="1"]')?.classList.add('show'), delay1));
-  runtime.revealTimers.push(setTimeout(() => document.querySelector('[data-reveal="2"]')?.classList.add('show'), delay2));
-  runtime.revealTimers.push(setTimeout(() => renderOptions(unit, word), delayOptions));
+  renderOptions(unit, word);
 }
 
 function renderOptions(unit, word) {
@@ -1433,11 +1476,24 @@ function renderOptions(unit, word) {
     button.addEventListener('click', () => answerChoice(word, text === correct, button, correct));
     grid.appendChild(button);
   });
+  const revealRow = document.createElement('div');
+  revealRow.className = 'option-tools';
+  const revealButton = document.createElement('button');
+  revealButton.type = 'button';
+  revealButton.className = 'ghost reveal-trigger';
+  revealButton.textContent = '모르겠다면 나타내기 학습';
+  revealButton.addEventListener('click', () => showRevealLearning(unit, word, revealButton));
+  const tip = document.createElement('p');
+  tip.className = 'question-first-help';
+  tip.innerHTML = '보기만으로 알면 바로 정답을 선택하세요. <strong>모를 때만</strong> 나타내기 학습을 진행하면 됩니다.';
+  revealRow.appendChild(revealButton);
   const help = document.createElement('p');
   help.className = 'option-help';
   help.innerHTML = '키보드 <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span> 또는 마우스/터치로 바로 선택할 수 있습니다.';
   $('answerArea').innerHTML = '';
   $('answerArea').appendChild(grid);
+  $('answerArea').appendChild(revealRow);
+  $('answerArea').appendChild(tip);
   $('answerArea').appendChild(help);
   runtime.questionStartedAt = performance.now();
 
