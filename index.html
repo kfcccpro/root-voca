@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#315fb5">
-  <title>18day_root V7.5</title>
+  <title>18day_root</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,40 +17,37 @@
       <button id="adminToggle" class="icon-button" type="button" aria-label="관리자 화면 열기">관리자</button>
     </header>
 
-    <section id="learnerHome" class="screen simple-home">
-      <section class="home-focus-card">
-        <div class="home-focus-top">
-          <span id="statusChip" class="status-chip">오늘 학습 준비됨</span>
-          <p class="home-time"><span>학습 시간</span><strong id="goalTime">19:30 - 20:30</strong></p>
-        </div>
-
-        <div class="home-primary-message">
-          <h2>오늘 학습을 시작하세요</h2>
+    <section id="learnerHome" class="screen">
+      <section class="hero-card">
+        <div>
+          <span id="statusChip" class="status-chip">총 18DAY · 오늘 학습</span>
+          <h2 id="goalTime">19:30 - 20:30</h2>
           <p id="goalAmount">ROOT 16개 · 단어 93개</p>
         </div>
+        <button id="startButton" class="primary large" type="button">학습 시작</button>
+      </section>
 
-        <div class="home-stat-row" aria-label="오늘의 남은 학습량">
-          <article id="timeRing" class="home-stat" style="--p:0">
-            <span>남은 시간</span>
+      <section class="ring-grid" aria-label="오늘의 진행 상황">
+        <article class="ring-card">
+          <div id="timeRing" class="ring" style="--p:0">
             <strong id="timeRemain">59분</strong>
-          </article>
-          <article id="amountRing" class="home-stat" style="--p:0">
-            <span>남은 단어</span>
-            <strong id="amountRemain">93개</strong>
-          </article>
-        </div>
-
-        <button id="startButton" class="primary home-start-button" type="button">오늘 학습 시작</button>
-
-        <div class="home-progress-compact">
-          <div class="home-progress-head">
-            <strong>오늘 진행</strong>
-            <span id="blockStatus">0 / 4 완료</span>
+            <span>남은 시간</span>
           </div>
-          <div id="blockList" class="segment-track compact-segments" aria-label="오늘의 네 학습 구간"></div>
-        </div>
+        </article>
+        <article class="ring-card">
+          <div id="amountRing" class="ring" style="--p:0">
+            <strong id="amountRemain">93개</strong>
+            <span>남은 단어</span>
+          </div>
+        </article>
+      </section>
 
-        <p class="home-flow-note">한 번 시작하면 4지선다부터 관리자 완료 보고까지 자동으로 이어집니다.</p>
+      <section class="blocks-section">
+        <div class="section-head">
+          <h2>집중블록</h2>
+          <span id="blockStatus">0 / 4 완료</span>
+        </div>
+        <div id="blockList" class="block-list"></div>
       </section>
 
       <section id="resumeNotice" class="notice hidden" aria-live="polite"></section>
@@ -58,9 +55,9 @@
 
     <section id="sessionScreen" class="screen hidden" aria-live="polite">
       <div class="session-head">
-        <button id="exitSession" class="ghost" type="button">일시정지</button>
+        <button id="exitSession" class="ghost" type="button">나가기</button>
         <div class="session-progress-wrap">
-          <div class="session-labels"><span id="sessionBlockLabel">DAY 01 연속 학습</span><span id="sessionProgressText">0 / 0</span></div>
+          <div class="session-labels"><span id="sessionBlockLabel">BLOCK 1</span><span id="sessionProgressText">0 / 0</span></div>
           <div class="progress-track"><div id="sessionProgressBar" class="progress-bar"></div></div>
         </div>
       </div>
@@ -125,7 +122,6 @@
           <button id="retryMail" class="ghost" type="button">메일 재시도</button>
           <button id="exportProgress" class="ghost" type="button">진도 백업</button>
           <button id="importProgress" class="ghost" type="button">진도 복원</button>
-          <button id="selfCheck" class="ghost" type="button">기능 자가점검</button>
           <input id="importProgressFile" class="hidden" type="file" accept="application/json,.json">
           <button id="forceComplete" class="danger" type="button">현재 DAY 강제 완료</button>
         </div>
@@ -133,30 +129,28 @@
         <section class="admin-summary">
           <h3 id="adminCourseTitle">18DAY 진행 현황</h3>
           <div id="spellingBacklogSummary" class="admin-backlog" aria-live="polite"></div>
-          <div id="reviewSystemSummary" class="admin-system-grid" aria-live="polite"></div>
-          <div id="storageSystemSummary" class="admin-storage-status" aria-live="polite"></div>
           <div id="adminProgressList" class="admin-progress-list"></div>
         </section>
-        <p class="note">현재 V7은 답변 직후 주 저장본과 이전 revision 안전백업을 함께 보존합니다. eventId·방향별 숙달·D+1·D+3·D+6 일정은 적용되어 있으며, 실제 다기기 실시간 동기화는 다음 DB 연결 단계에서 활성화합니다.</p>
+        <p class="note">현재 버전은 단일 기기 localStorage에 기록합니다. 관리자 화면의 진도 백업·복원으로 기록을 별도 보관할 수 있습니다. 다기기 실시간 동기화는 통합 단계에서 DB 연결이 필요합니다.</p>
       </section>
     </section>
   </main>
 
   <section id="mailGateModal" class="mail-gate-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mailGateTitle">
-    <div class="mail-gate-card" tabindex="-1">
+    <div class="mail-gate-card">
       <div class="mail-gate-icon" aria-hidden="true">✉</div>
-      <p class="mail-gate-kicker">필수 완료 단계 · 건너뛸 수 없음</p>
-      <h2 id="mailGateTitle">관리자 완료 보고 메일을 보내야만<br>오늘 DAY가 완료됩니다</h2>
-      <p class="mail-gate-copy">이 화면은 닫거나 건너뛸 수 없습니다. 오늘의 학습 내용을 확인한 뒤 아래의 큰 전송 버튼을 반드시 누르세요.</p>
+      <p class="mail-gate-kicker">DAY 마무리 · 마지막 1단계</p>
+      <h2 id="mailGateTitle">관리자에게 완료 보고를 보내야<br>오늘 학습이 끝납니다</h2>
+      <p class="mail-gate-copy">오늘의 학습 내용을 한 번 더 확인한 뒤, 아래 큰 버튼을 눌러 관리자에게 보고하세요.</p>
       <div id="mailGateMetrics" class="mail-gate-metrics"></div>
       <div class="mail-gate-recognition">
         <strong>오늘 학습 복기</strong>
-        <span>4지선다 → 오답 해설 → 구간 핵심 복습 → 관리자 보고</span>
+        <span>어원 확인 → 뜻 선택 → 오답 철자 회상 → 관리자 보고</span>
       </div>
       <p class="mail-gate-destination">전송 대상: <strong id="mailGateEmail">sk01197375068@gmail.com</strong></p>
       <p id="mailGateStatus" class="mail-gate-status" aria-live="assertive"></p>
-      <button id="sendCompletionMail" class="mail-send-button" type="button">필수: 관리자에게 완료 보고 메일 보내기</button>
-      <div class="mail-gate-lock-notice" role="note">메일 전송이 성공하기 전에는 홈 이동, 다음 DAY 진행, 팝업 닫기가 허용되지 않습니다.</div>
+      <button id="sendCompletionMail" class="mail-send-button" type="button">관리자에게 완료 보고 보내기</button>
+      <button id="mailGateBack" class="mail-gate-back" type="button">홈으로 돌아가기 · DAY는 미완료 상태로 유지</button>
     </div>
   </section>
 
