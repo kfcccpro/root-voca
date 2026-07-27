@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0E1016">
-  <title>root_18day CLOUD V7.19 HUB</title>
+  <title>root_18day CLOUD V7.22 SCHEDULE · MAIL AUDIT</title>
   <meta name="application-name" content="root_18day">
-  <meta name="root-app-build" content="standalone-single-file-v7.19-hub-sso">
+  <meta name="root-app-build" content="standalone-single-file-v7.22-schedule-mail-audit">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -504,10 +504,25 @@ const LEGACY_V3_KEY = 'vocaRoot18StateV3';
 const LEGACY_V2_KEY = 'vocaRoot18StateV2';
 const LEGACY_KEY = 'voca18State';
 const SCHEMA_VERSION = 7;
-const DATA_VERSION = '18day-root-integrated-360x1410-20260727-v7.15';
+const DATA_VERSION = '18day-root-integrated-360x1410-20260727-v7.22';
 const MINI_SET_SIZE = 6;
 const PRE_REVIEW_LIMIT = 8;
 const APP_NAME = 'root_18day';
+const COURSE_START_ISO = '2026-07-27';
+const COURSE_START_UTC = Date.UTC(2026, 6, 27);
+const COURSE_WEEKDAYS = ['일','월','화','수','목','금','토'];
+function courseDate(dayNo) {
+  const day = clamp(Number(dayNo || 1), 1, 18);
+  return new Date(COURSE_START_UTC + (day - 1) * 86400000);
+}
+function courseSchedule(dayNo) {
+  const day = clamp(Number(dayNo || 1), 1, 18), d = courseDate(day);
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(d.getUTCDate()).padStart(2, '0');
+  const weekday = COURSE_WEEKDAYS[d.getUTCDay()];
+  return { day, iso: `${d.getUTCFullYear()}-${mm}-${dd}`, short: `${mm}.${dd}(${weekday})`, weekday, week: Math.floor((day - 1) / 7) + 1 };
+}
+function courseDayLabel(dayNo) { const s = courseSchedule(dayNo); return `DAY ${pad(s.day)} · ${s.short}`; }
 const ADMIN_REPORT_EMAIL = 'sk01197375068@gmail.com';
 const LEARNER_PIN_FNV32 = 1069609042; // 학습자 PIN 8081의 FNV-1a 검증값.
 const ADMIN_PIN_FNV32 = 3475938270; // 관리자 PIN의 FNV-1a 검증값. 평문 PIN은 저장하지 않습니다.
@@ -537,6 +552,46 @@ function initEmailJS() {
   }
 }
 
+function rootMailAuditRecord(report, method, sentAt = nowIso()) {
+  const schedule = courseSchedule(report.day);
+  return {
+    app: 'rootVoca',
+    course: '어원 중심 ROOT 18DAY',
+    student: '8081',
+    day: Number(report.day),
+    dayLabel: courseDayLabel(report.day),
+    scheduledDate: schedule.iso,
+    recipient: report.email || ADMIN_REPORT_EMAIL,
+    sentAt,
+    method: method || 'unknown',
+    reportId: report.reportId || '',
+    status: 'provider-accepted',
+    deliveryVerified: false,
+    note: '메일 전송 서비스가 요청을 접수한 상태이며 실제 받은편지함 도착은 관리자 메일함에서 최종 확인합니다.'
+  };
+}
+async function saveRootMailAudit(report, method, sentAt = nowIso()) {
+  const record = rootMailAuditRecord(report, method, sentAt);
+  const ds = dayState(Number(report.day));
+  ds.mailRecipient = record.recipient;
+  ds.mailMethod = record.method;
+  ds.mailReportId = record.reportId;
+  ds.mailAcceptedAt = record.sentAt;
+  ds.mailDeliveryStatus = record.status;
+  ds.mailDeliveryVerified = false;
+  try {
+    if (rootCloud.db && rootCloud.auth?.currentUser) {
+      await rootCloud.db.ref(`singleStudent/8081/mailReports/rootVoca/day${pad(report.day)}`).set(record);
+      ds.mailAuditSavedAt = nowIso();
+    }
+  } catch (error) {
+    console.warn('ROOT 메일 증빙 저장 실패', error);
+    ds.mailAuditError = String(error?.message || error);
+  }
+  persist('mail_audit');
+  return record;
+}
+
 function hubEnabled() {
   try { return globalThis.parent && globalThis.parent !== globalThis; } catch (_error) { return false; }
 }
@@ -552,6 +607,13 @@ function hubDetail(dayNo = runtime.state?.currentDay || 0) {
       permanentWrong: runtime.state ? Object.keys(runtime.state.wrongHistory || {}).length : 0,
       completedAt: ds?.completedAt || null,
       mailConfirmedAt: ds?.mailConfirmedAt || null,
+      mailRecipient: ds?.mailRecipient || ADMIN_REPORT_EMAIL,
+      mailMethod: ds?.mailMethod || null,
+      mailReportId: ds?.mailReportId || null,
+      mailDeliveryStatus: ds?.mailDeliveryStatus || null,
+      startedAt: ds?.startedAt || null,
+      completedBlocks: Array.isArray(ds?.completedBlocks) ? ds.completedBlocks.length : 0,
+      phase: ds?.phase || 'root',
     };
   } catch (_error) {
     return { day: Number(dayNo || 0), totalDays: 18 };
@@ -788,6 +850,14 @@ function dayState(dayNo) {
       forced: false,
       completionRequestedAt: null,
       mailConfirmedAt: null,
+      mailRecipient: null,
+      mailMethod: null,
+      mailReportId: null,
+      mailAcceptedAt: null,
+      mailDeliveryStatus: null,
+      mailDeliveryVerified: false,
+      mailAuditSavedAt: null,
+      mailAuditError: '',
       mailGateStatus: 'idle',
       mailGateError: '',
     };
@@ -840,6 +910,14 @@ function blankDayState() {
     forced: false,
     completionRequestedAt: null,
     mailConfirmedAt: null,
+    mailRecipient: null,
+    mailMethod: null,
+    mailReportId: null,
+    mailAcceptedAt: null,
+    mailDeliveryStatus: null,
+    mailDeliveryVerified: false,
+    mailAuditSavedAt: null,
+    mailAuditError: '',
     mailGateStatus: 'idle',
     mailGateError: '',
   };
@@ -885,6 +963,14 @@ function sanitizeDayState(raw = {}) {
   out.postCourseStartedAt = out.postCourseStartedAt || null;
   out.completionRequestedAt = out.completionRequestedAt || null;
   out.mailConfirmedAt = out.mailConfirmedAt || null;
+  out.mailRecipient = out.mailRecipient || null;
+  out.mailMethod = out.mailMethod || null;
+  out.mailReportId = out.mailReportId || null;
+  out.mailAcceptedAt = out.mailAcceptedAt || null;
+  out.mailDeliveryStatus = out.mailDeliveryStatus || null;
+  out.mailDeliveryVerified = Boolean(out.mailDeliveryVerified);
+  out.mailAuditSavedAt = out.mailAuditSavedAt || null;
+  out.mailAuditError = typeof out.mailAuditError === 'string' ? out.mailAuditError : '';
   out.mailGateStatus = ['idle','ready','sending','error','sent'].includes(out.mailGateStatus) ? out.mailGateStatus : 'idle';
   out.mailGateError = typeof out.mailGateError === 'string' ? out.mailGateError : '';
   out.answers = out.answers && typeof out.answers === 'object' ? out.answers : {};
@@ -1575,7 +1661,7 @@ function renderHome() {
   const hasProgress = ds.completedBlocks.length > 0 || Object.keys(ds.answers || {}).length > 0 || ds.unitIndex > 0 || ds.wordIndex > 0;
   const awaitingMail = ds.completedBlocks.length >= 4 && !ds.completedAt;
 
-  $('todayTitle').textContent = `DAY ${pad(dayNo)}`;
+  $('todayTitle').textContent = courseDayLabel(dayNo);
   const homeDay = $('homeDayNumber'); if (homeDay) homeDay.textContent = pad(dayNo);
   const eyebrow = $('courseEyebrow'); if (eyebrow) eyebrow.textContent = APP_NAME;
   const statusChip = $('statusChip');
@@ -1762,7 +1848,7 @@ function updateSessionProgressHeader() {
     $('sessionProgressBar').style.width = `${ds.spacedReviewQueue.length ? (ds.spacedReviewIndex / ds.spacedReviewQueue.length) * 100 : 0}%`;
     return;
   }
-  $('sessionBlockLabel').textContent = `DAY ${pad(dayNo)}`;
+  $('sessionBlockLabel').textContent = courseDayLabel(dayNo);
   $('sessionProgressText').textContent = `${answered} / ${allWords.length}`;
   $('sessionProgressBar').style.width = `${allWords.length ? (answered / allWords.length) * 100 : 0}%`;
 }
@@ -2664,8 +2750,8 @@ function openMailGate(dayNo = runtime.state.currentDay) {
   const report = prepareCompletion(dayNo);
   const summary = report.summary;
   $('mailGateEmail').textContent = ADMIN_REPORT_EMAIL;
-  if ($('mailGateDay')) $('mailGateDay').textContent = `DAY ${pad(dayNo)} REPORT`;
-  if ($('mailGateIncomplete')) $('mailGateIncomplete').textContent = `DAY ${pad(dayNo)} · 관리자 보고 전송 대기 · 아직 미완료`;
+  if ($('mailGateDay')) $('mailGateDay').textContent = `${courseDayLabel(dayNo)} · REPORT`;
+  if ($('mailGateIncomplete')) $('mailGateIncomplete').textContent = `${courseDayLabel(dayNo)} · 관리자 보고 전송 대기 · 아직 미완료`;
   $('mailGateMetrics').innerHTML = [
     ['학습 단어', `${summary.words}`],
     ['응답', `${summary.attempted}`],
@@ -2684,10 +2770,14 @@ function openMailGate(dayNo = runtime.state.currentDay) {
   if (ds.mailGateStatus === 'error') status.classList.add('error');
   const send = $('sendCompletionMail');
   send.disabled = false;
-  send.textContent = `DAY ${pad(dayNo)} 보고서 이메일 보내고 완료 확정`;
+  send.textContent = `필수: ${courseDayLabel(dayNo)} 관리자 이메일 보내고 완료 확정`;
   $('mailGateModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  requestAnimationFrame(() => send.focus());
+  sendHub('mail-required', hubDetail(dayNo));
+  requestAnimationFrame(() => {
+    send.scrollIntoView({ block: 'center', behavior: 'instant' });
+    send.focus();
+  });
 }
 
 function closeMailGate(force = false) {
@@ -2745,22 +2835,25 @@ async function sendCompletionReport() {
   if (result.ok) {
     ds.mailGateStatus = 'sent';
     ds.mailGateError = '';
+    await saveRootMailAudit(report, result.method || 'unknown');
     finalizeDayRecord(dayNo, false);
     status.className = 'mail-gate-status success';
-    status.textContent = `전송 완료 ✓ DAY ${pad(dayNo)} 완료가 확정되었습니다`;
-    send.textContent = `DAY ${pad(dayNo)} 보고서 전송 완료 ✓`;
+    status.textContent = `전송 요청 접수 완료 ✓ ${courseDayLabel(dayNo)} 완료가 확정되었습니다`;
+    send.textContent = `${courseDayLabel(dayNo)} 보고서 전송 접수 완료 ✓`;
     persist();
+    const audit = rootMailAuditRecord(report, result.method || 'unknown', ds.mailAcceptedAt || nowIso());
+    status.textContent = `전송 요청 접수 완료 ✓ ${audit.recipient} · ${audit.method} · ${audit.reportId}`;
     setTimeout(() => {
       closeMailGate(true);
       renderCompletion(dayNo);
-    }, 650);
+    }, 1050);
     return;
   }
   ds.mailGateStatus = 'error';
   ds.mailGateError = `메일 전송 실패: ${result.error || '배포 환경과 메일 설정을 확인하세요.'}`;
   persist();
   send.disabled = false;
-  send.textContent = `DAY ${pad(dayNo)} 보고서 이메일 다시 보내기`;
+  send.textContent = `${courseDayLabel(dayNo)} 보고서 이메일 다시 보내기`;
   status.className = 'mail-gate-status error';
   status.textContent = `${ds.mailGateError} DAY는 아직 미완료 상태입니다.`;
 }
@@ -2805,6 +2898,8 @@ function buildReport(dayNo, requiresCompletion = false) {
     requiresCompletion,
     email: ADMIN_REPORT_EMAIL,
     day: dayNo,
+    dayLabel: courseDayLabel(dayNo),
+    scheduledDate: courseSchedule(dayNo).iso,
     startedAt: ds.firstStartedAt,
     completedAt: ds.completedAt || ds.completionRequestedAt,
     forced: ds.forced,
@@ -2839,7 +2934,8 @@ function emailJsReportPayload(report) {
   const summary = report.summary || {};
   const wrongWords = Array.isArray(summary.wrong_words) ? summary.wrong_words.join(', ') : '';
   const text = [
-    `[root_18day · DAY ${pad(report.day)} 완료 보고]`,
+    `[root_18day · ${courseDayLabel(report.day)} 완료 보고]`,
+    `예정일: ${courseSchedule(report.day).iso} · ${courseSchedule(report.day).weekday}요일`,
     `보고 시각: ${new Date().toLocaleString('ko-KR')}`,
     `ROOT: ${summary.roots || 0}개`,
     `단어: ${summary.words || 0}개`,
@@ -2857,6 +2953,11 @@ function emailJsReportPayload(report) {
     user_name: '학습자',
     report_date: new Date().toLocaleString('ko-KR'),
     day: report.day,
+    day_label: courseDayLabel(report.day),
+    scheduled_date: courseSchedule(report.day).iso,
+    course_name: '어원 중심 ROOT 18DAY',
+    report_id: report.reportId || '',
+    delivery_status: 'provider-accepted',
     progress: Math.round(((runtime.state?.completedDays?.length || 0) / totalDays()) * 100),
     mastered: runtime.state ? Object.keys(runtime.state.mastery || {}).length : 0,
     accuracy: summary.accuracy == null ? 0 : summary.accuracy,
@@ -2929,7 +3030,7 @@ function renderCompletion(dayNo) {
   stopSessionTimer();
   showScreen('completionScreen');
   const report = buildReport(dayNo);
-  $('completionTitle').textContent = `DAY ${pad(dayNo)} 완료`;
+  $('completionTitle').textContent = `${courseDayLabel(dayNo)} 완료`;
   const metrics = [
     ['학습 ROOT', `${report.summary.roots}개`],
     ['학습 단어', `${report.summary.words}개`],
@@ -2945,7 +3046,7 @@ function renderCompletion(dayNo) {
   } else {
     $('mailStatus').textContent = 'REPORT SENT';
   }
-  $('completionConfirm').textContent = dayNo < totalDays() ? `DAY ${pad(dayNo + 1)}로 이동` : '전체 과정 확인';
+  $('completionConfirm').textContent = dayNo < totalDays() ? `${courseDayLabel(dayNo + 1)}로 이동` : '전체 과정 확인';
   $('completionConfirm').onclick = () => {
     if (dayNo < totalDays()) runtime.state.currentDay = Math.max(runtime.state.currentDay, dayNo + 1);
     persist();
@@ -3009,7 +3110,7 @@ function renderAdmin() {
   showScreen('adminView');
   const s = runtime.state.settings;
   $('daySelect').innerHTML = runtime.schedule.days.map((d) => `
-    <option value="${d.new_day}" ${d.new_day === runtime.state.currentDay ? 'selected' : ''}>DAY ${pad(d.new_day)} · ROOT ${d.roots} · 단어 ${d.words}</option>
+    <option value="${d.new_day}" ${d.new_day === runtime.state.currentDay ? 'selected' : ''}>${courseDayLabel(d.new_day)} · ROOT ${d.roots} · 단어 ${d.words}</option>
   `).join('');
   $('startTime').value = s.start;
   $('endTime').value = s.end;
@@ -3046,7 +3147,7 @@ function renderAdmin() {
     const ds = dayState(d.new_day);
     const answered = Object.keys(ds.answers || {}).length;
     const mailState = ds.mailConfirmedAt ? '보고 전송 완료' : ds.completedBlocks.length >= 4 && !ds.completedAt ? '보고 전송 필수 대기' : '보고 미도달';
-    return `<div class="admin-day ${done ? 'done' : ''} ${current ? 'current' : ''}"><strong>DAY ${pad(d.new_day)}</strong><span>${done ? '완료' : current ? '진행 중' : '대기'} · 누적 ${answered}/${d.words} · 정답 ${ds.stats.correct} · 오답 ${ds.stats.wrong} · ${mailState}</span></div>`;
+    return `<div class="admin-day ${done ? 'done' : ''} ${current ? 'current' : ''}"><strong>${courseDayLabel(d.new_day)}</strong><span>${done ? '완료' : current ? '진행 중' : '대기'} · 누적 ${answered}/${d.words} · 정답 ${ds.stats.correct} · 오답 ${ds.stats.wrong} · ${mailState}</span></div>`;
   }).join('');
 }
 

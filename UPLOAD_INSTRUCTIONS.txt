@@ -1,1 +1,1 @@
-GitHub 저장소 kfcccpro/root-voca의 main 브랜치 최상위에 index.html, root_18day_SINGLE_FILE.html, .nojekyll을 덮어쓰십시오.
+root-voca 저장소 최상위에 index.html, root_18day_SINGLE_FILE.html, .nojekyll을 덮어쓰십시오.
