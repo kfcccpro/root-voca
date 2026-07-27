@@ -10,16 +10,18 @@ const LEGACY_V3_KEY = 'vocaRoot18StateV3';
 const LEGACY_V2_KEY = 'vocaRoot18StateV2';
 const LEGACY_KEY = 'voca18State';
 const SCHEMA_VERSION = 7;
-const DATA_VERSION = '18day-root-integrated-360x1410-20260727-v7.15';
+const DATA_VERSION = '18day-root-integrated-360x1410-20260727-v7.17';
 const MINI_SET_SIZE = 6;
 const PRE_REVIEW_LIMIT = 8;
 const APP_NAME = 'root_18day';
 const ADMIN_REPORT_EMAIL = 'sk01197375068@gmail.com';
-const WRONG_PRIMARY_HOLD_MS = 3500;
+const ADMIN_PIN_FNV32 = 3475938270; // 관리자 PIN(4자리)의 FNV-1a 검증값. 평문 PIN은 저장하지 않습니다.
+const ADMIN_UNLOCK_KEY = 'root18AdminUnlocked';
+const WRONG_PRIMARY_HOLD_MS = 3000;
 const WRONG_REINFORCE_HOLD_MS = 5000;
 const WRONG_REVIEW_HOLD_MS = 5000;
 const WRONG_COGNITION_CHAR_RISE_MS = 520;
-const WRONG_COGNITION_FINAL_HOLD_MS = 2200;
+const WRONG_COGNITION_REVEAL_MS = 4000;
 const EMAILJS_SERVICE_ID = 'service_v23hns6';
 const EMAILJS_TEMPLATE_ID = 'template_v2zb8ni';
 const EMAILJS_PUBLIC_KEY = 'JJdWMghPhZrilD_ZQ';
@@ -1754,9 +1756,9 @@ function renderWrongChoiceHold(activeWord, pending) {
 
 function koreanCognitionTiming(text) {
   const count = Math.max(1, Array.from(String(text || '')).length);
-  const stagger = Math.max(70, Math.min(150, Math.floor(4200 / count)));
-  const revealMs = (count - 1) * stagger + WRONG_COGNITION_CHAR_RISE_MS;
-  return { stagger, revealMs, totalMs: revealMs + WRONG_COGNITION_FINAL_HOLD_MS };
+  const stagger = Math.max(55, Math.floor((WRONG_COGNITION_REVEAL_MS - 650) / count));
+  const revealMs = Math.min(WRONG_COGNITION_REVEAL_MS, (count - 1) * stagger + WRONG_COGNITION_CHAR_RISE_MS);
+  return { stagger, revealMs, totalMs: WRONG_COGNITION_REVEAL_MS };
 }
 
 function koreanRiseMarkup(text, staggerMs) {
@@ -1779,8 +1781,9 @@ function renderRepeatedErrorCognition(activeWord, pending) {
     </div>
   `;
   $('answerArea').innerHTML = '';
-  const focus = document.createElement('div');
-  appendWrongHoldMeter(focus, timing.totalMs, '한글 뜻이 모두 완성된 뒤 2.2초간 유지되며, 그 후 NEXT가 활성화됩니다.');
+  const focus = document.createElement('p');
+  focus.className = 'wrong-focus-note cognition-wait-note';
+  focus.textContent = '한글 뜻이 천천히 나타납니다. 4초 후 NEXT가 활성화됩니다.';
   $('answerArea').appendChild(focus);
   const next = document.createElement('button');
   next.type = 'button';
@@ -2260,6 +2263,19 @@ function openMailAppFallback(dayNo = runtime.state.currentDay) {
   persist('mail_fallback_mailto');
 }
 
+function requestOfflineCompletion(dayNo = runtime.state.currentDay) {
+  // V7.17: 오프라인 완료는 학생이 단독으로 실행할 수 없다.
+  // 관리자(선생님) PIN 인증을 통과한 경우에만 허용한다.
+  if (adminUnlocked()) { completeDayOffline(dayNo); return; }
+  pendingOfflineDay = dayNo;
+  const modal = $('adminPinModal');
+  $('adminPinPurpose').textContent = `DAY ${pad(dayNo)}를 오프라인 완료 처리하려면 관리자 PIN이 필요합니다.`;
+  modal.classList.remove('hidden');
+  $('adminPinInput').value = '';
+  $('adminPinError').textContent = '';
+  setTimeout(() => $('adminPinInput').focus(), 30);
+}
+
 function completeDayOffline(dayNo = runtime.state.currentDay) {
   const ds = dayState(dayNo);
   if (ds.completedBlocks.length < 4) {
@@ -2274,6 +2290,7 @@ function completeDayOffline(dayNo = runtime.state.currentDay) {
   }
   if (!ds.completionRequestedAt) ds.completionRequestedAt = nowIso();
   ds.offlineCompleted = true;
+  ds.offlineApprovedBy = 'admin-pin';
   finalizeDayRecord(dayNo, true);
   ds.mailGateStatus = 'queued';
   logEvent('day_complete_offline', { day: dayNo, failCount: ds.mailFailCount || 0 });
@@ -2484,6 +2501,54 @@ function renderCompletion(dayNo) {
   };
 }
 
+function adminPinHash(value) {
+  let hash = 2166136261;
+  for (const char of String(value || '')) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619) >>> 0;
+  }
+  return hash >>> 0;
+}
+
+let pendingOfflineDay = null;
+
+function closeAdminPinModal() {
+  $('adminPinModal').classList.add('hidden');
+  $('adminPinInput').value = '';
+  $('adminPinError').textContent = '';
+  pendingOfflineDay = null;
+  $('adminPinPurpose').textContent = '관리자 설정과 진도 복원 기능은 PIN 인증 후 열립니다.';
+}
+
+function adminUnlocked() {
+  try { return sessionStorage.getItem(ADMIN_UNLOCK_KEY) === '1'; } catch (_e) { return false; }
+}
+
+function requestAdminAccess() {
+  // V7.16: 메일 게이트가 열려 있어도 PIN 인증만 통과하면 관리자 화면에 들어갈 수 있다.
+  // (전송 실패 진단과 보류 보고서 재전송은 교사가 반드시 해야 하는 작업이기 때문)
+  if (adminUnlocked()) { renderAdmin(); return; }
+  const modal = $('adminPinModal');
+  modal.classList.remove('hidden');
+  $('adminPinInput').value = '';
+  $('adminPinError').textContent = '';
+  setTimeout(() => $('adminPinInput').focus(), 30);
+}
+
+function confirmAdminAccess() {
+  const value = $('adminPinInput').value.trim();
+  if (value.length !== 4 || adminPinHash(value) !== ADMIN_PIN_FNV32) {
+    $('adminPinError').textContent = 'PIN이 올바르지 않습니다.';
+    $('adminPinInput').select();
+    return;
+  }
+  try { sessionStorage.setItem(ADMIN_UNLOCK_KEY, '1'); } catch (_e) {}
+  const offlineDay = pendingOfflineDay;
+  closeAdminPinModal();
+  if (offlineDay) { completeDayOffline(offlineDay); return; }
+  renderAdmin();
+}
+
 function renderAdmin() {
   // V7.15: 메일 게이트가 열려 있어도 관리자 화면 진입을 허용한다.
   // (교사가 전송 실패를 진단하고 보류 보고서를 재전송할 수 있어야 하기 때문)
@@ -2607,7 +2672,10 @@ function runSelfCheck() {
   add('안전 백업', backupOk, backupOk ? '정상' : '없음');
   add('복구 스냅샷', recoveryOk, recoveryOk ? '정상' : '없음');
   add('관리자 메일 게이트', isMailGateRequired.toString().includes('completedBlocks.length >= 4'), ADMIN_REPORT_EMAIL);
-  add('오프라인 대체 완료 경로', typeof completeDayOffline === 'function' && Boolean($('offlineCompleteDay')), '2회 실패 후 활성화');
+  add('오프라인 완료 · 관리자 PIN 필수', typeof requestOfflineCompletion === 'function' && requestOfflineCompletion.toString().includes('adminUnlocked'), '2회 실패 + PIN 인증');
+  add('관리자 PIN 게이트', typeof requestAdminAccess === 'function' && ADMIN_PIN_FNV32 > 0, '세션 단위 잠금');
+  add('당일 오답 확인 3초', WRONG_PRIMARY_HOLD_MS === 3000, `${WRONG_PRIMARY_HOLD_MS}ms`);
+  add('예약 재오답 인지 4초·막대 없음', WRONG_COGNITION_REVEAL_MS === 4000 && !renderRepeatedErrorCognition.toString().includes('appendWrongHoldMeter'), `${WRONG_COGNITION_REVEAL_MS}ms`);
   add('보류 보고서', Array.isArray(runtime.state.pendingReports), `${runtime.state.pendingReports.length}건 대기`);
   const failed = checks.filter((item) => !item.ok);
   logEvent('self_check', { result: failed.length ? 'fail' : 'pass', failed: failed.map((item) => item.name) });
@@ -2637,8 +2705,8 @@ function bindEvents() {
   $('startButton').addEventListener('click', startOrResumeSession);
   $('sendCompletionMail').addEventListener('click', sendCompletionReport);
   $('mailAppFallback')?.addEventListener('click', () => openMailAppFallback(runtime.state.currentDay));
-  $('offlineCompleteDay')?.addEventListener('click', () => completeDayOffline(runtime.state.currentDay));
-  $('mailGateAdmin')?.addEventListener('click', () => { closeMailGate(true); renderAdmin(); });
+  $('offlineCompleteDay')?.addEventListener('click', () => requestOfflineCompletion(runtime.state.currentDay));
+  $('mailGateAdmin')?.addEventListener('click', () => { closeMailGate(true); requestAdminAccess(); });
   window.addEventListener('online', () => { retryPendingReports().catch(() => {}); });
   $('mailGateModal').addEventListener('click', (event) => {
     if (event.target === $('mailGateModal') && isMailGateRequired()) {
@@ -2652,7 +2720,7 @@ function bindEvents() {
     if (event.key === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
-      if (mailFallbackUnlocked()) { closeMailGate(true); renderAdmin(); return; }
+      if (mailFallbackUnlocked()) { closeMailGate(true); requestAdminAccess(); return; }
       reinforceMailGate();
       return;
     }
@@ -2670,8 +2738,15 @@ function bindEvents() {
     if (!document.hidden && isMailGateRequired()) openMailGate(runtime.state.currentDay);
   });
   $('exitSession').addEventListener('click', () => { pauseActiveTimer(); renderHome(); });
-  $('adminToggle').addEventListener('click', renderAdmin);
-  $('closeAdmin').addEventListener('click', renderHome);
+  $('adminToggle').addEventListener('click', requestAdminAccess);
+  $('confirmAdminPin').addEventListener('click', confirmAdminAccess);
+  $('cancelAdminPin').addEventListener('click', closeAdminPinModal);
+  $('adminPinInput').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') { event.preventDefault(); confirmAdminAccess(); }
+    if (event.key === 'Escape') { event.preventDefault(); closeAdminPinModal(); }
+  });
+  $('adminPinModal').addEventListener('click', (event) => { if (event.target === $('adminPinModal')) closeAdminPinModal(); });
+  $('closeAdmin').addEventListener('click', () => { try { sessionStorage.removeItem(ADMIN_UNLOCK_KEY); } catch (_e) {} renderHome(); });
   $('saveAdmin').addEventListener('click', saveAdminSettings);
   $('exportProgress').addEventListener('click', exportProgress);
   $('importProgress').addEventListener('click', () => $('importProgressFile').click());

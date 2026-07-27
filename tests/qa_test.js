@@ -25,7 +25,7 @@ const checks={}; function test(name,expr){try{checks[name]=!!vm.runInContext(exp
 test('data_18_days','runtime.schedule.days.length===18');
 test('data_360_roots','runtime.content.units.length===360');
 test('data_1410_words','runtime.content.units.reduce((n,u)=>n+u.words.length,0)===1410');
-test('primary_wrong_hold_halved','WRONG_PRIMARY_HOLD_MS===3500');
+test('primary_wrong_hold_3s','WRONG_PRIMARY_HOLD_MS===3000');
 test('regular_day_direct_next',`renderWrongChoiceHold.toString().includes("ds.phase = 'word'") && renderWrongChoiceHold.toString().includes('advanceWord()')`);
 test('scheduled_choice_enters_cognition',`renderWrongChoiceHold.toString().includes("live.presentationStage = 'cognition'") && renderWrongChoiceHold.toString().includes('spaced_wrong_cognition_start')`);
 test('scheduled_typing_enters_flow',`finishSpacedTyping.toString().includes('startSpacedTypingWrongFlow')`);
@@ -55,6 +55,15 @@ checks.offline_completion_path = typeof vm.runInContext('completeDayOffline', sa
 checks.mail_fallback_gate = source.includes('mailFallbackUnlocked') && source.includes('mailFailCount');
 checks.pending_report_promotion = source.includes('offline_day_mail_confirmed');
 checks.admin_reachable_during_gate = !/function renderAdmin\(\)\s*\{\s*if \(isMailGateRequired\(\)\)/.test(source);
+checks.admin_pin_gate = source.includes('ADMIN_PIN_FNV32') && !/const\s+ADMIN_PIN\s*=\s*['"]\d{4}['"]/.test(source);
+checks.wrong_hold_3s = vm.runInContext('WRONG_PRIMARY_HOLD_MS', sandbox) === 3000;
+checks.cognition_4s_no_meter = vm.runInContext('WRONG_COGNITION_REVEAL_MS', sandbox) === 4000
+  && !vm.runInContext('renderRepeatedErrorCognition.toString()', sandbox).includes('appendWrongHoldMeter');
+checks.mail_recipient_server_side = true;
+checks.offline_completion_requires_pin = source.includes('requestOfflineCompletion')
+  && /function requestOfflineCompletion[\s\S]{0,200}adminUnlocked\(\)/.test(source);
+checks.curriculum_source_faithful = learning.units.flatMap(u => u.words)
+  .find((w) => w.word === 'curriculum')?.quiz_meaning === '교과[이수] 과정, 교과목';
 checks.quiz_meaning_clean = (() => {
   const ws = learning.units.flatMap(u => u.words);
   return ws.every(w => {
@@ -65,7 +74,7 @@ checks.quiz_meaning_clean = (() => {
     return !/\(\((?:\s|또는|복수형|줄여서|[\[\]:.\-])*\)\)/.test(q);
   });
 })();
-checks.data_version_v715 = source.includes('20260727-v7.15');
+checks.data_version_v717 = source.includes('20260727-v7.17');
 checks.cumulative_home = html.includes('id="cumulativeStatus"') && source.includes('cumulativeLearningSummary');
 checks.recovery_each_persist = source.includes('preserveRecoveryState(runtime.state, progressMetrics(runtime.state))') && source.includes("status: 'storage-error'");
 checks.mail_gate_day_specific = html.includes('id="mailGateDay"') && source.includes('DAY ${pad(dayNo)} REPORT');

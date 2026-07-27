@@ -1,43 +1,41 @@
 {
   "app": "root_18day",
-  "version": "7.15",
-  "dataVersion": "18day-root-integrated-360x1410-20260727-v7.15",
-  "basedOn": "7.14",
+  "version": "7.17",
+  "dataVersion": "18day-root-integrated-360x1410-20260727-v7.17",
+  "basedOn": "7.16",
   "storageKeys": [
     "18dayRootStateV7",
     "18dayRootStateV7Backup",
     "18dayRootStateV7Recovery"
   ],
   "adminEmail": "sk01197375068@gmail.com",
+  "adminPin": "hash-only (FNV-1a)",
   "changes": [
-    "DAY 종료 보고 메일 2회 연속 실패 시 오프라인 대체 완료 경로 제공 (학습 중단 방지)",
-    "메일 게이트가 열려 있어도 관리자 화면 진입 허용",
-    "오프라인 완료 DAY는 보류 보고서로 등록되고 온라인 복귀 시 자동 재전송 후 정식 완료로 승격",
-    "PDF 추출 과정에서 훼손된 quiz_meaning 441건 정제 (내용 유실 31건 복원)",
-    "자가점검에 대체 완료 경로·보류 보고서 항목 추가"
+    "오프라인 대체 완료를 관리자 PIN 인증 필수로 변경 (학생 단독 실행 불가)",
+    "메일 게이트 문구를 '선생님용 기능'으로 명확화, 관리자 링크를 '관리자 PIN으로 전송 상태 진단'으로 변경",
+    "오프라인 완료 시 승인 주체(offlineApprovedBy) 기록",
+    "원문 대조 재교정 4건: curriculum, thesis, monitor, labor",
+    "관리자 화면 PIN 인증 게이트 추가 (평문 PIN 상수 제거, 세션 단위 잠금)",
+    "메일 게이트가 열려 있어도 PIN 인증 후 관리자 화면 진입 허용",
+    "당일 오답 정답 확인 3,500ms -> 3,000ms",
+    "예약 복습 재오답 인지 화면: 진행 막대 제거, 4,000ms 후 NEXT 활성화",
+    "메일 함수 수신 주소를 서버 환경변수로 고정 (공개 릴레이 악용 차단)",
+    "메일 함수를 root/2000 두 앱 payload 모두 처리하는 통합본으로 교체"
+  ],
+  "inheritedFrom_7_15": [
+    "DAY 보고 메일 2회 연속 실패 시 오프라인 대체 완료 경로",
+    "오프라인 완료분 자동 재전송 후 정식 완료 승격",
+    "quiz_meaning 441건 정제 (내용 유실 31건 복원)"
   ],
   "features": [
+    "admin-pin-gate",
     "cumulative-learning-dashboard",
     "triple-local-recovery",
     "mandatory-day-report-mail-gate",
     "offline-fallback-completion",
-    "D+1-D+3-D+6-review"
+    "D+1-D+3-D+6-review",
+    "admin-approved-offline-completion"
   ],
-  "files": [
-    ".nojekyll",
-    "FILE_HASHES.sha256",
-    "MANIFEST.json",
-    "QA_REPORT.md",
-    "QA_RESULTS.json",
-    "README.md",
-    "index.html",
-    "netlify/functions/send-day-report.mjs",
-    "netlify.toml",
-    "qa_screenshots/mail_gate.png",
-    "root_18day_SINGLE_FILE.html",
-    "tests/app_extracted.js",
-    "tests/embeddedContent.json",
-    "tests/embeddedSchedule.json",
-    "tests/qa_test.js"
-  ]
+  "deployedUnder": "/root18/ (허브 하위 경로)",
+  "note": "netlify.toml 과 netlify/functions/ 는 저장소 루트로 이동했습니다. 앱이 /.netlify/functions/send-day-report 를 절대경로로 호출하기 때문입니다."
 }

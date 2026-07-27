@@ -4,7 +4,7 @@
     "data_18_days": true,
     "data_360_roots": true,
     "data_1410_words": true,
-    "primary_wrong_hold_halved": true,
+    "primary_wrong_hold_3s": true,
     "regular_day_direct_next": true,
     "scheduled_choice_enters_cognition": true,
     "scheduled_typing_enters_flow": true,
@@ -31,8 +31,14 @@
     "mail_fallback_gate": true,
     "pending_report_promotion": true,
     "admin_reachable_during_gate": true,
+    "admin_pin_gate": true,
+    "wrong_hold_3s": true,
+    "cognition_4s_no_meter": true,
+    "mail_recipient_server_side": true,
+    "offline_completion_requires_pin": true,
+    "curriculum_source_faithful": true,
     "quiz_meaning_clean": true,
-    "data_version_v715": true,
+    "data_version_v717": true,
     "cumulative_home": true,
     "recovery_each_persist": true,
     "mail_gate_day_specific": true,
@@ -40,5 +46,5 @@
     "admin_cumulative": true
   },
   "failed": [],
-  "version": "7.15"
+  "version": "7.17"
 }

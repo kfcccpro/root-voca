@@ -1,84 +1,118 @@
-const escapeHtml = (value) => String(value ?? '')
-  .replaceAll('&', '&amp;')
-  .replaceAll('<', '&lt;')
-  .replaceAll('>', '&gt;')
-  .replaceAll('"', '&quot;')
-  .replaceAll("'", '&#039;');
+// 학습 허브 통합 DAY 보고 메일 함수
+// root_18day 와 2000_18DAY 두 앱이 같은 경로(/.netlify/functions/send-day-report)를 사용하므로
+// 하나의 함수에서 두 가지 payload 형태를 모두 처리한다.
+//
+// 필요한 환경 변수
+//   RESEND_API_KEY      (필수)
+//   REPORT_FROM_EMAIL   (필수)  예: report@yourdomain.com
+//   ADMIN_REPORT_EMAIL  (선택)  미설정 시 아래 기본 주소 사용
+//
+// 보안: 수신 주소는 반드시 서버에서 결정한다.
+//       요청 본문의 주소를 신뢰하면 누구나 이 함수를 공개 메일 릴레이로 악용할 수 있다.
 
-const json = (body, status = 200) => new Response(JSON.stringify(body), {
-  status,
-  headers: { 'Content-Type': 'application/json; charset=utf-8' },
-});
+const DEFAULT_ADMIN_EMAIL = 'sk01197375068@gmail.com';
 
-export default async (request) => {
+function json(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+  });
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function row(label, value) {
+  return `<tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec;white-space:nowrap">${escapeHtml(label)}</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(value)}</td></tr>`;
+}
+
+function shell(title, subtitle, rows, extra = '') {
+  return `<div style="font-family:Arial,'Noto Sans KR',sans-serif;color:#172235;line-height:1.65;max-width:700px;margin:auto">
+    <h2 style="margin-bottom:6px">${escapeHtml(title)}</h2>
+    <p style="color:#667287;margin-top:0">${escapeHtml(subtitle)}</p>
+    <table style="width:100%;border-collapse:collapse;margin:20px 0"><tbody>${rows}</tbody></table>
+    ${extra}
+  </div>`;
+}
+
+/* ---------- 2000_18DAY 형식 ---------- */
+function buildVoca(report) {
+  const s = report.summary || {};
+  const rows = [
+    row('학습 단어', `${s.words ?? '-'}개`),
+    row('본 시험 정답률', `${s.accuracy ?? '-'}%`),
+    row('본 시험 오답', `${s.wrong ?? '-'}개`),
+    row('활성 오답', `${s.active_wrong ?? '-'}개`),
+    row('누적 오답 발생', `${s.cumulative_wrong ?? '-'}회`),
+  ].join('');
+  const text = escapeHtml(report.report_text || '').replaceAll('\n', '<br>');
+  const extra = text ? `<div style="background:#f4f6fb;border-radius:12px;padding:16px;font-size:14px">${text}</div>` : '';
+  const title = `WORD MASTER 2000 · DAY ${String(report.day).padStart(2, '0')} 완료`;
+  return { subject: title, html: shell(title, `보고 시각: ${report.report_date || ''}`, rows, extra) };
+}
+
+/* ---------- root_18day 형식 ---------- */
+function buildRoot(report) {
+  const s = report.summary || {};
+  const accuracy = s.accuracy === null || s.accuracy === undefined ? '미측정' : `${s.accuracy}%`;
+  const rows = [
+    row('학습 ROOT', `${s.roots ?? '-'}개`),
+    row('학습 단어', `${s.words ?? '-'}개`),
+    row('응답', `${s.attempted ?? '-'}`),
+    row('정답', `${s.correct ?? '-'}`),
+    row('오답', `${s.wrong ?? '-'}`),
+    row('정확도', accuracy),
+    row('학습 시간', `${s.elapsed_minutes ?? '-'}분`),
+    row('활성 복습', `${s.active_review_count ?? '-'}개`),
+    row('D+1 / D+3 / D+6', `${s.d1_due ?? 0} / ${s.d3_due ?? 0} / ${s.d6_due ?? 0}`),
+  ].join('');
+  const wrongWords = Array.isArray(s.wrong_words) ? s.wrong_words : [];
+  const extra = wrongWords.length
+    ? `<p><strong>오답 단어</strong></p><p>${wrongWords.map(escapeHtml).join(', ')}</p>`
+    : '<p><strong>오답 단어</strong>: 없음</p>';
+  const title = `18day_root · DAY ${String(report.day).padStart(2, '0')} 완료`;
+  return { subject: title, html: shell(title, `보고 시각: ${report.report_date || new Date().toLocaleString('ko-KR')}`, rows, extra) };
+}
+
+export default async function handler(request) {
   if (request.method !== 'POST') return json({ ok: false, reason: 'Method not allowed' }, 405);
 
   const apiKey = Netlify.env.get('RESEND_API_KEY');
   const from = Netlify.env.get('REPORT_FROM_EMAIL');
+  const recipient = Netlify.env.get('ADMIN_REPORT_EMAIL') || DEFAULT_ADMIN_EMAIL;
+
   if (!apiKey || !from) {
     return json({ ok: false, queued: false, reason: 'Missing RESEND_API_KEY or REPORT_FROM_EMAIL' }, 503);
   }
 
   let report;
-  try {
-    report = await request.json();
-  } catch {
-    return json({ ok: false, reason: 'Invalid JSON' }, 400);
+  try { report = await request.json(); }
+  catch { return json({ ok: false, reason: 'Invalid JSON' }, 400); }
+
+  if (!report?.day || !report?.summary) {
+    return json({ ok: false, reason: 'day and summary are required' }, 400);
   }
 
-  if (!report?.email || !report?.day || !report?.summary) {
-    return json({ ok: false, reason: 'email, day and summary are required' }, 400);
-  }
-
-  const summary = report.summary;
-  const accuracyLabel = summary.accuracy === null || summary.accuracy === undefined ? '미측정' : `${summary.accuracy}%`;
-  const wrongWords = Array.isArray(summary.wrong_words) ? summary.wrong_words : [];
-  const wrongHtml = wrongWords.length
-    ? `<p><strong>오답 단어</strong></p><p>${wrongWords.map(escapeHtml).join(', ')}</p>`
-    : '<p><strong>오답 단어</strong>: 없음</p>';
-
-  const html = `
-    <div style="font-family:Arial,'Noto Sans KR',sans-serif;color:#172235;line-height:1.6;max-width:680px;margin:auto">
-      <h2 style="margin-bottom:6px">18day_root · DAY ${String(report.day).padStart(2, '0')} 완료</h2>
-      <p style="color:#667287;margin-top:0">시작: ${escapeHtml(report.startedAt || '')}<br>완료: ${escapeHtml(report.completedAt || '')}${report.forced ? ' · 관리자 강제 완료' : ''}</p>
-      <table style="width:100%;border-collapse:collapse;margin:20px 0">
-        <tbody>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">ROOT</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.roots)}</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">단어</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.words)}</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">실제 학습시간</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.elapsed_minutes)}분</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">정답률</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(accuracyLabel)}</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">오답</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.wrong)}개</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">철자 회상</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.typed)}회</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">오늘 기억 확인</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.review_attempted || 0)}회 · 정답 ${escapeHtml(summary.review_correct || 0)} · 오답 ${escapeHtml(summary.review_wrong || 0)}</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">D+1 예약</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.d1_due || 0)}개</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">D+3 강화</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.d3_due || 0)}개</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">D+6 확인</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.d6_due || 0)}개</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">집중 케어</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.focus_care || 0)}개</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">영구 오답노트</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.permanent_wrong_count || 0)}개</td></tr>
-          <tr><th style="text-align:left;padding:10px;border-bottom:1px solid #d9e0ec">기존 DAY 범위</th><td style="padding:10px;border-bottom:1px solid #d9e0ec">${escapeHtml(summary.source_day_range)}</td></tr>
-        </tbody>
-      </table>
-      ${wrongHtml}
-      <p style="font-size:12px;color:#667287">보고서 ID: ${escapeHtml(report.reportId || '')}<br>스키마 ${escapeHtml(report.schemaVersion || '')} · revision ${escapeHtml(report.revision || '')} · 이벤트 ${escapeHtml(summary.event_count || 0)}건</p>
-    </div>`;
+  // 앱 판별: 2000_18DAY 는 report_id 가 wm2000- 으로 시작하고 report_text 를 함께 보낸다.
+  const isVoca = String(report.report_id || '').startsWith('wm2000')
+    || (typeof report.report_text === 'string' && report.summary.active_wrong !== undefined);
+  const { subject, html } = isVoca ? buildVoca(report) : buildRoot(report);
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      ...(report.reportId ? { 'Idempotency-Key': String(report.reportId).slice(0, 256) } : {}),
-    },
-    body: JSON.stringify({
-      from,
-      to: [report.email],
-      subject: `18day_root · DAY ${String(report.day).padStart(2, '0')} 완료`,
-      html,
-    }),
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from, to: [recipient], subject, html }),
   });
 
-  const bodyText = await response.text();
-  let providerBody = bodyText;
-  try { providerBody = JSON.parse(bodyText); } catch { /* preserve text */ }
-  return json({ ok: response.ok, provider: providerBody }, response.status);
-};
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    return json({ ok: false, reason: `Resend ${response.status}`, detail: detail.slice(0, 300) }, 502);
+  }
+  return json({ ok: true, app: isVoca ? '2000_18DAY' : 'root_18day', day: report.day });
+}
