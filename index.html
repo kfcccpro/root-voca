@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0E1016">
-  <title>root_18day CLOUD V7.18</title>
+  <title>root_18day CLOUD V7.19 HUB</title>
   <meta name="application-name" content="root_18day">
-  <meta name="root-app-build" content="standalone-single-file-v7.18-cloud-pin-gate">
+  <meta name="root-app-build" content="standalone-single-file-v7.19-hub-sso">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -603,6 +603,19 @@ const CLOUD_STUDENT_PASSWORD='voca8081';
 const CLOUD_ROOT_PATH='singleStudent/8081/apps';
 
 const CLOUD_ROOTVOCA_PATH=CLOUD_ROOT_PATH+'/rootVoca';
+
+const HUB_SESSION_KEY='vocaHubSessionV1';
+const HUB_SESSION_MAX_AGE_MS=12*60*60*1000;
+function validHubLearnerSession(){
+  try{
+    const params=new URLSearchParams(globalThis.location.search);
+    if(params.get('hub')!=='1'||globalThis.parent===globalThis)return false;
+    const raw=sessionStorage.getItem(HUB_SESSION_KEY);if(!raw)return false;
+    const s=JSON.parse(raw),now=Date.now();
+    return s&&s.student==='8081'&&s.role==='learner'&&s.origin===globalThis.location.origin&&Number(s.issuedAt)>0&&now-Number(s.issuedAt)<=HUB_SESSION_MAX_AGE_MS&&Number(s.expiresAt)>now;
+  }catch(_error){return false;}
+}
+
 const rootCloud={ready:false,app:null,auth:null,db:null,ref:null,timer:null,lastWriteAt:0,lastWriteId:'',applying:false,writing:false,pending:false};
 function setRootCloudStatus(text,mode='wait'){let n=document.getElementById('rootCloudStatus');if(!n){n=document.createElement('div');n.id='rootCloudStatus';n.setAttribute('aria-live','polite');Object.assign(n.style,{position:'fixed',right:'12px',bottom:'12px',zIndex:'520',padding:'8px 12px',borderRadius:'999px',fontSize:'12px',fontWeight:'800',boxShadow:'0 8px 28px rgba(0,0,0,.35)',backdropFilter:'blur(10px)',maxWidth:'calc(100vw - 24px)',whiteSpace:'nowrap'});document.body.appendChild(n);}const p={ok:['rgba(43,227,138,.16)','#2BE38A','rgba(43,227,138,.45)'],error:['rgba(255,77,109,.16)','#FF6B86','rgba(255,77,109,.45)'],local:['rgba(255,180,67,.15)','#FFB443','rgba(255,180,67,.4)'],wait:['rgba(108,92,231,.18)','#A99EFF','rgba(108,92,231,.42)']}[mode];n.textContent=text;n.style.background=p[0];n.style.color=p[1];n.style.border='1px solid '+p[2];}
 function rootCloudEnvelope(state,writeId){return{app:'rootVoca',student:'8081',schemaVersion:1,stateVersion:DATA_VERSION,updatedAt:nowIso(),deviceId:state.deviceId||createDeviceId(),writeId,state:JSON.parse(JSON.stringify(sanitizeState(state)))};}
@@ -625,9 +638,10 @@ function showRootLearnerGate(message='학습자 PIN 4자리를 입력하세요.'
   setRootLoginMessage(message);
   const status=$('rootCloudStatus');if(status)status.remove();
 }
-async function unlockRootLearner(){
+async function unlockRootLearner(options={}){
+  const hubAccess=options===true||options?.hub===true;
   if(rootLearnerLoginBusy)return;const input=$('rootLearnerPin');const value=(input?.value||'').replace(/\D/g,'').slice(0,4);
-  if(value.length!==4||rootLearnerPinHash(value)!==LEARNER_PIN_FNV32){if(input){input.classList.remove('error');void input.offsetWidth;input.classList.add('error');input.select();}setRootLoginMessage('PIN이 올바르지 않습니다. 다시 입력하세요.','error');return;}
+  if(!hubAccess&&(value.length!==4||rootLearnerPinHash(value)!==LEARNER_PIN_FNV32)){if(input){input.classList.remove('error');void input.offsetWidth;input.classList.add('error');input.select();}setRootLoginMessage('PIN이 올바르지 않습니다. 다시 입력하세요.','error');return;}
   rootLearnerLoginBusy=true;const button=$('rootLearnerLoginButton');if(button){button.disabled=true;button.textContent='클라우드 진도 확인 중...';}setRootLoginMessage('Firebase의 최신 누적 진도를 불러오는 중입니다.');
   let cloudOk=false;try{cloudOk=await Promise.race([initRootCloudSync(),new Promise(resolve=>setTimeout(()=>resolve(false),10000))]);}catch(_error){cloudOk=false;}
   rootLearnerUnlocked=true;$('rootLoginGate')?.classList.add('hidden');$('rootAppShell')?.classList.remove('hidden');
@@ -3237,8 +3251,13 @@ async function boot() {
     await loadData();
     initEmailJS();
     bindEvents();
-    showRootLearnerGate();
-    sendHub('ready', {...hubDetail(), locked:true});
+    if(validHubLearnerSession()){
+      showRootLearnerGate('통합 허브 인증 확인 완료 · 클라우드 진도를 불러오는 중입니다.');
+      await unlockRootLearner({hub:true});
+    }else{
+      showRootLearnerGate();
+      sendHub('ready', {...hubDetail(), locked:true});
+    }
   } catch (error) {
     sendHub('error', { message: error.message || '앱을 불러오지 못했습니다.' });
     document.body.innerHTML = `<p style="padding:24px;font-family:system-ui">${escapeHtml(error.message)}</p>`;

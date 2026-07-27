@@ -1,6 +1,1 @@
-ROOT CLOUD V7.18 GitHub 업로드
-
-1. 이 폴더의 index.html, root_18day_SINGLE_FILE.html, .nojekyll을 root-voca 저장소 최상위에 업로드합니다.
-2. 기존 파일을 덮어쓰고 main 브랜치에 커밋합니다.
-3. Actions의 Pages 배포가 초록색 체크인지 확인합니다.
-4. https://kfcccpro.github.io/root-voca/ 접속 시 반드시 8081 PIN 화면부터 나와야 합니다.
+GitHub 저장소 kfcccpro/root-voca의 main 브랜치 최상위에 index.html, root_18day_SINGLE_FILE.html, .nojekyll을 덮어쓰십시오.
