@@ -1,17 +1,43 @@
 {
-  "project": "root_18day",
-  "version": "7.6.0",
-  "schema_version": 7,
-  "days": 18,
-  "roots": 360,
-  "headwords": 1410,
-  "design_language": "dark_gradient_dashboard",
-  "learner_home_mode": "single_action_minimal",
-  "regular_learning_loop": "choice_correct_next_wrong_root_explanation_next",
-  "block_review_limit": 4,
-  "review_intervals": [1, 3, 6],
-  "completion_requires_email_success": true,
-  "default_admin_email": "sk01197375068@gmail.com",
-  "event_logging": true,
-  "revisioned_local_backup": true
+  "app": "root_18day",
+  "version": "7.15",
+  "dataVersion": "18day-root-integrated-360x1410-20260727-v7.15",
+  "basedOn": "7.14",
+  "storageKeys": [
+    "18dayRootStateV7",
+    "18dayRootStateV7Backup",
+    "18dayRootStateV7Recovery"
+  ],
+  "adminEmail": "sk01197375068@gmail.com",
+  "changes": [
+    "DAY 종료 보고 메일 2회 연속 실패 시 오프라인 대체 완료 경로 제공 (학습 중단 방지)",
+    "메일 게이트가 열려 있어도 관리자 화면 진입 허용",
+    "오프라인 완료 DAY는 보류 보고서로 등록되고 온라인 복귀 시 자동 재전송 후 정식 완료로 승격",
+    "PDF 추출 과정에서 훼손된 quiz_meaning 441건 정제 (내용 유실 31건 복원)",
+    "자가점검에 대체 완료 경로·보류 보고서 항목 추가"
+  ],
+  "features": [
+    "cumulative-learning-dashboard",
+    "triple-local-recovery",
+    "mandatory-day-report-mail-gate",
+    "offline-fallback-completion",
+    "D+1-D+3-D+6-review"
+  ],
+  "files": [
+    ".nojekyll",
+    "FILE_HASHES.sha256",
+    "MANIFEST.json",
+    "QA_REPORT.md",
+    "QA_RESULTS.json",
+    "README.md",
+    "index.html",
+    "netlify/functions/send-day-report.mjs",
+    "netlify.toml",
+    "qa_screenshots/mail_gate.png",
+    "root_18day_SINGLE_FILE.html",
+    "tests/app_extracted.js",
+    "tests/embeddedContent.json",
+    "tests/embeddedSchedule.json",
+    "tests/qa_test.js"
+  ]
 }
