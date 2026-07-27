@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0E1016">
-  <title>root_18day CLOUD V7.17</title>
+  <title>root_18day CLOUD V7.18</title>
   <meta name="application-name" content="root_18day">
-  <meta name="root-app-build" content="standalone-single-file-v7.17-cloud">
+  <meta name="root-app-build" content="standalone-single-file-v7.18-cloud-pin-gate">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,6 +55,25 @@ button{cursor:pointer}
 .compact-button{padding:9px 12px}
 .screen{animation:fadeUp .34s var(--ease)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+
+/* Learner PIN gate: cloud access begins only after 8081 verification. */
+.root-login-gate{position:fixed;inset:0;z-index:900;display:grid;place-items:center;padding:24px;background:radial-gradient(850px 560px at 50% 28%,rgba(108,92,231,.28),var(--bg) 72%)}
+.root-login-card{width:min(430px,94vw);padding:38px 30px 30px;text-align:center;border:1px solid var(--line2);border-radius:30px;background:linear-gradient(150deg,rgba(108,92,231,.24),rgba(0,229,212,.08),var(--panel));box-shadow:0 30px 90px rgba(0,0,0,.48)}
+.root-login-logo{width:76px;height:76px;margin:0 auto 18px;border-radius:23px;display:grid;place-items:center;background:var(--grad);font-family:var(--disp);font-size:34px;font-weight:800;box-shadow:0 16px 42px rgba(108,92,231,.48)}
+.root-login-card h1{font-family:var(--disp);font-size:30px;letter-spacing:-.8px}
+.root-login-card>p{margin:7px 0 24px;color:var(--txt2);font-weight:700}
+.root-login-field{width:100%;min-height:64px;padding:14px 18px;border:2px solid var(--line2);border-radius:17px;background:rgba(14,16,22,.75);color:var(--txt);font-family:var(--disp);font-size:30px;font-weight:800;letter-spacing:12px;text-align:center;outline:none}
+.root-login-field:focus{border-color:var(--iris2);box-shadow:0 0 0 4px rgba(108,92,231,.14)}
+.root-login-field.error{border-color:var(--red);animation:shakePin .34s ease}
+.root-login-button{width:100%;min-height:60px;margin-top:14px;font-size:17px}
+.root-login-button:disabled{opacity:.55;cursor:wait;transform:none!important}
+.root-login-message{min-height:24px;margin-top:12px!important;color:var(--txt3)!important;font-size:13px;font-weight:800!important}
+.root-login-message.error{color:var(--red)!important}.root-login-message.ok{color:var(--green)!important}
+.root-login-note{margin-top:17px;color:var(--txt3);font-size:12px;font-weight:700;line-height:1.7}
+.top-actions{display:flex;align-items:center;gap:8px}
+@keyframes shakePin{0%,100%{transform:none}30%{transform:translateX(-7px)}70%{transform:translateX(7px)}}
+@media(max-width:600px){.root-login-card{padding:32px 20px 24px}.root-login-field{font-size:26px;letter-spacing:9px}}
 
 /* Home */
 .simple-home{display:grid;place-items:center;min-height:calc(100vh - 100px)}
@@ -308,7 +327,19 @@ body.modal-open{overflow:hidden}
 </head>
 <body>
   <noscript><p style="padding:24px;color:white;background:#0E1016;font-family:system-ui">JavaScript를 활성화해야 root_18day를 사용할 수 있습니다.</p></noscript>
-  <main class="app-shell">
+  <section id="rootLoginGate" class="root-login-gate" role="dialog" aria-modal="true" aria-labelledby="rootLoginTitle">
+    <div class="root-login-card">
+      <div class="root-login-logo">R</div>
+      <h1 id="rootLoginTitle">root_18day</h1>
+      <p>학습자 PIN을 입력하면 클라우드 누적 진도를 불러옵니다.</p>
+      <label class="visually-hidden" for="rootLearnerPin">학습자 PIN 4자리</label>
+      <input id="rootLearnerPin" class="root-login-field" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••" aria-describedby="rootLoginMessage">
+      <button id="rootLearnerLoginButton" class="primary root-login-button" type="button">학습 시작</button>
+      <p id="rootLoginMessage" class="root-login-message" aria-live="assertive">학습자 PIN 4자리를 입력하세요.</p>
+      <div class="root-login-note">새 기기·새 브라우저에서도 같은 PIN으로 로그인하면<br>Firebase의 최신 진도를 자동 복원합니다.</div>
+    </div>
+  </section>
+  <main id="rootAppShell" class="app-shell hidden">
     <header class="topbar">
       <div class="brand-lockup">
         <div class="brand-mark">R</div>
@@ -317,7 +348,10 @@ body.modal-open{overflow:hidden}
           <span id="todayTitle">DAY 01</span>
         </div>
       </div>
-      <button id="adminToggle" class="icon-button" type="button" aria-label="관리자 화면 열기">ADMIN</button>
+      <div class="top-actions">
+        <button id="rootLockButton" class="icon-button" type="button" aria-label="학습 화면 잠그기">LOCK</button>
+        <button id="adminToggle" class="icon-button" type="button" aria-label="관리자 화면 열기">ADMIN</button>
+      </div>
     </header>
 
     <section id="learnerHome" class="screen simple-home">
@@ -475,6 +509,7 @@ const MINI_SET_SIZE = 6;
 const PRE_REVIEW_LIMIT = 8;
 const APP_NAME = 'root_18day';
 const ADMIN_REPORT_EMAIL = 'sk01197375068@gmail.com';
+const LEARNER_PIN_FNV32 = 1069609042; // 학습자 PIN 8081의 FNV-1a 검증값.
 const ADMIN_PIN_FNV32 = 3475938270; // 관리자 PIN의 FNV-1a 검증값. 평문 PIN은 저장하지 않습니다.
 const ADMIN_UNLOCK_KEY = 'root18AdminUnlocked';
 const WRONG_PRIMARY_HOLD_MS = 3000;
@@ -572,11 +607,38 @@ const rootCloud={ready:false,app:null,auth:null,db:null,ref:null,timer:null,last
 function setRootCloudStatus(text,mode='wait'){let n=document.getElementById('rootCloudStatus');if(!n){n=document.createElement('div');n.id='rootCloudStatus';n.setAttribute('aria-live','polite');Object.assign(n.style,{position:'fixed',right:'12px',bottom:'12px',zIndex:'520',padding:'8px 12px',borderRadius:'999px',fontSize:'12px',fontWeight:'800',boxShadow:'0 8px 28px rgba(0,0,0,.35)',backdropFilter:'blur(10px)',maxWidth:'calc(100vw - 24px)',whiteSpace:'nowrap'});document.body.appendChild(n);}const p={ok:['rgba(43,227,138,.16)','#2BE38A','rgba(43,227,138,.45)'],error:['rgba(255,77,109,.16)','#FF6B86','rgba(255,77,109,.45)'],local:['rgba(255,180,67,.15)','#FFB443','rgba(255,180,67,.4)'],wait:['rgba(108,92,231,.18)','#A99EFF','rgba(108,92,231,.42)']}[mode];n.textContent=text;n.style.background=p[0];n.style.color=p[1];n.style.border='1px solid '+p[2];}
 function rootCloudEnvelope(state,writeId){return{app:'rootVoca',student:'8081',schemaVersion:1,stateVersion:DATA_VERSION,updatedAt:nowIso(),deviceId:state.deviceId||createDeviceId(),writeId,state:JSON.parse(JSON.stringify(sanitizeState(state)))};}
 function rootCloudMerge(left,right){const a=sanitizeState(left||defaultState()),b=sanitizeState(right||defaultState());const candidates=[{state:a,metrics:progressMetrics(a)},{state:b,metrics:progressMetrics(b)}].sort(compareProgress);const merged=mergeProgressStates(candidates[0].state,candidates.slice(1));for(let d=1;d<=totalDays();d++){const md=dayStateWith(merged,d),ad=dayStateWith(a,d),bd=dayStateWith(b,d);md.mailConfirmedAt=[ad.mailConfirmedAt,bd.mailConfirmedAt].filter(Boolean).sort().pop()||null;md.completionRequestedAt=[ad.completionRequestedAt,bd.completionRequestedAt].filter(Boolean).sort().pop()||null;if(md.mailConfirmedAt){md.mailGateStatus='sent';md.mailGateError='';md.forced=false;md.completedAt=md.completedAt||md.mailConfirmedAt;if(!merged.completedDays.includes(d))merged.completedDays.push(d);}else{const statuses=[ad.mailGateStatus,bd.mailGateStatus];if(statuses.includes('sending'))md.mailGateStatus='ready';else if(statuses.includes('error'))md.mailGateStatus='error';}md.elapsedSeconds=Math.max(+ad.elapsedSeconds||0,+bd.elapsedSeconds||0);md.postCourseSeconds=Math.max(+ad.postCourseSeconds||0,+bd.postCourseSeconds||0);}merged.completedDays=[...new Set(merged.completedDays.map(Number))].sort((x,y)=>x-y);merged.currentDay=Math.max(1,Math.min(totalDays(),Math.max(+a.currentDay||1,+b.currentDay||1)));merged.revision=Math.max(+a.revision||0,+b.revision||0);merged.updatedAt=new Date(Math.max(Date.parse(a.updatedAt||0)||0,Date.parse(b.updatedAt||0)||0,Date.now())).toISOString();return sanitizeState(merged);}
-function applyRootCloudState(next,message){rootCloud.applying=true;try{runtime.state=rootCloudMerge(runtime.state,next);runtime.state.sync={...(runtime.state.sync||{}),status:'cloud-synced',lastVerifiedAt:nowIso(),error:''};const prev=localStorage.getItem(APP_KEY);if(prev)localStorage.setItem(BACKUP_KEY,prev);localStorage.setItem(APP_KEY,JSON.stringify(runtime.state));preserveRecoveryState(runtime.state,progressMetrics(runtime.state));if(message)console.info(message);if(!$('homeScreen').classList.contains('hidden'))renderHome();else if(!$('adminScreen').classList.contains('hidden'))renderAdmin();}finally{rootCloud.applying=false;}}
+function applyRootCloudState(next,message){rootCloud.applying=true;try{runtime.state=rootCloudMerge(runtime.state,next);runtime.state.sync={...(runtime.state.sync||{}),status:'cloud-synced',lastVerifiedAt:nowIso(),error:''};const prev=localStorage.getItem(APP_KEY);if(prev)localStorage.setItem(BACKUP_KEY,prev);localStorage.setItem(APP_KEY,JSON.stringify(runtime.state));preserveRecoveryState(runtime.state,progressMetrics(runtime.state));if(message)console.info(message);if($('learnerHome')&&!$('learnerHome').classList.contains('hidden'))renderHome();else if($('adminView')&&!$('adminView').classList.contains('hidden'))renderAdmin();}finally{rootCloud.applying=false;}}
 function scheduleRootCloudSave(reason='state',force=false){if(rootCloud.applying)return;if(!rootCloud.ready||!rootCloud.ref){rootCloud.pending=true;return;}rootCloud.pending=false;clearTimeout(rootCloud.timer);const elapsed=Date.now()-rootCloud.lastWriteAt;const immediate=force||/complete|mail|import|admin|pagehide/.test(String(reason));const delay=immediate?120:Math.max(1800,12000-elapsed);rootCloud.timer=setTimeout(writeRootCloud,delay);}
 async function writeRootCloud(){if(!rootCloud.ready||rootCloud.writing||!rootCloud.ref||!runtime.state)return;rootCloud.writing=true;const localSnapshot=sanitizeState(JSON.parse(JSON.stringify(runtime.state)));const writeId=(localSnapshot.deviceId||'root')+'-'+Date.now().toString(36);rootCloud.lastWriteId=writeId;setRootCloudStatus('☁ 진도 저장 중','wait');try{await rootCloud.ref.transaction(current=>rootCloudEnvelope(current&&current.state?rootCloudMerge(localSnapshot,current.state):localSnapshot,writeId));rootCloud.lastWriteAt=Date.now();runtime.state.sync={...(runtime.state.sync||{}),status:'cloud-synced',lastVerifiedAt:nowIso(),error:''};localStorage.setItem(APP_KEY,JSON.stringify(runtime.state));setRootCloudStatus('✓ 클라우드 진도 저장됨','ok');}catch(e){console.warn('ROOT 클라우드 저장 실패',e);rootCloud.pending=true;runtime.state.sync={...(runtime.state.sync||{}),status:'local-safe',lastVerifiedAt:nowIso(),error:String(e?.message||e)};setRootCloudStatus('로컬 저장 · 연결 시 재동기화','local');}finally{rootCloud.writing=false;}}
-async function initRootCloudSync(){setRootCloudStatus('☁ 클라우드 진도 연결 중','wait');if(!window.firebase){setRootCloudStatus('클라우드 모듈 차단 · 로컬 저장','local');return false;}try{rootCloud.app=firebase.apps.length?firebase.app():firebase.initializeApp(FIREBASE_CONFIG);rootCloud.auth=firebase.auth();rootCloud.db=firebase.database();await rootCloud.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);if(!rootCloud.auth.currentUser)await rootCloud.auth.signInWithEmailAndPassword(CLOUD_STUDENT_EMAIL,CLOUD_STUDENT_PASSWORD);rootCloud.ref=rootCloud.db.ref(CLOUD_ROOTVOCA_PATH);const localSnapshot=sanitizeState(JSON.parse(JSON.stringify(runtime.state)));const writeId=(localSnapshot.deviceId||'root')+'-boot-'+Date.now().toString(36);rootCloud.lastWriteId=writeId;const result=await rootCloud.ref.transaction(current=>rootCloudEnvelope(current&&current.state?rootCloudMerge(localSnapshot,current.state):localSnapshot,writeId));const p=result.snapshot.val();if(p&&p.state)applyRootCloudState(p.state,'ROOT 클라우드 누적 진도 복원');rootCloud.ready=true;rootCloud.lastWriteAt=Date.now();setRootCloudStatus('✓ 모든 기기 진도 동기화','ok');rootCloud.ref.on('value',snap=>{const v=snap.val();if(!v||!v.state||v.writeId===rootCloud.lastWriteId||rootCloud.writing)return;applyRootCloudState(v.state,'다른 기기의 최신 ROOT 진도 반영');setRootCloudStatus('✓ 최신 진도 반영됨','ok');});if(rootCloud.pending)scheduleRootCloudSave('pending',true);return true;}catch(e){console.error('ROOT Firebase 연결 실패',e);setRootCloudStatus('클라우드 인증 확인 필요 · 로컬 저장','error');return false;}}
-window.addEventListener('online',()=>{if(rootCloud.ready)scheduleRootCloudSave('online',true);else if(runtime.state)initRootCloudSync();});
+async function initRootCloudSync(){setRootCloudStatus('☁ 클라우드 진도 연결 중','wait');if(!window.firebase){setRootCloudStatus('클라우드 모듈 차단 · 로컬 저장','local');return false;}try{rootCloud.app=firebase.apps.length?firebase.app():firebase.initializeApp(FIREBASE_CONFIG);rootCloud.auth=firebase.auth();rootCloud.db=firebase.database();await rootCloud.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);if(rootCloud.auth.currentUser&&rootCloud.auth.currentUser.email!==CLOUD_STUDENT_EMAIL)await rootCloud.auth.signOut();if(!rootCloud.auth.currentUser)await rootCloud.auth.signInWithEmailAndPassword(CLOUD_STUDENT_EMAIL,CLOUD_STUDENT_PASSWORD);rootCloud.ref=rootCloud.db.ref(CLOUD_ROOTVOCA_PATH);const localSnapshot=sanitizeState(JSON.parse(JSON.stringify(runtime.state)));const writeId=(localSnapshot.deviceId||'root')+'-boot-'+Date.now().toString(36);rootCloud.lastWriteId=writeId;const result=await rootCloud.ref.transaction(current=>rootCloudEnvelope(current&&current.state?rootCloudMerge(localSnapshot,current.state):localSnapshot,writeId));const p=result.snapshot.val();if(p&&p.state)applyRootCloudState(p.state,'ROOT 클라우드 누적 진도 복원');rootCloud.ready=true;rootCloud.lastWriteAt=Date.now();setRootCloudStatus('✓ 모든 기기 진도 동기화','ok');rootCloud.ref.on('value',snap=>{const v=snap.val();if(!v||!v.state||v.writeId===rootCloud.lastWriteId||rootCloud.writing)return;applyRootCloudState(v.state,'다른 기기의 최신 ROOT 진도 반영');setRootCloudStatus('✓ 최신 진도 반영됨','ok');});if(rootCloud.pending)scheduleRootCloudSave('pending',true);return true;}catch(e){console.error('ROOT Firebase 연결 실패',e);setRootCloudStatus('클라우드 인증 확인 필요 · 로컬 저장','error');return false;}}
+window.addEventListener('online',()=>{if(rootCloud.ready)scheduleRootCloudSave('online',true);else if(rootLearnerUnlocked&&runtime.state)initRootCloudSync();});
+
+
+let rootLearnerUnlocked=false;
+let rootLearnerLoginBusy=false;
+function rootLearnerPinHash(value){let hash=2166136261;for(const ch of String(value||'')){hash^=ch.charCodeAt(0);hash=Math.imul(hash,16777619)>>>0;}return hash>>>0;}
+function setRootLoginMessage(text,mode=''){const n=$('rootLoginMessage');if(!n)return;n.textContent=text;n.className='root-login-message'+(mode?' '+mode:'');}
+function showRootLearnerGate(message='학습자 PIN 4자리를 입력하세요.'){
+  rootLearnerUnlocked=false;rootLearnerLoginBusy=false;
+  $('rootAppShell')?.classList.add('hidden');$('rootLoginGate')?.classList.remove('hidden');
+  const input=$('rootLearnerPin'),button=$('rootLearnerLoginButton');if(input){input.value='';input.classList.remove('error');setTimeout(()=>input.focus(),60);}if(button){button.disabled=false;button.textContent='학습 시작';}
+  setRootLoginMessage(message);
+  const status=$('rootCloudStatus');if(status)status.remove();
+}
+async function unlockRootLearner(){
+  if(rootLearnerLoginBusy)return;const input=$('rootLearnerPin');const value=(input?.value||'').replace(/\D/g,'').slice(0,4);
+  if(value.length!==4||rootLearnerPinHash(value)!==LEARNER_PIN_FNV32){if(input){input.classList.remove('error');void input.offsetWidth;input.classList.add('error');input.select();}setRootLoginMessage('PIN이 올바르지 않습니다. 다시 입력하세요.','error');return;}
+  rootLearnerLoginBusy=true;const button=$('rootLearnerLoginButton');if(button){button.disabled=true;button.textContent='클라우드 진도 확인 중...';}setRootLoginMessage('Firebase의 최신 누적 진도를 불러오는 중입니다.');
+  let cloudOk=false;try{cloudOk=await Promise.race([initRootCloudSync(),new Promise(resolve=>setTimeout(()=>resolve(false),10000))]);}catch(_error){cloudOk=false;}
+  rootLearnerUnlocked=true;$('rootLoginGate')?.classList.add('hidden');$('rootAppShell')?.classList.remove('hidden');
+  applyHubDayParameter();renderHome();sendHub('ready',{...hubDetail(),cloud:cloudOk});retryPendingReports().catch(()=>{});
+  if(!cloudOk)setRootCloudStatus('로컬 저장 · 연결 시 재동기화','local');
+  rootLearnerLoginBusy=false;
+}
+async function lockRootLearner(){
+  try{pauseActiveTimer();persist('manual_lock');if(rootCloud.ready)await writeRootCloud();rootCloud.ref?.off();if(rootCloud.auth?.currentUser)await rootCloud.auth.signOut();}catch(_error){}
+  rootCloud.ready=false;rootCloud.ref=null;rootCloud.pending=false;sessionStorage.removeItem(ADMIN_UNLOCK_KEY);showRootLearnerGate('학습 화면이 잠겼습니다. PIN을 다시 입력하세요.');
+}
 
 const runtime = {
   schedule: null,
@@ -3080,6 +3142,11 @@ function escapeHtml(value) {
 }
 
 function bindEvents() {
+  $('rootLearnerLoginButton').addEventListener('click', unlockRootLearner);
+  $('rootLearnerPin').addEventListener('input', (event) => { event.target.value=event.target.value.replace(/\D/g,'').slice(0,4); event.target.classList.remove('error'); if(event.target.value.length===4)setRootLoginMessage('PIN 확인 준비 완료'); });
+  $('rootLearnerPin').addEventListener('keydown', (event) => { if(event.key==='Enter'){event.preventDefault();unlockRootLearner();} });
+  $('rootLockButton').addEventListener('click', lockRootLearner);
+
   $('startButton').addEventListener('click', startOrResumeSession);
   $('sendCompletionMail').addEventListener('click', sendCompletionReport);
   $('mailGateAdmin').addEventListener('click', requestAdminAccess);
@@ -3148,7 +3215,7 @@ function bindEvents() {
       event.target.value = '';
     }
   });
-  window.addEventListener('pagehide', () => { pauseActiveTimer(); persist('pagehide'); scheduleRootCloudSave('pagehide', true); });
+  window.addEventListener('pagehide', () => { pauseActiveTimer(); persist('pagehide'); if(rootLearnerUnlocked)scheduleRootCloudSave('pagehide', true); });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) pauseActiveTimer();
     else if (!$('sessionScreen').classList.contains('hidden')) {
@@ -3168,13 +3235,10 @@ function bindEvents() {
 async function boot() {
   try {
     await loadData();
-    await Promise.race([initRootCloudSync(), new Promise((resolve)=>setTimeout(()=>resolve(false),7000))]);
-    applyHubDayParameter();
     initEmailJS();
     bindEvents();
-    renderHome();
-    sendHub('ready', hubDetail());
-    retryPendingReports().catch(() => {});
+    showRootLearnerGate();
+    sendHub('ready', {...hubDetail(), locked:true});
   } catch (error) {
     sendHub('error', { message: error.message || '앱을 불러오지 못했습니다.' });
     document.body.innerHTML = `<p style="padding:24px;font-family:system-ui">${escapeHtml(error.message)}</p>`;

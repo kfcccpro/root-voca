@@ -1,17 +1,6 @@
-ROOT VOCA GitHub Pages 업로드 파일
+ROOT CLOUD V7.18 GitHub 업로드
 
-리포지토리: https://github.com/kfcccpro/root-voca
-배포 주소: https://kfcccpro.github.io/root-voca/
-
-업로드할 파일:
-1. index.html (기존 파일 덮어쓰기)
-2. root_18day_SINGLE_FILE.html (기존 보관본 덮어쓰기)
-3. .nojekyll (없으면 추가)
-
-GitHub Pages 설정:
-Settings > Pages > Source: Deploy from a branch
-Branch: main
-Folder: /(root)
-
-커밋 메시지 예시:
-Deploy root_18day V7.16 final
+1. 이 폴더의 index.html, root_18day_SINGLE_FILE.html, .nojekyll을 root-voca 저장소 최상위에 업로드합니다.
+2. 기존 파일을 덮어쓰고 main 브랜치에 커밋합니다.
+3. Actions의 Pages 배포가 초록색 체크인지 확인합니다.
+4. https://kfcccpro.github.io/root-voca/ 접속 시 반드시 8081 PIN 화면부터 나와야 합니다.
