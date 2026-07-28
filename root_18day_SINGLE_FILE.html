@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0E1016">
-  <title>root_18day CLOUD V7.22 SCHEDULE · MAIL AUDIT</title>
+  <title>root_18day CLOUD V7.23 · PROGRESS ONLY</title>
   <meta name="application-name" content="root_18day">
-  <meta name="root-app-build" content="standalone-single-file-v7.22-schedule-mail-audit">
+  <meta name="root-app-build" content="standalone-single-file-v7.23-progress-only">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@ button{cursor:pointer}
 .brand-lockup>div:last-child{display:grid;gap:2px}
 .brand-lockup strong{font-family:var(--disp);font-size:16px;letter-spacing:-.2px}
 .brand-lockup span{font-family:var(--disp);font-size:11px;letter-spacing:1.8px;color:var(--txt3)}
-.icon-button,.ghost,.primary,.danger,.mail-send-button{border:none;border-radius:14px;font-weight:800;transition:.18s var(--ease)}
+.icon-button,.ghost,.primary,.danger{border:none;border-radius:14px;font-weight:800;transition:.18s var(--ease)}
 .icon-button,.ghost{background:var(--panel);border:1px solid var(--line);color:var(--txt2);padding:10px 14px;font-family:var(--disp);font-size:12px;letter-spacing:.7px}
 .icon-button:hover,.ghost:hover{background:var(--panel2);border-color:var(--line2);color:var(--txt);transform:translateY(-1px)}
 .primary{background:var(--grad);color:#fff;padding:15px 22px;box-shadow:0 12px 30px rgba(108,92,231,.35)}
@@ -86,7 +86,6 @@ button{cursor:pointer}
 .home-count{position:relative;z-index:1;font-family:var(--disp);font-weight:600;color:var(--txt2);letter-spacing:.4px}
 .home-start-button{position:relative;z-index:1;width:min(360px,100%);min-height:68px;margin:28px auto 26px;font-family:var(--disp);font-size:20px;letter-spacing:1.4px}
 .notice{width:min(720px,100%);margin-top:14px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--txt2);text-align:center;font-family:var(--disp);font-size:12px;font-weight:700;letter-spacing:.7px}
-.pending-mail-notice{border-color:rgba(255,180,67,.5);color:var(--amber)}
 
 /* Session */
 .session-head{display:flex;align-items:center;gap:16px;max-width:820px;margin:8px auto 16px}
@@ -202,7 +201,6 @@ button{cursor:pointer}
 .completion-card h2{font-family:var(--disp);font-size:34px}
 .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:22px 0}
 .metric-grid>div,.metric-grid article{padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}
-.mail-status{min-height:24px;margin-bottom:14px;color:var(--txt2)}
 
 /* Admin */
 .admin-card{max-width:980px;margin:10px auto;padding:28px;border:1px solid var(--line);border-radius:26px;background:var(--panel)}
@@ -213,8 +211,6 @@ button{cursor:pointer}
 .admin-grid .full{grid-column:1/-1}
 .admin-grid input,.admin-grid select{width:100%;min-height:50px;padding:11px 13px;border:1px solid var(--line);border-radius:13px;background:var(--bg2);color:var(--txt);outline:none}
 .admin-grid input:focus,.admin-grid select:focus{border-color:var(--iris2)}
-.mail-required-admin,.check-row{display:flex;align-items:center;gap:10px;margin-top:14px;padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:var(--bg2);font-size:12px;color:var(--txt2)}
-.mail-required-admin strong{font-family:var(--disp);color:var(--amber);letter-spacing:.7px}
 .button-row{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 26px}
 .button-row button{padding:11px 14px;font-family:var(--disp);font-size:11px;letter-spacing:.5px}
 .admin-summary{display:grid;gap:12px}
@@ -224,22 +220,7 @@ button{cursor:pointer}
 .admin-progress-list{display:grid;gap:8px}
 .admin-progress-list>*{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg2)}
 
-/* Mail gate */
 body.modal-open{overflow:hidden}
-.mail-gate-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:rgba(5,7,12,.88);backdrop-filter:blur(18px)}
-.mail-gate-card{width:min(760px,100%);padding:46px;border:1px solid var(--line2);border-radius:32px;background:linear-gradient(145deg,rgba(108,92,231,.24),rgba(0,229,212,.08),var(--panel));box-shadow:0 40px 120px rgba(0,0,0,.65);text-align:center;outline:none}
-.mail-gate-kicker{display:inline-flex;padding:6px 12px;border-radius:999px;background:rgba(255,180,67,.13);border:1px solid rgba(255,180,67,.35);color:var(--amber);font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:1.3px}
-.mail-gate-card h2{margin:18px 0 22px;font-family:var(--disp);font-size:clamp(34px,7vw,62px);line-height:1;letter-spacing:-2px}
-.mail-gate-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:0 0 20px}
-.mail-gate-metrics>div{padding:13px;border:1px solid var(--line);border-radius:14px;background:rgba(14,16,22,.48)}
-.mail-gate-destination{color:var(--txt2);font-size:13px;word-break:break-all}
-.mail-gate-status{min-height:26px;margin:12px 0;color:var(--amber);font-weight:700}
-.mail-send-button{width:100%;min-height:104px;margin-top:4px;background:var(--grad);color:#fff;font-family:var(--disp);font-size:clamp(20px,4vw,30px);letter-spacing:1px;box-shadow:0 20px 50px rgba(108,92,231,.48)}
-.mail-send-button:hover{transform:translateY(-3px);box-shadow:0 28px 65px rgba(108,92,231,.62)}
-.mail-send-button:disabled{opacity:.55;cursor:wait;transform:none}
-.mail-gate-card{position:relative}.mail-gate-admin-link{position:fixed;top:18px;right:20px;padding:10px 16px;border:1px solid var(--line2);border-radius:12px;background:rgba(14,16,22,.72);color:var(--txt2);font-weight:800;text-decoration:underline;z-index:2}
-.mail-gate-admin-link:hover{color:var(--txt);background:var(--panel2)}
-.mail-gate-card.gate-shake{animation:gateShake .35s linear}
 @keyframes gateShake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 
 @media(max-width:760px){
@@ -257,9 +238,6 @@ body.modal-open{overflow:hidden}
   .admin-card{padding:20px 14px}
   .admin-grid{grid-template-columns:1fr}
   .admin-grid .full{grid-column:auto}
-  .mail-gate-overlay{padding:0}
-  .mail-gate-card{width:100%;min-height:100vh;border-radius:0;padding:42px 18px;display:flex;flex-direction:column;justify-content:center}
-  .mail-send-button{min-height:112px}
 }
 @media(max-width:380px){
   .brand-lockup strong{font-size:14px}
@@ -269,45 +247,17 @@ body.modal-open{overflow:hidden}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* V7.7: one-flow study and unavoidable mail gate */
 .session-head{max-width:900px;margin-top:12px}
 .session-progress-wrap{flex:1}
 .session-labels{font-size:13px}
 .progress-track{height:10px}
 
-.mail-gate-overlay{padding:0;background:rgba(5,7,12,.96);backdrop-filter:blur(24px)}
-.mail-gate-card{width:100%;min-height:100vh;border:none;border-radius:0;padding:clamp(28px,5vw,72px);display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(900px 520px at 50% 5%,rgba(108,92,231,.34),transparent 62%),radial-gradient(700px 460px at 100% 100%,rgba(0,229,212,.18),transparent 60%),var(--bg);box-shadow:none}
-.mail-gate-kicker{font-size:13px;padding:8px 16px}
-.mail-gate-day{margin:18px 0 0;font-family:var(--disp);font-size:clamp(22px,3vw,34px);font-weight:900;letter-spacing:1.4px;color:var(--cyan)}
-.mail-gate-state{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin:0 auto 18px;padding:10px 20px;border:2px solid rgba(255,77,109,.72);border-radius:999px;background:rgba(255,77,109,.12);color:#ff6b87;font-family:var(--disp);font-size:clamp(14px,2vw,20px);font-weight:900;letter-spacing:.5px}
-.mail-gate-card h2{max-width:980px;margin:22px auto 14px;font-size:clamp(44px,8vw,96px);line-height:.98;letter-spacing:-4px}
-.mail-gate-lock{max-width:760px;margin:0 auto 14px;color:var(--txt2);font-size:clamp(18px,2.4vw,26px);font-weight:800;text-align:center}
-.mail-gate-warning{max-width:820px;margin:0 auto 28px;padding:14px 20px;border:2px solid rgba(255,180,67,.62);border-radius:16px;background:rgba(255,180,67,.09);color:var(--amber);font-size:clamp(15px,2vw,20px);font-weight:900;text-align:center}
-.mail-gate-metrics{width:min(1040px,100%);grid-template-columns:repeat(8,1fr);gap:12px;margin-bottom:24px}
-.mail-gate-metrics>div{padding:18px 10px;border-radius:18px}
-.mail-gate-metric{display:grid;gap:6px;text-align:center}
-.mail-gate-metric span{font-family:var(--disp);font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--txt3)}
-.mail-gate-metric strong{font-family:var(--disp);font-size:clamp(20px,3vw,30px);color:var(--txt)}
-.mail-gate-destination{font-size:15px;line-height:1.65}
-.mail-gate-destination strong{font-size:clamp(18px,3vw,26px);color:var(--cyan)}
-.mail-gate-status{font-size:16px;min-height:30px;margin:14px 0}
-.mail-send-button{width:min(980px,100%);min-height:150px;margin-top:8px;border-radius:26px;font-size:clamp(26px,4vw,44px);letter-spacing:-.5px;box-shadow:0 28px 80px rgba(108,92,231,.58);animation:mailPulse 1.7s ease-in-out infinite}
-.mail-send-button:disabled{animation:none}
-@keyframes mailPulse{0%,100%{transform:scale(1);box-shadow:0 28px 80px rgba(108,92,231,.50)}50%{transform:scale(1.015);box-shadow:0 34px 100px rgba(0,229,212,.35)}}
 
 @media(max-width:1100px){
-  .mail-gate-metrics{grid-template-columns:repeat(4,1fr)}
 }
 @media(max-width:900px){
-  .mail-gate-metrics{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:560px){
-  .mail-gate-card{padding:72px 16px 28px}
-  .mail-gate-admin-link{top:14px;right:14px;font-size:12px;padding:8px 11px}
-  .mail-gate-card h2{font-size:clamp(38px,12vw,58px);letter-spacing:-2px}
-  .mail-gate-lock{font-size:17px}
-  .mail-gate-metrics{grid-template-columns:repeat(2,1fr);gap:8px}
-  .mail-send-button{min-height:136px;font-size:clamp(23px,7vw,34px);border-radius:22px}
 }
 
 /* Administrator access gate */
@@ -320,10 +270,8 @@ body.modal-open{overflow:hidden}
 .admin-pin-error{min-height:24px;color:var(--red)!important;font-size:13px}
 .admin-pin-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 
-@media(prefers-reduced-motion:reduce){.mail-send-button{animation:none!important}}
 
 </style>
-  <script async src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
   <noscript><p style="padding:24px;color:white;background:#0E1016;font-family:system-ui">JavaScript를 활성화해야 root_18day를 사용할 수 있습니다.</p></noscript>
@@ -392,7 +340,6 @@ body.modal-open{overflow:hidden}
         <span class="completion-mark">✓</span>
         <h2 id="completionTitle">DAY 01</h2>
         <div id="completionMetrics" class="metric-grid"></div>
-        <p id="mailStatus" class="mail-status"></p>
         <button id="completionConfirm" class="primary large" type="button">OK</button>
       </section>
     </section>
@@ -409,16 +356,12 @@ body.modal-open{overflow:hidden}
           <input id="blockMinutes" type="hidden" value="15">
           <label>START<span class="time-input-wrap"><input id="startTime" type="time" value="19:30"></span></label>
           <label>END<span class="time-input-wrap"><input id="endTime" type="time" value="20:30"></span></label>
-          <label class="full">EMAIL<input id="reportEmail" type="email" value="sk01197375068@gmail.com" readonly></label>
         </div>
 
-        <input id="autoMail" class="hidden" type="checkbox" checked>
-        <div class="mail-required-admin"><strong>MAIL REQUIRED</strong></div>
         <label class="check-row"><input id="shortenMastered" type="checkbox" checked> FAST PASS</label>
 
         <div class="button-row">
           <button id="saveAdmin" class="primary" type="button">SAVE</button>
-          <button id="retryMail" class="ghost" type="button">RETRY MAIL</button>
           <button id="exportProgress" class="ghost" type="button">BACKUP</button>
           <button id="importProgress" class="ghost" type="button">RESTORE</button>
           <button id="selfCheck" class="ghost" type="button">CHECK</button>
@@ -439,7 +382,7 @@ body.modal-open{overflow:hidden}
 
   <section id="adminPinModal" class="admin-pin-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="adminPinTitle">
     <div class="admin-pin-card">
-      <p class="mail-gate-kicker">ADMIN ACCESS</p>
+      <p class="stage-badge">ADMIN ACCESS</p>
       <h2 id="adminPinTitle">관리자 인증</h2>
       <p>관리자 설정과 진도 복원 기능은 PIN 인증 후 열립니다.</p>
       <input id="adminPinInput" class="admin-pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="one-time-code" aria-label="관리자 PIN 4자리">
@@ -448,22 +391,6 @@ body.modal-open{overflow:hidden}
         <button id="cancelAdminPin" class="ghost" type="button">취소</button>
         <button id="confirmAdminPin" class="primary" type="button">관리자 화면 열기</button>
       </div>
-    </div>
-  </section>
-
-  <section id="mailGateModal" class="mail-gate-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mailGateTitle">
-    <div class="mail-gate-card" tabindex="-1">
-      <p class="mail-gate-kicker">DAY REPORT · REQUIRED</p>
-      <p id="mailGateDay" class="mail-gate-day">DAY 01 REPORT</p>
-      <h2 id="mailGateTitle">관리자 보고서<br>이메일 전송 필수</h2>
-      <p id="mailGateIncomplete" class="mail-gate-state">현재 DAY는 아직 미완료입니다</p>
-      <p class="mail-gate-lock">관리자 이메일 전송 성공이 확인되어야 오늘 DAY가 완료됩니다.</p>
-      <p class="mail-gate-warning">전송 실패 시 다음 DAY 이동과 완료 처리가 잠긴 상태로 유지됩니다.</p>
-      <div id="mailGateMetrics" class="mail-gate-metrics"></div>
-      <p class="mail-gate-destination">관리자 이메일<br><strong id="mailGateEmail">sk01197375068@gmail.com</strong></p>
-      <p id="mailGateStatus" class="mail-gate-status" aria-live="assertive"></p>
-      <button id="sendCompletionMail" class="mail-send-button" type="button">관리자에게 이메일 보내고 DAY 완료 확정</button>
-      <button id="mailGateAdmin" class="mail-gate-admin-link" type="button">관리자 PIN으로 전송 상태 진단</button>
     </div>
   </section>
 
@@ -504,7 +431,7 @@ const LEGACY_V3_KEY = 'vocaRoot18StateV3';
 const LEGACY_V2_KEY = 'vocaRoot18StateV2';
 const LEGACY_KEY = 'voca18State';
 const SCHEMA_VERSION = 7;
-const DATA_VERSION = '18day-root-integrated-360x1410-20260727-v7.22';
+const DATA_VERSION = '18day-root-integrated-360x1410-20260727-v7.23';
 const MINI_SET_SIZE = 6;
 const PRE_REVIEW_LIMIT = 8;
 const APP_NAME = 'root_18day';
@@ -523,7 +450,6 @@ function courseSchedule(dayNo) {
   return { day, iso: `${d.getUTCFullYear()}-${mm}-${dd}`, short: `${mm}.${dd}(${weekday})`, weekday, week: Math.floor((day - 1) / 7) + 1 };
 }
 function courseDayLabel(dayNo) { const s = courseSchedule(dayNo); return `DAY ${pad(s.day)} · ${s.short}`; }
-const ADMIN_REPORT_EMAIL = 'sk01197375068@gmail.com';
 const LEARNER_PIN_FNV32 = 1069609042; // 학습자 PIN 8081의 FNV-1a 검증값.
 const ADMIN_PIN_FNV32 = 3475938270; // 관리자 PIN의 FNV-1a 검증값. 평문 PIN은 저장하지 않습니다.
 const ADMIN_UNLOCK_KEY = 'root18AdminUnlocked';
@@ -532,65 +458,9 @@ const WRONG_REINFORCE_HOLD_MS = 5000;
 const WRONG_REVIEW_HOLD_MS = 5000;
 const WRONG_COGNITION_REVEAL_MS = 4000;
 const WRONG_COGNITION_CHAR_RISE_MS = 520;
-const EMAILJS_SERVICE_ID = 'service_v23hns6';
-const EMAILJS_TEMPLATE_ID = 'template_v2zb8ni';
-const EMAILJS_PUBLIC_KEY = 'JJdWMghPhZrilD_ZQ';
 const HUB_APP_ID = 'root_18day';
-let emailJSReady = false;
 let hubProgressTimer = null;
 let hubCompletionSentFor = new Set();
-
-function initEmailJS() {
-  if (!globalThis.emailjs) return false;
-  try {
-    globalThis.emailjs.init(EMAILJS_PUBLIC_KEY);
-    emailJSReady = true;
-    return true;
-  } catch (_error) {
-    emailJSReady = false;
-    return false;
-  }
-}
-
-function rootMailAuditRecord(report, method, sentAt = nowIso()) {
-  const schedule = courseSchedule(report.day);
-  return {
-    app: 'rootVoca',
-    course: '어원 중심 ROOT 18DAY',
-    student: '8081',
-    day: Number(report.day),
-    dayLabel: courseDayLabel(report.day),
-    scheduledDate: schedule.iso,
-    recipient: report.email || ADMIN_REPORT_EMAIL,
-    sentAt,
-    method: method || 'unknown',
-    reportId: report.reportId || '',
-    status: 'provider-accepted',
-    deliveryVerified: false,
-    note: '메일 전송 서비스가 요청을 접수한 상태이며 실제 받은편지함 도착은 관리자 메일함에서 최종 확인합니다.'
-  };
-}
-async function saveRootMailAudit(report, method, sentAt = nowIso()) {
-  const record = rootMailAuditRecord(report, method, sentAt);
-  const ds = dayState(Number(report.day));
-  ds.mailRecipient = record.recipient;
-  ds.mailMethod = record.method;
-  ds.mailReportId = record.reportId;
-  ds.mailAcceptedAt = record.sentAt;
-  ds.mailDeliveryStatus = record.status;
-  ds.mailDeliveryVerified = false;
-  try {
-    if (rootCloud.db && rootCloud.auth?.currentUser) {
-      await rootCloud.db.ref(`singleStudent/8081/mailReports/rootVoca/day${pad(report.day)}`).set(record);
-      ds.mailAuditSavedAt = nowIso();
-    }
-  } catch (error) {
-    console.warn('ROOT 메일 증빙 저장 실패', error);
-    ds.mailAuditError = String(error?.message || error);
-  }
-  persist('mail_audit');
-  return record;
-}
 
 function hubEnabled() {
   try { return globalThis.parent && globalThis.parent !== globalThis; } catch (_error) { return false; }
@@ -605,12 +475,8 @@ function hubDetail(dayNo = runtime.state?.currentDay || 0) {
       totalDays: totalDays(),
       activeReview: runtime.state ? activeReviewEntries().length : 0,
       permanentWrong: runtime.state ? Object.keys(runtime.state.wrongHistory || {}).length : 0,
+      dayDone: Boolean(ds?.completedAt),
       completedAt: ds?.completedAt || null,
-      mailConfirmedAt: ds?.mailConfirmedAt || null,
-      mailRecipient: ds?.mailRecipient || ADMIN_REPORT_EMAIL,
-      mailMethod: ds?.mailMethod || null,
-      mailReportId: ds?.mailReportId || null,
-      mailDeliveryStatus: ds?.mailDeliveryStatus || null,
       startedAt: ds?.startedAt || null,
       completedBlocks: Array.isArray(ds?.completedBlocks) ? ds.completedBlocks.length : 0,
       phase: ds?.phase || 'root',
@@ -681,7 +547,27 @@ function validHubLearnerSession(){
 const rootCloud={ready:false,app:null,auth:null,db:null,ref:null,timer:null,lastWriteAt:0,lastWriteId:'',applying:false,writing:false,pending:false};
 function setRootCloudStatus(text,mode='wait'){let n=document.getElementById('rootCloudStatus');if(!n){n=document.createElement('div');n.id='rootCloudStatus';n.setAttribute('aria-live','polite');Object.assign(n.style,{position:'fixed',right:'12px',bottom:'12px',zIndex:'520',padding:'8px 12px',borderRadius:'999px',fontSize:'12px',fontWeight:'800',boxShadow:'0 8px 28px rgba(0,0,0,.35)',backdropFilter:'blur(10px)',maxWidth:'calc(100vw - 24px)',whiteSpace:'nowrap'});document.body.appendChild(n);}const p={ok:['rgba(43,227,138,.16)','#2BE38A','rgba(43,227,138,.45)'],error:['rgba(255,77,109,.16)','#FF6B86','rgba(255,77,109,.45)'],local:['rgba(255,180,67,.15)','#FFB443','rgba(255,180,67,.4)'],wait:['rgba(108,92,231,.18)','#A99EFF','rgba(108,92,231,.42)']}[mode];n.textContent=text;n.style.background=p[0];n.style.color=p[1];n.style.border='1px solid '+p[2];}
 function rootCloudEnvelope(state,writeId){return{app:'rootVoca',student:'8081',schemaVersion:1,stateVersion:DATA_VERSION,updatedAt:nowIso(),deviceId:state.deviceId||createDeviceId(),writeId,state:JSON.parse(JSON.stringify(sanitizeState(state)))};}
-function rootCloudMerge(left,right){const a=sanitizeState(left||defaultState()),b=sanitizeState(right||defaultState());const candidates=[{state:a,metrics:progressMetrics(a)},{state:b,metrics:progressMetrics(b)}].sort(compareProgress);const merged=mergeProgressStates(candidates[0].state,candidates.slice(1));for(let d=1;d<=totalDays();d++){const md=dayStateWith(merged,d),ad=dayStateWith(a,d),bd=dayStateWith(b,d);md.mailConfirmedAt=[ad.mailConfirmedAt,bd.mailConfirmedAt].filter(Boolean).sort().pop()||null;md.completionRequestedAt=[ad.completionRequestedAt,bd.completionRequestedAt].filter(Boolean).sort().pop()||null;if(md.mailConfirmedAt){md.mailGateStatus='sent';md.mailGateError='';md.forced=false;md.completedAt=md.completedAt||md.mailConfirmedAt;if(!merged.completedDays.includes(d))merged.completedDays.push(d);}else{const statuses=[ad.mailGateStatus,bd.mailGateStatus];if(statuses.includes('sending'))md.mailGateStatus='ready';else if(statuses.includes('error'))md.mailGateStatus='error';}md.elapsedSeconds=Math.max(+ad.elapsedSeconds||0,+bd.elapsedSeconds||0);md.postCourseSeconds=Math.max(+ad.postCourseSeconds||0,+bd.postCourseSeconds||0);}merged.completedDays=[...new Set(merged.completedDays.map(Number))].sort((x,y)=>x-y);merged.currentDay=Math.max(1,Math.min(totalDays(),Math.max(+a.currentDay||1,+b.currentDay||1)));merged.revision=Math.max(+a.revision||0,+b.revision||0);merged.updatedAt=new Date(Math.max(Date.parse(a.updatedAt||0)||0,Date.parse(b.updatedAt||0)||0,Date.now())).toISOString();return sanitizeState(merged);}
+function rootCloudMerge(left,right){
+  const a=sanitizeState(left||defaultState()),b=sanitizeState(right||defaultState());
+  const candidates=[{state:a,metrics:progressMetrics(a)},{state:b,metrics:progressMetrics(b)}].sort(compareProgress);
+  const merged=mergeProgressStates(candidates[0].state,candidates.slice(1));
+  for(let d=1;d<=totalDays();d++){
+    const md=dayStateWith(merged,d),ad=dayStateWith(a,d),bd=dayStateWith(b,d);
+    md.elapsedSeconds=Math.max(+ad.elapsedSeconds||0,+bd.elapsedSeconds||0);
+    md.postCourseSeconds=Math.max(+ad.postCourseSeconds||0,+bd.postCourseSeconds||0);
+    const complete=Boolean(md.completedAt||ad.completedAt||bd.completedAt||md.completedBlocks.length>=4||ad.completedBlocks.length>=4||bd.completedBlocks.length>=4);
+    if(complete){
+      md.completedBlocks=[0,1,2,3];
+      md.completedAt=[md.completedAt,ad.completedAt,bd.completedAt,ad.completionRequestedAt,bd.completionRequestedAt].filter(Boolean).sort()[0]||nowIso();
+      if(!merged.completedDays.includes(d))merged.completedDays.push(d);
+    }
+  }
+  merged.completedDays=[...new Set(merged.completedDays.map(Number))].sort((x,y)=>x-y);
+  merged.currentDay=Math.max(1,Math.min(totalDays(),Math.max(+a.currentDay||1,+b.currentDay||1)));
+  merged.revision=Math.max(+a.revision||0,+b.revision||0);
+  merged.updatedAt=new Date(Math.max(Date.parse(a.updatedAt||0)||0,Date.parse(b.updatedAt||0)||0,Date.now())).toISOString();
+  return sanitizeState(merged);
+}
 function applyRootCloudState(next,message){rootCloud.applying=true;try{runtime.state=rootCloudMerge(runtime.state,next);runtime.state.sync={...(runtime.state.sync||{}),status:'cloud-synced',lastVerifiedAt:nowIso(),error:''};const prev=localStorage.getItem(APP_KEY);if(prev)localStorage.setItem(BACKUP_KEY,prev);localStorage.setItem(APP_KEY,JSON.stringify(runtime.state));preserveRecoveryState(runtime.state,progressMetrics(runtime.state));if(message)console.info(message);if($('learnerHome')&&!$('learnerHome').classList.contains('hidden'))renderHome();else if($('adminView')&&!$('adminView').classList.contains('hidden'))renderAdmin();}finally{rootCloud.applying=false;}}
 function scheduleRootCloudSave(reason='state',force=false){if(rootCloud.applying)return;if(!rootCloud.ready||!rootCloud.ref){rootCloud.pending=true;return;}rootCloud.pending=false;clearTimeout(rootCloud.timer);const elapsed=Date.now()-rootCloud.lastWriteAt;const immediate=force||/complete|mail|import|admin|pagehide/.test(String(reason));const delay=immediate?120:Math.max(1800,12000-elapsed);rootCloud.timer=setTimeout(writeRootCloud,delay);}
 async function writeRootCloud(){if(!rootCloud.ready||rootCloud.writing||!rootCloud.ref||!runtime.state)return;rootCloud.writing=true;const localSnapshot=sanitizeState(JSON.parse(JSON.stringify(runtime.state)));const writeId=(localSnapshot.deviceId||'root')+'-'+Date.now().toString(36);rootCloud.lastWriteId=writeId;setRootCloudStatus('☁ 진도 저장 중','wait');try{await rootCloud.ref.transaction(current=>rootCloudEnvelope(current&&current.state?rootCloudMerge(localSnapshot,current.state):localSnapshot,writeId));rootCloud.lastWriteAt=Date.now();runtime.state.sync={...(runtime.state.sync||{}),status:'cloud-synced',lastVerifiedAt:nowIso(),error:''};localStorage.setItem(APP_KEY,JSON.stringify(runtime.state));setRootCloudStatus('✓ 클라우드 진도 저장됨','ok');}catch(e){console.warn('ROOT 클라우드 저장 실패',e);rootCloud.pending=true;runtime.state.sync={...(runtime.state.sync||{}),status:'local-safe',lastVerifiedAt:nowIso(),error:String(e?.message||e)};setRootCloudStatus('로컬 저장 · 연결 시 재동기화','local');}finally{rootCloud.writing=false;}}
@@ -707,7 +593,7 @@ async function unlockRootLearner(options={}){
   rootLearnerLoginBusy=true;const button=$('rootLearnerLoginButton');if(button){button.disabled=true;button.textContent='클라우드 진도 확인 중...';}setRootLoginMessage('Firebase의 최신 누적 진도를 불러오는 중입니다.');
   let cloudOk=false;try{cloudOk=await Promise.race([initRootCloudSync(),new Promise(resolve=>setTimeout(()=>resolve(false),10000))]);}catch(_error){cloudOk=false;}
   rootLearnerUnlocked=true;$('rootLoginGate')?.classList.add('hidden');$('rootAppShell')?.classList.remove('hidden');
-  applyHubDayParameter();renderHome();sendHub('ready',{...hubDetail(),cloud:cloudOk});retryPendingReports().catch(()=>{});
+  applyHubDayParameter();renderHome();sendHub('ready',{...hubDetail(),cloud:cloudOk});
   if(!cloudOk)setRootCloudStatus('로컬 저장 · 연결 시 재동기화','local');
   rootLearnerLoginBusy=false;
 }
@@ -758,8 +644,6 @@ function defaultState() {
     settings: {
       start: '19:30',
       end: '20:30',
-      email: ADMIN_REPORT_EMAIL,
-      autoMail: true,
       shortenMastered: true,
       blockMinutes: 15,
       preReviewLimit: PRE_REVIEW_LIMIT,
@@ -773,8 +657,6 @@ function defaultState() {
     spellingNotebook: {},
     wrongHistory: {},
     reviewSchedule: {},
-    pendingReports: [],
-    sentReportIds: [],
     sessions: [],
     sync: { status: 'local-safe', lastVerifiedAt: null, error: '' },
     migrationNotice: '',
@@ -849,17 +731,6 @@ function dayState(dayNo) {
       answers: {},
       forced: false,
       completionRequestedAt: null,
-      mailConfirmedAt: null,
-      mailRecipient: null,
-      mailMethod: null,
-      mailReportId: null,
-      mailAcceptedAt: null,
-      mailDeliveryStatus: null,
-      mailDeliveryVerified: false,
-      mailAuditSavedAt: null,
-      mailAuditError: '',
-      mailGateStatus: 'idle',
-      mailGateError: '',
     };
   }
   return runtime.state.days[key];
@@ -909,17 +780,6 @@ function blankDayState() {
     answers: {},
     forced: false,
     completionRequestedAt: null,
-    mailConfirmedAt: null,
-    mailRecipient: null,
-    mailMethod: null,
-    mailReportId: null,
-    mailAcceptedAt: null,
-    mailDeliveryStatus: null,
-    mailDeliveryVerified: false,
-    mailAuditSavedAt: null,
-    mailAuditError: '',
-    mailGateStatus: 'idle',
-    mailGateError: '',
   };
 }
 
@@ -962,17 +822,8 @@ function sanitizeDayState(raw = {}) {
   out.postCourseSeconds = Math.max(0, Number(out.postCourseSeconds || 0));
   out.postCourseStartedAt = out.postCourseStartedAt || null;
   out.completionRequestedAt = out.completionRequestedAt || null;
-  out.mailConfirmedAt = out.mailConfirmedAt || null;
-  out.mailRecipient = out.mailRecipient || null;
-  out.mailMethod = out.mailMethod || null;
-  out.mailReportId = out.mailReportId || null;
-  out.mailAcceptedAt = out.mailAcceptedAt || null;
-  out.mailDeliveryStatus = out.mailDeliveryStatus || null;
-  out.mailDeliveryVerified = Boolean(out.mailDeliveryVerified);
-  out.mailAuditSavedAt = out.mailAuditSavedAt || null;
-  out.mailAuditError = typeof out.mailAuditError === 'string' ? out.mailAuditError : '';
-  out.mailGateStatus = ['idle','ready','sending','error','sent'].includes(out.mailGateStatus) ? out.mailGateStatus : 'idle';
-  out.mailGateError = typeof out.mailGateError === 'string' ? out.mailGateError : '';
+  if (!out.completedAt && out.completedBlocks.length >= 4) out.completedAt = out.completionRequestedAt || nowIso();
+  ['mailConfirmedAt','mailRecipient','mailMethod','mailReportId','mailAcceptedAt','mailDeliveryStatus','mailDeliveryVerified','mailAuditSavedAt','mailAuditError','mailGateStatus','mailGateError'].forEach((key) => { delete out[key]; });
   out.answers = out.answers && typeof out.answers === 'object' ? out.answers : {};
   const stats = out.stats && typeof out.stats === 'object' ? out.stats : {};
   out.stats = {
@@ -999,8 +850,8 @@ function sanitizeState(raw) {
   out.eventCounter = Math.max(0, Number(out.eventCounter || 0));
   out.eventLog = Array.isArray(out.eventLog) ? out.eventLog.slice(-2500) : [];
   out.settings = { ...defaultState().settings, ...(raw?.settings || {}) };
-  out.settings.email = ADMIN_REPORT_EMAIL;
-  out.settings.autoMail = true;
+  delete out.settings.email; delete out.settings.autoMail;
+  delete out.pendingReports; delete out.sentReportIds;
   out.settings.blockMinutes = [12, 15, 18].includes(Number(out.settings.blockMinutes))
     ? Number(out.settings.blockMinutes) : 15;
   out.settings.preReviewLimit = clamp(Number(out.settings.preReviewLimit || PRE_REVIEW_LIMIT), 1, 15);
@@ -1011,8 +862,6 @@ function sanitizeState(raw) {
   out.currentDay = clamp(Number(out.currentDay || 1), 1, totalDays());
   out.completedDays = [...new Set((Array.isArray(out.completedDays) ? out.completedDays : [])
     .map(Number).filter((n) => Number.isInteger(n) && n >= 1 && n <= totalDays()))].sort((a, b) => a - b);
-  out.pendingReports = Array.isArray(out.pendingReports) ? out.pendingReports : [];
-  out.sentReportIds = Array.isArray(out.sentReportIds) ? [...new Set(out.sentReportIds.map(String))] : [];
   out.mastery = out.mastery && typeof out.mastery === 'object' ? out.mastery : {};
   out.days = out.days && typeof out.days === 'object' ? out.days : {};
   out.spellingNotebook = out.spellingNotebook && typeof out.spellingNotebook === 'object' ? out.spellingNotebook : {};
@@ -1054,8 +903,6 @@ function migrateScheduleState(raw) {
   const base = defaultState();
   base.settings = { ...base.settings, ...(raw?.settings || {}) };
   base.mastery = raw?.mastery && typeof raw.mastery === 'object' ? raw.mastery : {};
-  base.pendingReports = Array.isArray(raw?.pendingReports) ? raw.pendingReports : [];
-  base.sentReportIds = Array.isArray(raw?.sentReportIds) ? raw.sentReportIds : [];
   base.spellingNotebook = raw?.spellingNotebook && typeof raw.spellingNotebook === 'object' ? raw.spellingNotebook : {};
 
   const answerMap = {};
@@ -1198,7 +1045,6 @@ function cumulativeLearningSummary(state = runtime.state) {
   const totalWords = runtime.content?.units?.reduce((sum, unit) => sum + (unit.words?.length || 0), 0) || 1410;
   const activeReviews = state ? Object.values(state.reviewSchedule || {}).filter((entry) => entry && entry.status === 'ACTIVE').length : 0;
   const permanentWrong = state ? Object.keys(state.wrongHistory || {}).length : 0;
-  const sentDays = state ? runtime.schedule.days.filter((d) => Boolean(dayStateWith(state, d.new_day).mailConfirmedAt)).length : 0;
   return {
     answered: metrics.answered,
     totalWords,
@@ -1206,7 +1052,6 @@ function cumulativeLearningSummary(state = runtime.state) {
     totalDays: totalDays(),
     activeReviews,
     permanentWrong,
-    sentDays,
     updatedAt: state?.updatedAt || null,
     storageStatus: state?.sync?.status || 'local-safe',
   };
@@ -1223,8 +1068,6 @@ function compareProgress(a, b) {
 
 function mergeProgressStates(primary, candidates) {
   const merged = sanitizeState(JSON.parse(JSON.stringify(primary)));
-  const reportIds = new Set((merged.pendingReports || []).map((item) => String(item?.reportId || '')));
-  const sentIds = new Set((merged.sentReportIds || []).map(String));
   const sessionIds = new Set((merged.sessions || []).map((item) => String(item?.sessionId || '')));
 
   candidates.forEach((candidate) => {
@@ -1277,18 +1120,12 @@ function mergeProgressStates(primary, candidates) {
       const current = merged.reviewSchedule[wordId];
       if (!current || String(value?.updatedAt || '') > String(current?.updatedAt || '')) merged.reviewSchedule[wordId] = value;
     });
-    (other.pendingReports || []).forEach((item) => {
-      const id = String(item?.reportId || '');
-      if (id && !reportIds.has(id)) { merged.pendingReports.push(item); reportIds.add(id); }
-    });
-    (other.sentReportIds || []).forEach((id) => sentIds.add(String(id)));
     (other.sessions || []).forEach((item) => {
       const id = String(item?.sessionId || '');
       if (id && !sessionIds.has(id)) { merged.sessions.push(item); sessionIds.add(id); }
     });
   });
   merged.completedDays = [...new Set(merged.completedDays.map(Number))].filter((n)=>n>=1&&n<=totalDays()).sort((a,b)=>a-b);
-  merged.sentReportIds = [...sentIds];
   merged.sessions = merged.sessions.slice(-300);
   merged.dataVersion = DATA_VERSION;
   return sanitizeState(merged);
@@ -1648,10 +1485,6 @@ function renderHome() {
   const dayNo = runtime.state.currentDay;
   const d = currentDayDef(dayNo);
   const ds = dayState(dayNo);
-  if (isMailGateRequired(dayNo)) {
-    requestAnimationFrame(() => openMailGate(dayNo));
-    return;
-  }
   const completedBlocks = ds.completedBlocks.length;
   const completedWords = totalCompletedWords(dayNo);
   const dueReviews = selectDueReviews(Number(runtime.state.settings.preReviewLimit || PRE_REVIEW_LIMIT));
@@ -1659,7 +1492,6 @@ function renderHome() {
   const postCourseDue = courseStudyCompleted && dueReviews.length > 0;
   const courseCompleted = courseStudyCompleted && !postCourseDue;
   const hasProgress = ds.completedBlocks.length > 0 || Object.keys(ds.answers || {}).length > 0 || ds.unitIndex > 0 || ds.wordIndex > 0;
-  const awaitingMail = ds.completedBlocks.length >= 4 && !ds.completedAt;
 
   $('todayTitle').textContent = courseDayLabel(dayNo);
   const homeDay = $('homeDayNumber'); if (homeDay) homeDay.textContent = pad(dayNo);
@@ -1679,11 +1511,10 @@ function renderHome() {
       ['자동 저장', saveOk ? '정상' : '점검 필요'],
     ].map(([label, value], index) => `<div class="${index === 3 ? (saveOk ? 'save-ok' : 'save-error') : ''}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
   }
-  $('startButton').textContent = postCourseDue ? 'REVIEW' : courseCompleted ? 'COMPLETE' : awaitingMail ? 'SEND REPORT' : hasProgress ? 'CONTINUE' : 'START';
+  $('startButton').textContent = postCourseDue ? 'REVIEW' : courseCompleted ? 'COMPLETE' : hasProgress ? 'CONTINUE' : 'START';
   $('startButton').disabled = courseCompleted;
 
   const notice = $('resumeNotice');
-  notice.classList.remove('pending-mail-notice');
   if (postCourseDue) {
     notice.classList.remove('hidden'); notice.textContent = `REVIEW ${dueReviews.length}`;
   } else if (courseCompleted) {
@@ -1692,8 +1523,6 @@ function renderHome() {
     notice.classList.remove('hidden'); notice.textContent = 'DATA UPDATED';
     runtime.state.migrationNotice = '';
     persist();
-  } else if (awaitingMail) {
-    notice.classList.remove('hidden'); notice.classList.add('pending-mail-notice'); notice.textContent = 'REPORT REQUIRED';
   } else if ((ds.firstStartedAt || hasProgress) && !ds.completedAt) {
     notice.classList.remove('hidden'); notice.textContent = `${completedWords} / ${d.words}`;
   } else if (dueReviews.length) {
@@ -1750,7 +1579,8 @@ async function startOrResumeSession() {
     return;
   }
   if (ds.completedBlocks.length >= 4) {
-    openMailGate(dayNo);
+    finalizeDayRecord(dayNo, false);
+    renderCompletion(dayNo);
     return;
   }
   if (!ds.firstStartedAt) ds.firstStartedAt = nowIso();
@@ -2699,95 +2529,14 @@ function completeCurrentBlock() {
   if (completed >= 4) {
     ds.phase = 'word';
     persist('day_content_complete');
-    openMailGate(runtime.state.currentDay);
+    finalizeDayRecord(runtime.state.currentDay, false);
+    renderCompletion(runtime.state.currentDay);
     return;
   }
   ds.block = completed;
   ds.phase = 'root';
   persist('continuous_day_advance');
   renderSessionStep();
-}
-
-function isMailGateRequired(dayNo = runtime.state.currentDay) {
-  if (!runtime.state) return false;
-  const ds = dayState(dayNo);
-  return ds.completedBlocks.length >= 4 && !ds.completedAt;
-}
-
-function reinforceMailGate() {
-  const modal = $('mailGateModal');
-  const card = modal?.querySelector('.mail-gate-card');
-  const send = $('sendCompletionMail');
-  if (card) {
-    card.classList.remove('mail-gate-shake');
-    void card.offsetWidth;
-    card.classList.add('mail-gate-shake');
-  }
-  const status = $('mailGateStatus');
-  if (status && isMailGateRequired()) {
-    status.className = 'mail-gate-status mandatory';
-    status.textContent = '관리자 이메일 전송 성공이 확인되어야 DAY가 완료됩니다';
-  }
-  send?.focus();
-}
-
-function prepareCompletion(dayNo) {
-  const ds = dayState(dayNo);
-  if (ds.completedBlocks.length < 4) throw new Error('오늘의 단어 학습을 모두 완료해야 관리자 보고를 보낼 수 있습니다.');
-  pauseActiveTimer();
-  if (!ds.completionRequestedAt) ds.completionRequestedAt = nowIso();
-  if (!ds.mailGateStatus || ds.mailGateStatus === 'idle') ds.mailGateStatus = 'ready';
-  persist();
-  return buildReport(dayNo, true);
-}
-
-function openMailGate(dayNo = runtime.state.currentDay) {
-  const ds = dayState(dayNo);
-  if (ds.completedAt) {
-    renderCompletion(dayNo);
-    return;
-  }
-  const report = prepareCompletion(dayNo);
-  const summary = report.summary;
-  $('mailGateEmail').textContent = ADMIN_REPORT_EMAIL;
-  if ($('mailGateDay')) $('mailGateDay').textContent = `${courseDayLabel(dayNo)} · REPORT`;
-  if ($('mailGateIncomplete')) $('mailGateIncomplete').textContent = `${courseDayLabel(dayNo)} · 관리자 보고 전송 대기 · 아직 미완료`;
-  $('mailGateMetrics').innerHTML = [
-    ['학습 단어', `${summary.words}`],
-    ['응답', `${summary.attempted}`],
-    ['정답', `${summary.correct}`],
-    ['오답', `${summary.wrong}`],
-    ['정확도', summary.accuracy == null ? '-' : `${summary.accuracy}%`],
-    ['활성 복습', `${summary.active_review_count}`],
-    ['D+1', `${summary.d1_due}`],
-    ['D+3 / D+6', `${summary.d3_due} / ${summary.d6_due}`],
-  ].map(([label, value]) => `<div class="mail-gate-metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
-  const status = $('mailGateStatus');
-  status.className = 'mail-gate-status';
-  status.textContent = ds.mailGateStatus === 'error'
-    ? (ds.mailGateError || 'SEND FAILED')
-    : '관리자 이메일 전송 성공이 확인되어야 DAY가 완료됩니다';
-  if (ds.mailGateStatus === 'error') status.classList.add('error');
-  const send = $('sendCompletionMail');
-  send.disabled = false;
-  send.textContent = `필수: ${courseDayLabel(dayNo)} 관리자 이메일 보내고 완료 확정`;
-  $('mailGateModal').classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  sendHub('mail-required', hubDetail(dayNo));
-  requestAnimationFrame(() => {
-    send.scrollIntoView({ block: 'center', behavior: 'instant' });
-    send.focus();
-  });
-}
-
-function closeMailGate(force = false) {
-  if (!force && isMailGateRequired()) {
-    reinforceMailGate();
-    return false;
-  }
-  $('mailGateModal').classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  return true;
 }
 
 function finalizeDayRecord(dayNo, forced = false) {
@@ -2798,8 +2547,6 @@ function finalizeDayRecord(dayNo, forced = false) {
     ds.completedAt = nowIso();
     ds.forced = Boolean(forced);
     ds.completedBlocks = [0, 1, 2, 3];
-    ds.mailGateStatus = forced ? 'idle' : 'sent';
-    if (!forced) ds.mailConfirmedAt = nowIso();
     if (!runtime.state.completedDays.includes(dayNo)) runtime.state.completedDays.push(dayNo);
     runtime.state.completedDays.sort((a, b) => a - b);
     const session = runtime.state.sessions.find((item) => item.sessionId === runtime.activeSessionId);
@@ -2808,79 +2555,21 @@ function finalizeDayRecord(dayNo, forced = false) {
     runtime.activeSessionId = null;
   }
   persist('day_complete');
-  if (newlyCompleted && !forced) notifyHubComplete(dayNo);
+  if (newlyCompleted) notifyHubComplete(dayNo);
 }
 
-async function sendCompletionReport() {
+async function finishDay(forced = false) {
   const dayNo = runtime.state.currentDay;
   const ds = dayState(dayNo);
-  if (!ADMIN_REPORT_EMAIL) {
-    const status = $('mailGateStatus');
-    status.className = 'mail-gate-status error';
-    status.textContent = 'EMAIL REQUIRED';
-    return;
-  }
-  const report = prepareCompletion(dayNo);
-  report.requiresCompletion = true;
-  ds.mailGateStatus = 'sending';
-  ds.mailGateError = '';
-  persist();
-  const send = $('sendCompletionMail');
-  const status = $('mailGateStatus');
-  send.disabled = true;
-  send.textContent = 'SENDING...';
-  status.className = 'mail-gate-status sending';
-  status.textContent = 'SENDING';
-  const result = await queueOrSendReport(report);
-  if (result.ok) {
-    ds.mailGateStatus = 'sent';
-    ds.mailGateError = '';
-    await saveRootMailAudit(report, result.method || 'unknown');
-    finalizeDayRecord(dayNo, false);
-    status.className = 'mail-gate-status success';
-    status.textContent = `전송 요청 접수 완료 ✓ ${courseDayLabel(dayNo)} 완료가 확정되었습니다`;
-    send.textContent = `${courseDayLabel(dayNo)} 보고서 전송 접수 완료 ✓`;
-    persist();
-    const audit = rootMailAuditRecord(report, result.method || 'unknown', ds.mailAcceptedAt || nowIso());
-    status.textContent = `전송 요청 접수 완료 ✓ ${audit.recipient} · ${audit.method} · ${audit.reportId}`;
-    setTimeout(() => {
-      closeMailGate(true);
-      renderCompletion(dayNo);
-    }, 1050);
-    return;
-  }
-  ds.mailGateStatus = 'error';
-  ds.mailGateError = `메일 전송 실패: ${result.error || '배포 환경과 메일 설정을 확인하세요.'}`;
-  persist();
-  send.disabled = false;
-  send.textContent = `${courseDayLabel(dayNo)} 보고서 이메일 다시 보내기`;
-  status.className = 'mail-gate-status error';
-  status.textContent = `${ds.mailGateError} DAY는 아직 미완료 상태입니다.`;
-}
-
-async function finishDay(forced) {
-  const dayNo = runtime.state.currentDay;
-  const ds = dayState(dayNo);
-  if (!forced) {
-    openMailGate(dayNo);
-    return;
-  }
-  if (ds.completedBlocks.length < 4 && !ds.completedAt) {
-    ds.completedBlocks = [0, 1, 2, 3];
-  }
-  if (!ds.completionRequestedAt) ds.completionRequestedAt = nowIso();
-  finalizeDayRecord(dayNo, true);
-  const report = buildReport(dayNo, false);
-  report.forced = true;
-  queueOrSendReport(report).catch(() => {});
+  if (ds.completedBlocks.length < 4 && !forced) return;
+  if (forced) ds.completedBlocks = [0, 1, 2, 3];
+  finalizeDayRecord(dayNo, forced);
   renderCompletion(dayNo);
 }
 
-function buildReport(dayNo, requiresCompletion = false) {
+function buildReport(dayNo) {
   const d = currentDayDef(dayNo);
   const ds = dayState(dayNo);
-  const reportTime = ds.completedAt || ds.completionRequestedAt || nowIso();
-  const reportId = `18day-root-${dayNo}-${reportTime.slice(0, 19).replace(/\D/g, '')}`;
   const wrongWords = Object.entries(ds.answers || {})
     .filter(([, result]) => result === 'wrong')
     .map(([wordId]) => findWordById(wordId)?.word)
@@ -2891,139 +2580,26 @@ function buildReport(dayNo, requiresCompletion = false) {
     return acc;
   }, {});
   return {
-    reportId,
-    appName: APP_NAME,
-    schemaVersion: SCHEMA_VERSION,
-    revision: runtime.state.revision,
-    requiresCompletion,
-    email: ADMIN_REPORT_EMAIL,
     day: dayNo,
     dayLabel: courseDayLabel(dayNo),
     scheduledDate: courseSchedule(dayNo).iso,
     startedAt: ds.firstStartedAt,
-    completedAt: ds.completedAt || ds.completionRequestedAt,
+    completedAt: ds.completedAt,
     forced: ds.forced,
     summary: {
-      roots: d.roots,
-      words: d.words,
-      source_day_range: d.source_day_range,
+      roots: d.roots, words: d.words, source_day_range: d.source_day_range,
       elapsed_minutes: Math.max(1, Math.round(ds.elapsedSeconds / 60)),
-      attempted: ds.stats.attempted,
-      correct: ds.stats.correct,
-      wrong: ds.stats.wrong,
-      typed: ds.stats.typed,
-      review_attempted: ds.stats.reviewAttempted,
-      review_correct: ds.stats.reviewCorrect,
-      review_wrong: ds.stats.reviewWrong,
+      attempted: ds.stats.attempted, correct: ds.stats.correct, wrong: ds.stats.wrong,
+      typed: ds.stats.typed, review_attempted: ds.stats.reviewAttempted,
+      review_correct: ds.stats.reviewCorrect, review_wrong: ds.stats.reviewWrong,
       accuracy: ds.stats.attempted ? Math.round((ds.stats.correct / ds.stats.attempted) * 100) : null,
-      wrong_words: wrongWords,
-      permanent_wrong_count: Object.keys(runtime.state.wrongHistory || {}).length,
-      active_review_count: activeReviews.length,
-      d1_due: stageCounts.D1_DUE || 0,
-      d3_due: stageCounts.D3_DUE || 0,
-      d6_due: stageCounts.D6_DUE || 0,
-      focus_care: stageCounts.FOCUS_CARE || 0,
-      pending_spelling: pendingSpellingIds().length,
+      wrong_words: wrongWords, permanent_wrong_count: Object.keys(runtime.state.wrongHistory || {}).length,
+      active_review_count: activeReviews.length, d1_due: stageCounts.D1_DUE || 0,
+      d3_due: stageCounts.D3_DUE || 0, d6_due: stageCounts.D6_DUE || 0,
+      focus_care: stageCounts.FOCUS_CARE || 0, pending_spelling: pendingSpellingIds().length,
       event_count: runtime.state.eventLog.length,
     },
   };
-}
-
-
-function emailJsReportPayload(report) {
-  const summary = report.summary || {};
-  const wrongWords = Array.isArray(summary.wrong_words) ? summary.wrong_words.join(', ') : '';
-  const text = [
-    `[root_18day · ${courseDayLabel(report.day)} 완료 보고]`,
-    `예정일: ${courseSchedule(report.day).iso} · ${courseSchedule(report.day).weekday}요일`,
-    `보고 시각: ${new Date().toLocaleString('ko-KR')}`,
-    `ROOT: ${summary.roots || 0}개`,
-    `단어: ${summary.words || 0}개`,
-    `정답률: ${summary.accuracy == null ? '미측정' : `${summary.accuracy}%`}`,
-    `오답: ${summary.wrong || 0}개`,
-    `학습시간: ${summary.elapsed_minutes || 0}분`,
-    `활성 복습: ${summary.active_review_count || 0}개`,
-    `D+1: ${summary.d1_due || 0}개 · D+3: ${summary.d3_due || 0}개 · D+6: ${summary.d6_due || 0}개`,
-    `영구 오답노트: ${summary.permanent_wrong_count || 0}개`,
-    wrongWords ? `오답 단어: ${wrongWords}` : '오답 단어: 없음',
-    `보고서 ID: ${report.reportId || ''}`,
-  ].join('\n');
-  return {
-    to_email: report.email || ADMIN_REPORT_EMAIL,
-    user_name: '학습자',
-    report_date: new Date().toLocaleString('ko-KR'),
-    day: report.day,
-    day_label: courseDayLabel(report.day),
-    scheduled_date: courseSchedule(report.day).iso,
-    course_name: '어원 중심 ROOT 18DAY',
-    report_id: report.reportId || '',
-    delivery_status: 'provider-accepted',
-    progress: Math.round(((runtime.state?.completedDays?.length || 0) / totalDays()) * 100),
-    mastered: runtime.state ? Object.keys(runtime.state.mastery || {}).length : 0,
-    accuracy: summary.accuracy == null ? 0 : summary.accuracy,
-    history_count: runtime.state?.sessions?.length || 0,
-    recent_history: text,
-    day_report: text,
-    report_text: text,
-    message: text,
-    active_wrong: summary.active_review_count || 0,
-    cumulative_wrong: summary.permanent_wrong_count || 0,
-  };
-}
-
-async function sendReportViaEmailJS(report) {
-  if (!emailJSReady && !initEmailJS()) throw new Error('EmailJS를 불러오지 못했습니다.');
-  await globalThis.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailJsReportPayload(report));
-  return { ok: true, method: 'emailjs' };
-}
-
-async function queueOrSendReport(report) {
-  if (!runtime.state.settings.autoMail || !report.email) return { ok: false, skipped: true };
-  if (runtime.state.sentReportIds.includes(report.reportId)) return { ok: true, duplicate: true, method: 'duplicate' };
-  let lastError = null;
-  try {
-    const response = await fetch('/.netlify/functions/send-day-report', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(report),
-    });
-    if (!response.ok) throw new Error(`메일 함수 응답 ${response.status}`);
-    const responseBody = await response.json().catch(() => ({ ok: true }));
-    if (responseBody && responseBody.ok === false) throw new Error(responseBody.reason || 'Netlify 메일 전송 실패');
-    runtime.state.sentReportIds.push(report.reportId);
-    runtime.state.pendingReports = runtime.state.pendingReports.filter((item) => item.reportId !== report.reportId);
-    persist('mail_sent_netlify');
-    return { ok: true, method: 'netlify-function' };
-  } catch (error) {
-    lastError = error;
-  }
-  try {
-    const emailResult = await sendReportViaEmailJS(report);
-    runtime.state.sentReportIds.push(report.reportId);
-    runtime.state.pendingReports = runtime.state.pendingReports.filter((item) => item.reportId !== report.reportId);
-    persist('mail_sent_emailjs');
-    return emailResult;
-  } catch (error) {
-    lastError = error;
-  }
-  if (!runtime.state.pendingReports.some((item) => item.reportId === report.reportId)) {
-    runtime.state.pendingReports.push(report);
-  }
-  persist('mail_queued');
-  return { ok: false, error: lastError?.message || '메일 전송 경로를 사용할 수 없습니다.' };
-}
-
-async function retryPendingReports() {
-  const pending = [...runtime.state.pendingReports];
-  let success = 0;
-  for (const report of pending) {
-    const result = await queueOrSendReport(report);
-    if (result.ok) {
-      success += 1;
-      if (report.requiresCompletion && !dayState(Number(report.day)).completedAt) finalizeDayRecord(Number(report.day), false);
-    }
-  }
-  return { total: pending.length, success };
 }
 
 function renderCompletion(dayNo) {
@@ -3041,11 +2617,6 @@ function renderCompletion(dayNo) {
   $('completionMetrics').innerHTML = metrics.map(([label, value]) => `
     <div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>
   `).join('');
-  if (dayState(dayNo).forced) {
-    $('mailStatus').textContent = 'FORCED';
-  } else {
-    $('mailStatus').textContent = 'REPORT SENT';
-  }
   $('completionConfirm').textContent = dayNo < totalDays() ? `${courseDayLabel(dayNo + 1)}로 이동` : '전체 과정 확인';
   $('completionConfirm').onclick = () => {
     if (dayNo < totalDays()) runtime.state.currentDay = Math.max(runtime.state.currentDay, dayNo + 1);
@@ -3068,17 +2639,10 @@ function closeAdminPinModal() {
   modal.classList.add('hidden');
   $('adminPinInput').value = '';
   $('adminPinError').textContent = '';
-  if (isMailGateRequired() && sessionStorage.getItem(ADMIN_UNLOCK_KEY) !== '1') requestAnimationFrame(() => openMailGate(runtime.state.currentDay));
 }
 
 function requestAdminAccess() {
-  if (sessionStorage.getItem(ADMIN_UNLOCK_KEY) === '1') {
-    closeMailGate(true);
-    renderAdmin();
-    return;
-  }
-  // 보고 게이트 상태는 유지하되, 교사 PIN 입력창이 보이도록 잠시 오버레이만 닫는다.
-  if (isMailGateRequired()) closeMailGate(true);
+  if (sessionStorage.getItem(ADMIN_UNLOCK_KEY) === '1') { renderAdmin(); return; }
   const modal = $('adminPinModal');
   modal.classList.remove('hidden');
   $('adminPinInput').value = '';
@@ -3104,7 +2668,6 @@ function renderAdmin() {
     return;
   }
   // 교사 진단 화면 진입은 허용하지만 DAY 완료 조건은 변경하지 않는다.
-  closeMailGate(true);
   pauseActiveTimer();
   stopSessionTimer();
   showScreen('adminView');
@@ -3114,8 +2677,6 @@ function renderAdmin() {
   `).join('');
   $('startTime').value = s.start;
   $('endTime').value = s.end;
-  $('reportEmail').value = ADMIN_REPORT_EMAIL;
-  $('autoMail').checked = true;
   $('shortenMastered').checked = s.shortenMastered;
   $('blockMinutes').value = String(s.blockMinutes);
   const activeReviews = activeReviewEntries();
@@ -3139,15 +2700,14 @@ function renderAdmin() {
   $('storageSystemSummary').innerHTML = `
     <strong>누적 학습 ${cumulative.answered} / ${cumulative.totalWords} · 완료 DAY ${cumulative.completedDays} / ${cumulative.totalDays}</strong>
     <span>${saveStatus} · 현재/안전백업/복구스냅샷 3중 보존 · revision ${runtime.state.revision}</span>
-    <span>관리자 보고 전송 완료 DAY ${cumulative.sentDays}개 · 이벤트 ${runtime.state.eventLog.length}건 · 실제 활성시간 ${Math.round(totalActiveSeconds / 60)}분</span>
+    <span>이벤트 ${runtime.state.eventLog.length}건 · 실제 활성시간 ${Math.round(totalActiveSeconds / 60)}분</span>
   `;
   $('adminProgressList').innerHTML = runtime.schedule.days.map((d) => {
     const done = runtime.state.completedDays.includes(d.new_day);
     const current = runtime.state.currentDay === d.new_day;
     const ds = dayState(d.new_day);
     const answered = Object.keys(ds.answers || {}).length;
-    const mailState = ds.mailConfirmedAt ? '보고 전송 완료' : ds.completedBlocks.length >= 4 && !ds.completedAt ? '보고 전송 필수 대기' : '보고 미도달';
-    return `<div class="admin-day ${done ? 'done' : ''} ${current ? 'current' : ''}"><strong>${courseDayLabel(d.new_day)}</strong><span>${done ? '완료' : current ? '진행 중' : '대기'} · 누적 ${answered}/${d.words} · 정답 ${ds.stats.correct} · 오답 ${ds.stats.wrong} · ${mailState}</span></div>`;
+    return `<div class="admin-day ${done ? 'done' : ''} ${current ? 'current' : ''}"><strong>${courseDayLabel(d.new_day)}</strong><span>${done ? '완료' : current ? '진행 중' : '대기'} · 누적 ${answered}/${d.words} · 정답 ${ds.stats.correct} · 오답 ${ds.stats.wrong}</span></div>`;
   }).join('');
 }
 
@@ -3158,8 +2718,6 @@ function saveAdminSettings() {
     ...runtime.state.settings,
     start: $('startTime').value || '19:30',
     end: $('endTime').value || '20:30',
-    email: ADMIN_REPORT_EMAIL,
-    autoMail: true,
     shortenMastered: $('shortenMastered').checked,
     blockMinutes: Number($('blockMinutes').value || 15),
   };
@@ -3228,7 +2786,6 @@ function runSelfCheck() {
   const recoveryOk = Boolean(readStoredJson(RECOVERY_KEY) || readStoredJson(APP_KEY));
   add('안전 백업', backupOk, backupOk ? '정상' : '없음');
   add('복구 스냅샷', recoveryOk, recoveryOk ? '정상' : '없음');
-  add('관리자 메일 강제 완료', isMailGateRequired.toString().includes('completedBlocks.length >= 4'), ADMIN_REPORT_EMAIL);
   add('관리자 PIN 게이트', typeof requestAdminAccess === 'function' && ADMIN_PIN_FNV32 > 0, '세션 단위 잠금');
   add('당일 오답 확인 3초', WRONG_PRIMARY_HOLD_MS === 3000, `${WRONG_PRIMARY_HOLD_MS}ms`);
   add('예약 재오답 인지 4초·타임라인 없음', WRONG_COGNITION_REVEAL_MS === 4000 && !renderRepeatedErrorCognition.toString().includes('appendWrongHoldMeter'), `${WRONG_COGNITION_REVEAL_MS}ms`);
@@ -3261,47 +2818,7 @@ function bindEvents() {
   $('rootLearnerPin').addEventListener('input', (event) => { event.target.value=event.target.value.replace(/\D/g,'').slice(0,4); event.target.classList.remove('error'); if(event.target.value.length===4)setRootLoginMessage('PIN 확인 준비 완료'); });
   $('rootLearnerPin').addEventListener('keydown', (event) => { if(event.key==='Enter'){event.preventDefault();unlockRootLearner();} });
   $('rootLockButton').addEventListener('click', lockRootLearner);
-
   $('startButton').addEventListener('click', startOrResumeSession);
-  $('sendCompletionMail').addEventListener('click', sendCompletionReport);
-  $('mailGateAdmin').addEventListener('click', requestAdminAccess);
-  $('mailGateModal').addEventListener('click', (event) => {
-    if (event.target === $('mailGateModal') && isMailGateRequired()) {
-      event.preventDefault();
-      reinforceMailGate();
-    }
-  });
-  document.addEventListener('keydown', (event) => {
-    const gateOpen = !$('mailGateModal').classList.contains('hidden') && isMailGateRequired();
-    if (!gateOpen) return;
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      event.stopPropagation();
-      reinforceMailGate();
-      return;
-    }
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      const send = $('sendCompletionMail');
-      if (send && !send.disabled) send.focus();
-      else $('mailGateModal').querySelector('.mail-gate-card')?.focus();
-    }
-  }, true);
-  window.addEventListener('pageshow', () => {
-    if (isMailGateRequired()) openMailGate(runtime.state.currentDay);
-  });
-  window.addEventListener('online', async () => {
-    const dayNo = runtime.state.currentDay;
-    const wasRequired = isMailGateRequired(dayNo);
-    const result = await retryPendingReports().catch(() => ({ total: 0, success: 0 }));
-    if (wasRequired && result.success > 0 && dayState(dayNo).completedAt) {
-      closeMailGate(true);
-      renderCompletion(dayNo);
-    }
-  });
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && isMailGateRequired()) openMailGate(runtime.state.currentDay);
-  });
   $('exitSession').addEventListener('click', () => { pauseActiveTimer(); renderHome(); });
   $('adminToggle').addEventListener('click', requestAdminAccess);
   $('confirmAdminPin').addEventListener('click', confirmAdminAccess);
@@ -3311,24 +2828,15 @@ function bindEvents() {
     if (event.key === 'Escape') { event.preventDefault(); closeAdminPinModal(); }
   });
   $('adminPinModal').addEventListener('click', (event) => { if (event.target === $('adminPinModal')) closeAdminPinModal(); });
-  $('closeAdmin').addEventListener('click', () => {
-    sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
-    if (isMailGateRequired()) openMailGate(runtime.state.currentDay);
-    else renderHome();
-  });
+  $('closeAdmin').addEventListener('click', () => { sessionStorage.removeItem(ADMIN_UNLOCK_KEY); renderHome(); });
   $('saveAdmin').addEventListener('click', saveAdminSettings);
   $('exportProgress').addEventListener('click', exportProgress);
   $('importProgress').addEventListener('click', () => $('importProgressFile').click());
   $('selfCheck').addEventListener('click', runSelfCheck);
   $('importProgressFile').addEventListener('change', async (event) => {
-    try {
-      await importProgressFile(event.target.files?.[0]);
-      window.alert('진도 기록을 복원했습니다.');
-    } catch (error) {
-      window.alert(error.message);
-    } finally {
-      event.target.value = '';
-    }
+    try { await importProgressFile(event.target.files?.[0]); window.alert('진도 기록을 복원했습니다.'); }
+    catch (error) { window.alert(error.message); }
+    finally { event.target.value = ''; }
   });
   window.addEventListener('pagehide', () => { pauseActiveTimer(); persist('pagehide'); if(rootLearnerUnlocked)scheduleRootCloudSave('pagehide', true); });
   document.addEventListener('visibilitychange', () => {
@@ -3340,17 +2848,11 @@ function bindEvents() {
       persist('visibility_resume');
     }
   });
-  $('retryMail').addEventListener('click', async () => {
-    const result = await retryPendingReports();
-    window.alert(result.total ? `${result.total}건 중 ${result.success}건을 발송했습니다.` : '대기 중인 메일이 없습니다.');
-    renderAdmin();
-  });
 }
 
 async function boot() {
   try {
     await loadData();
-    initEmailJS();
     bindEvents();
     if(validHubLearnerSession()){
       showRootLearnerGate('통합 허브 인증 확인 완료 · 클라우드 진도를 불러오는 중입니다.');
@@ -3371,7 +2873,6 @@ window.addEventListener('message', (event) => {
   if (data.type === 'request-progress') sendHub('progress', hubDetail());
   if (data.type === 'go-home') renderHome();
 });
-window.addEventListener('load', initEmailJS);
 
 boot();
 
